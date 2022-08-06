@@ -20,10 +20,10 @@ const Onboarding1 = () => {
       </View>
       <View style={{flexDirection:'row',justifyContent:'space-between'}}>
       <TouchableOpacity>
-      <LinearGradient colors={['#4B74FF','#9281FF']} style={styles.button1}
-         start={{x: 0, y: 0}} end={{x: 1, y: 0}}>
-            <Text style={styles.buttonText}>Continue</Text>     
-      </LinearGradient>
+         <LinearGradient colors={['#4B74FF','#9281FF']} style={styles.button1}
+            start={{x: 0, y: 0}} end={{x: 1, y: 0}}>
+               <Text style={styles.buttonText}>Continue</Text>     
+         </LinearGradient>
       </TouchableOpacity>
       <TouchableOpacity>
       <LinearGradient colors={['#4B74FF','#A560FF80']} style={styles.button2}

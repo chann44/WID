@@ -2,14 +2,18 @@ import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import Button from '../components/Button'
 
-const ConnectWallet1 = () => {
+const ConnectWallet1 = ({navigation}) => {
   return (
     <View style={styles.Container}>
       <View style={{marginBottom:16,alignItems:'center'}}>
       <Text style={styles.text}>Now lets connect{'\n'} your wallet⚡</Text>
       {/* <Text style={styles.text}>  your wallet⚡</Text> */}
       </View>
-      <Button title={'Lets go'}/>
+      <Button title={'Lets go'}
+        onPress={()=>{
+          navigation.navigate('ConnectWalletMain')
+       }}
+      />
     </View>
   )
 }

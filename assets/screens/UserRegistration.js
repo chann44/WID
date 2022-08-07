@@ -2,7 +2,7 @@ import { StyleSheet, Text, View,KeyboardAvoidingView,TextInput } from 'react-nat
 import React from 'react'
 import Button from '../components/Button'
 
-const UserRegistration = () => {
+const UserRegistration = ({navigation}) => {
   return (
       <View style={styles.Container} >
          <View>   
@@ -38,7 +38,11 @@ const UserRegistration = () => {
          
          </View>
          <View style={{position:'absolute',bottom:38}}>
-            <Button title={'Next'}/>
+            <Button title={'Next'}
+               onPress={()=>{
+                  navigation.navigate('ConnectWallet1')
+               }}
+            />
          </View>
       </View>
   )

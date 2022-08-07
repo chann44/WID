@@ -3,7 +3,10 @@ import { StyleSheet, Text, View } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 
 
-export default function App() {
+export default function App({navigation}) {
+  setTimeout(()=>{
+    navigation.navigate('Onboarding1')
+  },2000)
   return (
     <View style={styles.container}>
       <View style={styles.circle2}>

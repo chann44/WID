@@ -2,7 +2,7 @@ import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import Button from '../components/Button'
 
-const Onboarding3 = () => {
+const Onboarding3 = ({navigation}) => {
   return (
     <View style={styles.container}>
       <View style={{paddingBottom:20}}>
@@ -17,7 +17,11 @@ const Onboarding3 = () => {
          </Text>
       </View>
 
-      <Button title={'Register'}/>
+      <Button title={'Register'}
+         onPress={()=>{
+            navigation.navigate('UserRegistration')
+         }}
+      />
     </View>
   )
 }

@@ -4,7 +4,7 @@ import Button from '../components/Button'
 import { LinearGradient } from 'expo-linear-gradient';
 
 
-const Onboarding1 = () => {
+const Onboarding1 = ({navigation}) => {
   return (
     <View style={styles.container}>
       <View style={{marginBottom:20}}>
@@ -19,7 +19,11 @@ const Onboarding1 = () => {
          </Text>
       </View>
       <View style={{flexDirection:'row',justifyContent:'space-between'}}>
-      <TouchableOpacity>
+      <TouchableOpacity 
+         onPress={()=>{
+            navigation.navigate('Onboarding2')
+         }}
+      >
          <LinearGradient colors={['#4B74FF','#9281FF']} style={styles.button1}
             start={{x: 0, y: 0}} end={{x: 1, y: 0}}>
                <Text style={styles.buttonText}>Continue</Text>     

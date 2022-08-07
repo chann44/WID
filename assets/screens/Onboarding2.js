@@ -2,7 +2,7 @@ import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import Button from '../components/Button'
 
-const Onboarding2 = () => {
+const Onboarding2 = ({navigation}) => {
   return (
     <View style={styles.container}>
       <View style={{marginBottom:20}}>
@@ -18,7 +18,9 @@ const Onboarding2 = () => {
       </View>
 
       <Button title={'Next'}
-         onPress={()=>console.log('Button Pressed')}
+         onPress={()=>{
+            navigation.navigate('Onboarding3')
+         }}
       />
     </View>
   )

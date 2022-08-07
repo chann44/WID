@@ -8,7 +8,7 @@ import { TouchableOpacity } from 'react-native';
 import AssetContainer from '../components/AssetContainer';
 
 
-const Home = () => {
+const Home = ({navigation}) => {
   return (
     <View style={{backgroundColor:'#000',flex:1}}>
       <View style={{flexDirection:'row',paddingHorizontal:17,paddingTop:56,justifyContent:'space-between'}}>
@@ -29,7 +29,11 @@ const Home = () => {
          <View style={styles.shadow}></View>
       </View>
       <View style={{flexDirection:'row',marginHorizontal:16,justifyContent:'space-between',marginBottom:36,marginTop:30}}>
-         <TouchableOpacity>
+         <TouchableOpacity
+            onPress={()=>{
+               navigation.navigate('Send')
+            }}
+         >
             <LinearGradient colors={['#4B74FF','#9281FF']} style={styles.button1}
                start={{x: 0, y: 0}} end={{x: 1, y: 0}}>
                   <Feather name='arrow-up-right' size={18} color={'#fff'} />

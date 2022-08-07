@@ -14,35 +14,72 @@ import Transaction from './assets/screens/Transaction';
 import Wallet from './assets/screens/Wallet';
 import Home from './assets/screens/Home';
 import Send from './assets/screens/Send';
+import ConnectWalletMain from './assets/screens/ConnectWalletMain';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
+import AntDesign from '@expo/vector-icons/AntDesign';
+import Entypo from '@expo/vector-icons/Entypo';
+import LaunchS from './assets/screens/LaunchS'
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
+
 
 const Tab = createBottomTabNavigator();
+const Stack = createNativeStackNavigator();
 
-const TabNavigation = () => {
+
+export function TabNavigation() {
   return(
-    <NavigationContainer>
       <Tab.Navigator screenOptions={{tabBarStyle:{
         backgroundColor:'#000'
       }}} >
         <Tab.Screen name="Home" component={Home} 
-          options={{headerShown:false}}
+          options={{headerShown:false,
+          tabBarIcon:()=>(
+            <MaterialIcons name='home' color={'#fff'} size={25}/>
+          )
+          }}
         />
-        <Tab.Screen name="Transaction" component={Transaction} />
-        <Tab.Screen name="Wallet" component={Wallet} />
+        <Tab.Screen name="Transaction" component={Transaction}
+          options={{
+            tabBarIcon:()=>(
+              <AntDesign name='swap' color={'#fff'} size={20} 
+                style={{transform:[{ rotate: '90deg'}]}} 
+              />
+            )
+            }}
+  
+        />
+        <Tab.Screen name="Wallet" component={Wallet}
+          options={{
+            tabBarIcon:()=>(
+              <Entypo name='wallet' color={'#fff'} size={20} 
+              />
+            )
+            }}
+        />
       </Tab.Navigator>
-    </NavigationContainer>
   )
 }
 
 
+
 export default function App() {
-  const LoadFonts = async () => {
-    await useFonts();
-  };
-  <AppLoading startAsync={LoadFonts}/>
 
 
   return (
-    <Send />
-  );
+    <NavigationContainer>
+      <Stack.Navigator screenOptions={{headerShown:false}}>
+        <Stack.Screen name="LaunchS" component={LaunchS} />
+        <Stack.Screen name="Onboarding1" component={Onboarding1} />
+        <Stack.Screen name="Onboarding2" component={Onboarding2} />
+        <Stack.Screen name="Onboarding3" component={Onboarding3} />
+        <Stack.Screen name="UserRegistration" component={UserRegistration} />
+        <Stack.Screen name="ConnectWallet1" component={ConnectWallet1} />
+        <Stack.Screen name="ConnectWalletMain" component={ConnectWalletMain} />
+        <Stack.Screen name="TabNavigation" component={TabNavigation}/>
+        <Stack.Screen name="Send" component={Send} />
+      </Stack.Navigator>
+    </NavigationContainer>  
+    );
 }
 

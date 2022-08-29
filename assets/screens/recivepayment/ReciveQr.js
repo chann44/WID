@@ -9,6 +9,8 @@ import {
 import React, { useState } from "react";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import Button from "../../components/Button";
+import QRImage from "../../qr.svg";
+import { SIZES } from "../../theme";
 
 const ReciveQr = () => {
   return (
@@ -50,9 +52,46 @@ const ReciveQr = () => {
           style={{
             flex: 1,
             alignItems: "center",
-            justifyContent: "space-between",
+            justifyContent: "center",
           }}
-        ></View>
+        >
+          <QRImage />
+          <Text
+            style={{
+              marginVertical: 20,
+              lineHeight: 25,
+              paddingHorizontal: 20,
+              textAlign: "center",
+              fontSize: SIZES.large,
+              color: "white",
+            }}
+          >
+            Scan this address to receive payments
+          </Text>
+          <View
+            style={{
+              marginVertical: 12,
+              marginHorizontal: 20,
+              flexDirection: "row",
+              justifyContent: "space-between",
+              alignItems: "center",
+              paddingVertical: 15,
+              paddingHorizontal: 18,
+              width: "100%",
+              borderWidth: 1,
+              borderColor: "#374151",
+            }}
+          >
+            <Text
+              style={{
+                color: "white",
+              }}
+            >
+              Vikash@wagpay
+            </Text>
+            <MaterialIcons name="content-copy" color="#fff" size={20} />
+          </View>
+        </View>
         <View
           style={{
             marginHorizontal: 40,

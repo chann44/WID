@@ -18,6 +18,8 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import AccoundCreated from "./assets/screens/accountcreated";
 import TryAgain from "./assets/screens/TryAgain";
 import TransectionSuccess from "./assets/screens/transectionsuccess";
+import RequestPayment from "./assets/screens/recivepayment/RequestPayment";
+import ReciveQr from "./assets/screens/recivepayment/ReciveQr";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -58,7 +60,7 @@ export function TabNavigation() {
       />
       <Tab.Screen
         name="Wallet"
-        component={TransectionSuccess}
+        component={ReciveQr}
         options={{
           headerShown: false,
           tabBarIcon: () => <Entypo name="wallet" color={"#fff"} size={20} />,

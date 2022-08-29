@@ -19,6 +19,7 @@ const Home = ({ navigation }) => {
   return (
     <SafeAreaView
       style={{
+        backgroundColor: "#000",
         flex: 1,
       }}
     >

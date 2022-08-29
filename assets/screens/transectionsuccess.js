@@ -1,6 +1,5 @@
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import React from "react";
-import Button from "../components/Button";
 import { LinearGradient } from "expo-linear-gradient";
 import SVGImg from "../../assets/done.svg";
 const TransectionSuccess = ({ navigation }) => {

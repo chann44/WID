@@ -20,6 +20,8 @@ import TryAgain from "./assets/screens/TryAgain";
 import TransectionSuccess from "./assets/screens/transectionsuccess";
 import RequestPayment from "./assets/screens/recivepayment/RequestPayment";
 import ReciveQr from "./assets/screens/recivepayment/ReciveQr";
+import CreateWalletOnBoarding from "./assets/screens/createWallet.js/onBoardincreateWallet";
+import CreateWallet from "./assets/screens/createWallet.js/createwallet";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -60,7 +62,7 @@ export function TabNavigation() {
       />
       <Tab.Screen
         name="Wallet"
-        component={ReciveQr}
+        component={CreateWallet}
         options={{
           headerShown: false,
           tabBarIcon: () => <Entypo name="wallet" color={"#fff"} size={20} />,

@@ -47,6 +47,9 @@ const TransectionSuccess = ({ navigation }) => {
           </LinearGradient>
         </TouchableOpacity>
         <TouchableOpacity
+          onPress={() => {
+            navigation.navigate("Home");
+          }}
           style={{
             width: 350,
           }}

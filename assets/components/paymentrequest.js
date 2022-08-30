@@ -3,7 +3,7 @@ import React from "react";
 import { SIZES } from "../theme";
 import { LinearGradient } from "expo-linear-gradient";
 
-const Paymentrequest = () => {
+const Paymentrequest = ({ navigation }) => {
   return (
     <View
       style={{
@@ -79,36 +79,12 @@ const Paymentrequest = () => {
           }}
         >
           <TouchableOpacity
-            style={{
-              flexGrow: 1,
-              marginHorizontal: 3,
-            }}
             onPress={() => {
-              navigation.navigate("Onboarding2");
+              console.log(navigation);
+              navigation.navigate("Send");
             }}
-          >
-            <LinearGradient
-              style={{
-                paddingVertical: 10,
-              }}
-              colors={["#4B74FF", "#9281FF"]}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 0 }}
-            >
-              <Text
-                style={{
-                  color: "white",
-                  fontSize: SIZES.large,
-                  textAlign: "center",
-                }}
-              >
-                Pay
-              </Text>
-            </LinearGradient>
-          </TouchableOpacity>
-          <TouchableOpacity
             style={{
-              marginHorizontal: 3,
+              marginHorizontal: 10,
               flexGrow: 1,
             }}
           >
@@ -116,6 +92,7 @@ const Paymentrequest = () => {
               style={{
                 padding: 1,
 
+                borderRadius: SIZES.small,
                 width: "100%",
               }}
               colors={["#4B74FF", "#A560FF80"]}
@@ -128,7 +105,8 @@ const Paymentrequest = () => {
                   backgroundColor: "#000",
                   justifyContent: "center",
                   alignItems: "center",
-                  borderRadius: 4,
+
+                  borderRadius: SIZES.small,
                 }}
               >
                 <Text
@@ -138,10 +116,39 @@ const Paymentrequest = () => {
                     textAlign: "center",
                   }}
                 >
-                  Cancel
+                  pay
                 </Text>
               </View>
             </LinearGradient>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={{
+              marginHorizontal: 3,
+              flexGrow: 1,
+              borderWidth: 1,
+              borderColor: "#959595",
+              borderRadius: SIZES.small,
+            }}
+          >
+            <View
+              style={{
+                paddingVertical: 10,
+                justifyContent: "center",
+                alignItems: "center",
+                borderRadius: 4,
+              }}
+            >
+              <Text
+                style={{
+                  color: "white",
+                  fontSize: SIZES.large,
+                  textAlign: "center",
+                }}
+              >
+                Cancel
+              </Text>
+            </View>
           </TouchableOpacity>
         </View>
       </View>

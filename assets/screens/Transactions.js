@@ -14,7 +14,7 @@ import Transection from "../components/transection";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { SIZES } from "../theme";
 
-const Transections = () => {
+const Transections = ({ navigation }) => {
   return (
     <SafeAreaView
       style={{
@@ -34,7 +34,11 @@ const Transections = () => {
               alignItems: "center",
             }}
           >
-            <TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate("Home");
+              }}
+            >
               <MaterialIcons
                 name="keyboard-arrow-left"
                 color={"#fff"}

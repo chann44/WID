@@ -35,7 +35,11 @@ const Send = ({ navigation }) => {
             alignItems: "center",
           }}
         >
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("Home");
+            }}
+          >
             <MaterialIcons
               name="keyboard-arrow-left"
               color={"#fff"}
@@ -167,7 +171,14 @@ const Send = ({ navigation }) => {
             </View>
           ) : null}
         </View>
-        <View style={{ position: "absolute", bottom: 40, alignSelf: "center" }}>
+        <View
+          style={{
+            position: "absolute",
+            bottom: 40,
+            alignSelf: "center",
+            width: "100%",
+          }}
+        >
           {next ? (
             <Button
               title={"Send"}

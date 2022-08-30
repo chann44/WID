@@ -14,6 +14,7 @@ import { TouchableOpacity } from "react-native";
 import AssetContainer from "../components/AssetContainer";
 import PaymentRequest from "../components/paymentrequest";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { SIZES } from "../theme";
 
 const Home = ({ navigation }) => {
   return (
@@ -91,10 +92,19 @@ const Home = ({ navigation }) => {
               onPress={() => {
                 navigation.navigate("Recive");
               }}
+              style={{
+                marginHorizontal: 10,
+                flexGrow: 1,
+              }}
             >
               <LinearGradient
+                style={{
+                  padding: 1,
+
+                  borderRadius: SIZES.small,
+                  width: "100%",
+                }}
                 colors={["#4B74FF", "#A560FF80"]}
-                style={styles.button1}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 0 }}
               >
@@ -102,11 +112,12 @@ const Home = ({ navigation }) => {
                   style={{
                     height: 54,
                     width: 160,
-                    backgroundColor: "transparent",
+                    backgroundColor: "#000",
                     justifyContent: "center",
                     alignItems: "center",
-                    borderRadius: 8,
+                    borderRadius: SIZES.small,
                     flexDirection: "row",
+                    padding: 1,
                   }}
                 >
                   <Feather name="arrow-down-left" size={18} color={"#fff"} />
@@ -117,7 +128,7 @@ const Home = ({ navigation }) => {
           </View>
           <View style={{ marginHorizontal: 16 }}>
             {/* payment request */}
-            <PaymentRequest></PaymentRequest>
+            <PaymentRequest navigation={navigation}></PaymentRequest>
             <View
               style={{
                 flexDirection: "row",
@@ -187,6 +198,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     flexDirection: "row",
+    padding: 1,
   },
   buttonText: {
     fontSize: 16,

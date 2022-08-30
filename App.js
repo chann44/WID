@@ -14,6 +14,7 @@ import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import AntDesign from "@expo/vector-icons/AntDesign";
 import Entypo from "@expo/vector-icons/Entypo";
 import LaunchS from "./assets/screens/LaunchS";
+
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import AccoundCreated from "./assets/screens/accountcreated";
 import TryAgain from "./assets/screens/TryAgain";
@@ -25,6 +26,8 @@ import CreateWallet from "./assets/screens/createWallet.js/createwallet";
 import Loading from "./assets/screens/Loading";
 import CreateWalletSuccess from "./assets/screens/createWallet.js/createWalletSuccess";
 import ImportWallet from "./assets/screens/createWallet.js/importWallet";
+import Profile from "./assets/screens/Profile";
+import Paymentrequest from "./assets/components/paymentrequest";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -63,14 +66,16 @@ export function TabNavigation() {
           ),
         }}
       />
-      {/* <Tab.Screen
-        name="Wallet"
-        component={Loading}
+      <Tab.Screen
+        name="Profile"
+        component={Profile}
         options={{
           headerShown: false,
-          tabBarIcon: () => <Entypo name="wallet" color={"#fff"} size={20} />,
+          tabBarIcon: () => (
+            <MaterialIcons name="account-circle" color={"#fff"} size={20} />
+          ),
         }}
-      /> */}
+      />
     </Tab.Navigator>
   );
 }
@@ -90,6 +95,7 @@ export default function App() {
         <Stack.Screen name="Send" component={Send} />
         <Stack.Screen name="Recive" component={ReciveQr} />
         <Stack.Screen name="RequestPayment" component={RequestPayment} />
+        <Stack.Screen name="PaymentRequest" component={Paymentrequest} />
         <Stack.Screen
           name="CreateWalletOnBoarding"
           component={CreateWalletOnBoarding}

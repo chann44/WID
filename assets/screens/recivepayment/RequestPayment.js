@@ -27,7 +27,7 @@ const RequestPayment = ({ navigation }) => {
         backgroundColor: "#000000",
         flex: 1,
         width: "100%",
-        paddingTop: 40,
+        paddingVertical: 40,
         paddingHorizontal: 12,
       }}
     >
@@ -206,6 +206,7 @@ const RequestPayment = ({ navigation }) => {
             style={{
               marginHorizontal: 40,
               alignItems: "center",
+              width: "100%",
             }}
           >
             <Button
@@ -213,7 +214,7 @@ const RequestPayment = ({ navigation }) => {
               onPress={() => {
                 navigation.navigate("Loading", {
                   meesage: "Sending payment request",
-                  next: "Home",
+                  next: "TabNavigation",
                 });
               }}
             />

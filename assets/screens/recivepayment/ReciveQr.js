@@ -98,8 +98,8 @@ const ReciveQr = ({ navigation }) => {
         </View>
         <View
           style={{
-            marginHorizontal: 40,
             alignItems: "center",
+            width: "100%",
           }}
         >
           <Button

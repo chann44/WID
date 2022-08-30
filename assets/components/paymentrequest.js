@@ -1,6 +1,7 @@
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import React from "react";
 import { SIZES } from "../theme";
+import { LinearGradient } from "expo-linear-gradient";
 
 const Paymentrequest = () => {
   return (
@@ -22,20 +23,21 @@ const Paymentrequest = () => {
       <View
         style={{
           backgroundColor: "#1C1C1C",
-          paddingVertical: 10,
+          paddingVertical: 20,
         }}
       >
         <Text
           style={{
             color: "white",
             fontSize: SIZES.medium,
+            marginBottom: 8,
           }}
         >
           Payment Request from <Text>vikash@wagapay</Text>
         </Text>
         <View
           style={{
-            marginVertical: 8,
+            marginVertical: 12,
             flexDirection: "row",
             justifyContent: "space-between",
           }}
@@ -71,52 +73,75 @@ const Paymentrequest = () => {
         </View>
         <View
           style={{
+            marginTop: 12,
             flexDirection: "row",
             justifyContent: "space-between",
           }}
         >
           <TouchableOpacity
             style={{
-              marginHorizontal: 3,
               flexGrow: 1,
-              height: 50,
-              borderColor: "#9281FF",
-              borderWidth: 1,
-              borderColor: "white",
-              borderStyle: "solid",
-              justifyContent: "center",
-              alignItems: "center",
+              marginHorizontal: 3,
+            }}
+            onPress={() => {
+              navigation.navigate("Onboarding2");
             }}
           >
-            <Text
+            <LinearGradient
               style={{
-                fontSize: SIZES.large,
-                color: "white",
-                lineHeight: 22.5,
+                paddingVertical: 10,
               }}
+              colors={["#4B74FF", "#9281FF"]}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 0 }}
             >
-              pay
-            </Text>
+              <Text
+                style={{
+                  color: "white",
+                  fontSize: SIZES.large,
+                  textAlign: "center",
+                }}
+              >
+                Pay
+              </Text>
+            </LinearGradient>
           </TouchableOpacity>
           <TouchableOpacity
             style={{
-              marginHorizontal: 6,
+              marginHorizontal: 3,
               flexGrow: 1,
-              borderWidth: 1,
-              borderColor: "white",
-              borderStyle: "solid",
-              justifyContent: "center",
-              alignItems: "center",
             }}
           >
-            <Text
+            <LinearGradient
               style={{
-                fontSize: SIZES.large,
-                color: "white",
+                padding: 1,
+
+                width: "100%",
               }}
+              colors={["#4B74FF", "#A560FF80"]}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 0 }}
             >
-              cancel
-            </Text>
+              <View
+                style={{
+                  paddingVertical: 10,
+                  backgroundColor: "#000",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  borderRadius: 4,
+                }}
+              >
+                <Text
+                  style={{
+                    color: "white",
+                    fontSize: SIZES.large,
+                    textAlign: "center",
+                  }}
+                >
+                  Cancel
+                </Text>
+              </View>
+            </LinearGradient>
           </TouchableOpacity>
         </View>
       </View>

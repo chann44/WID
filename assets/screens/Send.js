@@ -1,62 +1,207 @@
-import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
-import React from 'react'
-import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
-import MaterialIcons from '@expo/vector-icons/MaterialIcons';
-import Button from '../components/Button';
+import {
+  SafeAreaView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import React, { useState } from "react";
+import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
+import MaterialIcons from "@expo/vector-icons/MaterialIcons";
+import Button from "../components/Button";
 
+const Send = ({ navigation }) => {
+  const [next, setNext] = useState(false);
 
-const Send = () => {
   return (
-    <View style={styles.container}>
-      <View style={{flexDirection:'row',justifyContent:'space-between',paddingHorizontal:4,alignItems:'center'}}>
-         <TouchableOpacity>
-            <MaterialIcons name='keyboard-arrow-left' color={'#fff'} size={25}/>
-         </TouchableOpacity>
-         <Text style={styles.headerText}>Send</Text>
-         <TouchableOpacity>
-            <MaterialCommunityIcons name='line-scan' color={'#ffffff'} size={25}/>
-         </TouchableOpacity>
-      </View>
-      <View style={{backgroundColor:'#111111',width:358,borderRadius:8,alignItems:'center',paddingHorizontal:8,paddingVertical:12,marginTop:60}}>
-         <View style={{width:342,paddingHorizontal:16,backgroundColor:"#000000",borderRadius:8,marginBottom:10}}>
-            <Text style={{fontSize:16,fontWeight:"500",lineHeight:20,marginTop:16,color:'#9B9B9B'}}>Receipent wagpay id</Text>
-            <TextInput placeholder=''/>
-
-         </View>
-         <View
-            style={{width:342,paddingHorizontal:16,backgroundColor:"#000000",borderRadius:8,flexDirection:'row',justifyContent:'space-between'}}
-         >
-            <View style={{marginVertical:16}}>
-               <Text style={{fontSize:16,fontWeight:"500",lineHeight:20,color:'#FFFFFF'}} >Amount</Text>
-               <TextInput placeholder='--' placeholderTextColor={'#ffff'} style={{fontSize:18,color:'#fff',marginTop:12}} keyboardType='number-pad' />
+    <SafeAreaView
+      style={{
+        flex: 1,
+        backgroundColor: "#000000",
+        flex: 1,
+        width: "100%",
+        paddingTop: 40,
+        paddingBottom: 20,
+        paddingHorizontal: 12,
+      }}
+    >
+      <View style={styles.container}>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+            paddingHorizontal: 4,
+            alignItems: "center",
+          }}
+        >
+          <TouchableOpacity>
+            <MaterialIcons
+              name="keyboard-arrow-left"
+              color={"#fff"}
+              size={25}
+            />
+          </TouchableOpacity>
+          <Text style={styles.headerText}>Send</Text>
+          <TouchableOpacity>
+            <MaterialCommunityIcons
+              name="line-scan"
+              color={"#ffffff"}
+              size={25}
+            />
+          </TouchableOpacity>
+        </View>
+        <View
+          style={{
+            backgroundColor: "#111111",
+            width: "100%",
+            borderRadius: 8,
+            alignItems: "center",
+            paddingHorizontal: 8,
+            paddingVertical: 12,
+            marginTop: 60,
+          }}
+        >
+          <View
+            style={{
+              width: "100%",
+              paddingHorizontal: 16,
+              backgroundColor: "#000000",
+              borderRadius: 8,
+              marginBottom: 10,
+            }}
+          >
+            <Text
+              style={{
+                fontSize: 16,
+                fontWeight: "500",
+                lineHeight: 20,
+                marginTop: 16,
+                color: "#9B9B9B",
+              }}
+            >
+              Receipent wagpay id
+            </Text>
+            <TextInput placeholder="" />
+          </View>
+          <View
+            style={{
+              width: "100%",
+              paddingHorizontal: 16,
+              backgroundColor: "#000000",
+              borderRadius: 8,
+              flexDirection: "row",
+              justifyContent: "space-between",
+            }}
+          >
+            <View style={{ marginVertical: 16 }}>
+              <Text
+                style={{
+                  fontSize: 16,
+                  fontWeight: "500",
+                  lineHeight: 20,
+                  color: "#FFFFFF",
+                }}
+              >
+                Amount
+              </Text>
+              <TextInput
+                placeholder="--"
+                placeholderTextColor={"#ffff"}
+                style={{ fontSize: 18, color: "#fff", marginTop: 12 }}
+                keyboardType="number-pad"
+              />
             </View>
-            <View style={{height:54,width:83,backgroundColor:'#303030',borderRadius:8,flexDirection:'row',marginVertical:16,justifyContent:'center',alignItems:'center'}}>
-               <Text style={{fontSize:16,fontWeight:"500",lineHeight:20,color:'#FFFFFF'}}>USDC</Text>
-               <MaterialIcons name='keyboard-arrow-down' color={'#fff'} size={25}/>
+            <View
+              style={{
+                height: 54,
+                width: 83,
+                backgroundColor: "#303030",
+                borderRadius: 8,
+                flexDirection: "row",
+                marginVertical: 16,
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <Text
+                style={{
+                  fontSize: 16,
+                  fontWeight: "500",
+                  lineHeight: 20,
+                  color: "#FFFFFF",
+                }}
+              >
+                USDC
+              </Text>
+              <MaterialIcons
+                name="keyboard-arrow-down"
+                color={"#fff"}
+                size={25}
+              />
             </View>
-         </View>
+          </View>
+          {next ? (
+            <View
+              style={{
+                marginVertical: 10,
+                width: "100%",
+                flexDirection: "row",
+                justifyContent: "space-between",
+              }}
+            >
+              <Text
+                style={{
+                  color: "white",
+                }}
+              >
+                Gas fees
+              </Text>
+              <Text
+                style={{
+                  color: "white",
+                }}
+              >
+                $0.04
+              </Text>
+            </View>
+          ) : null}
+        </View>
+        <View style={{ position: "absolute", bottom: 40, alignSelf: "center" }}>
+          {next ? (
+            <Button
+              title={"Send"}
+              onPress={() => {
+                navigation.navigate("TransectionSuccess");
+              }}
+            />
+          ) : (
+            <Button
+              onPress={() => {
+                setNext(true);
+              }}
+              title={"Next"}
+            />
+          )}
+        </View>
       </View>
-      <View style={{position:'absolute',bottom:40,alignSelf:'center'}}>
-         <Button title={'Next'} />
-      </View>
-         
-    </View>
-  )
-}
+    </SafeAreaView>
+  );
+};
 
-export default Send
+export default Send;
 
 const styles = StyleSheet.create({
-   container:{
-      backgroundColor:'#000000',
-      flex:1,
-      paddingVertical:60,
-      paddingHorizontal:16
-   },
-   headerText:{
-      fontSize:18,
-      fontWeight:'600',
-      lineHeight:22.5,
-      color:'#ffffff'
-   }
-})
+  container: {
+    width: "100%",
+    backgroundColor: "#000000",
+    flex: 1,
+    paddingHorizontal: 10,
+  },
+  headerText: {
+    fontSize: 18,
+    fontWeight: "600",
+    lineHeight: 22.5,
+    color: "#ffffff",
+  },
+});

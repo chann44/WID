@@ -2,16 +2,30 @@ import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import React from "react";
 import { LinearGradient } from "expo-linear-gradient";
 import SVGImg from "../../assets/done.svg";
+import { SIZES } from "../theme";
 const TransectionSuccess = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View
         style={{
+          justifyContent: "center",
+          alignItems: "center",
           height: 200,
           marginBottom: 30,
         }}
       >
         <SVGImg />
+        <Text
+          style={{
+            textAlign: "center",
+            marginTop: SIZES.small,
+            fontSize: SIZES.large,
+            fontWeight: "bold",
+            color: "white",
+          }}
+        >
+          Transaction Successfull
+        </Text>
       </View>
       <View style={{ alignItems: "center", justifyContent: "center" }}>
         <TouchableOpacity

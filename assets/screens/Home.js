@@ -87,7 +87,11 @@ const Home = ({ navigation }) => {
                 <Text style={styles.buttonText}>Send</Text>
               </LinearGradient>
             </TouchableOpacity>
-            <TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate("Recive");
+              }}
+            >
               <LinearGradient
                 colors={["#4B74FF", "#A560FF80"]}
                 style={styles.button1}

@@ -22,6 +22,9 @@ import RequestPayment from "./assets/screens/recivepayment/RequestPayment";
 import ReciveQr from "./assets/screens/recivepayment/ReciveQr";
 import CreateWalletOnBoarding from "./assets/screens/createWallet.js/onBoardincreateWallet";
 import CreateWallet from "./assets/screens/createWallet.js/createwallet";
+import Loading from "./assets/screens/Loading";
+import CreateWalletSuccess from "./assets/screens/createWallet.js/createWalletSuccess";
+import ImportWallet from "./assets/screens/createWallet.js/importWallet";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -60,14 +63,14 @@ export function TabNavigation() {
           ),
         }}
       />
-      <Tab.Screen
+      {/* <Tab.Screen
         name="Wallet"
-        component={CreateWallet}
+        component={Loading}
         options={{
           headerShown: false,
           tabBarIcon: () => <Entypo name="wallet" color={"#fff"} size={20} />,
         }}
-      />
+      /> */}
     </Tab.Navigator>
   );
 }
@@ -85,6 +88,30 @@ export default function App() {
         <Stack.Screen name="ConnectWalletMain" component={ConnectWalletMain} />
         <Stack.Screen name="TabNavigation" component={TabNavigation} />
         <Stack.Screen name="Send" component={Send} />
+        <Stack.Screen name="Recive" component={ReciveQr} />
+        <Stack.Screen name="RequestPayment" component={RequestPayment} />
+        <Stack.Screen
+          name="CreateWalletOnBoarding"
+          component={CreateWalletOnBoarding}
+        />
+        <Stack.Screen
+          name="CreateWalletOnSuccess"
+          component={CreateWalletSuccess}
+        />
+        <Stack.Screen name="CreateWallet" component={CreateWallet} />
+        <Stack.Screen
+          name="CreateWalletSuccess"
+          component={CreateWalletSuccess}
+        />
+        <Stack.Screen
+          name="TransectionSuccess"
+          component={TransectionSuccess}
+        />
+
+        <Stack.Screen name="ImportWallet" component={ImportWallet} />
+        <Stack.Screen name="Loading" component={Loading} />
+        <Stack.Screen name="Transections" component={Transactions} />
+        <Stack.Screen name="createAccountSuccess" component={AccoundCreated} />
       </Stack.Navigator>
     </NavigationContainer>
   );

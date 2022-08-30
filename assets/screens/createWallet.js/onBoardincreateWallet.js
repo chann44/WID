@@ -26,7 +26,7 @@ const CreateWalletOnBoarding = ({ navigation }) => {
             width: "100%",
           }}
           onPress={() => {
-            navigation.navigate("Onboarding2");
+            navigation.navigate("CreateWallet");
           }}
         >
           <LinearGradient
@@ -39,6 +39,9 @@ const CreateWalletOnBoarding = ({ navigation }) => {
           </LinearGradient>
         </TouchableOpacity>
         <TouchableOpacity
+          onPress={() => {
+            navigation.navigate("ImportWallet");
+          }}
           style={{
             marginTop: 5,
           }}

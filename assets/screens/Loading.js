@@ -1,12 +1,13 @@
-import { View, Text, Image } from "react-native";
+import { View, Text, Image, ActivityIndicator } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { SIZES } from "../../theme";
-import { SvgUri } from "react-native-svg";
-import SVGImg from "../../done.svg";
+import { SIZES } from "../theme";
+import SVGImg from "../../assets/done.svg";
 
-const CreateWalletSuccess = ({ navigation }) => {
+const Loading = ({ navigation, route }) => {
+  console.log(route);
+
   setTimeout(() => {
-    navigation.navigate("TabNavigation");
+    navigation.navigate(route.params.next);
   }, 3000);
   return (
     <SafeAreaView
@@ -24,18 +25,8 @@ const CreateWalletSuccess = ({ navigation }) => {
           alignItems: "center",
         }}
       >
-        <SVGImg />
-        <Text
-          style={{
-            marginTop: SIZES.extraLarge,
-            fontSize: SIZES.large,
-            fontWeight: "bold",
-            color: "white",
-            textAlign: "center",
-          }}
-        >
-          Yay!!
-        </Text>
+        <ActivityIndicator size={70} color="#fff" />
+
         <Text
           style={{
             textAlign: "center",
@@ -45,11 +36,11 @@ const CreateWalletSuccess = ({ navigation }) => {
             color: "white",
           }}
         >
-          Wallet created Succesfully
+          {route.params.meesage}
         </Text>
       </View>
     </SafeAreaView>
   );
 };
 
-export default CreateWalletSuccess;
+export default Loading;

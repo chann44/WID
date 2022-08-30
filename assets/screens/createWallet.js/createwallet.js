@@ -67,11 +67,14 @@ const CreateWallet = ({ navigation }) => {
             </View>
           </View>
         </View>
-        <View style={{ position: "absolute", bottom: 38 }}>
+        <View style={{ position: "absolute", bottom: 38, width: "100%" }}>
           <Button
             title={"Next"}
             onPress={() => {
-              navigation.navigate("ConnectWallet1");
+              navigation.navigate("Loading", {
+                meesage: "creating wallet",
+                next: "CreateWalletOnSuccess",
+              });
             }}
           />
         </View>

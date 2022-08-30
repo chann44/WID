@@ -12,7 +12,7 @@ import Button from "../../components/Button";
 import QRImage from "../../qr.svg";
 import { SIZES } from "../../theme";
 
-const ReciveQr = () => {
+const ReciveQr = ({ navigation }) => {
   return (
     <SafeAreaView
       style={{
@@ -33,7 +33,11 @@ const ReciveQr = () => {
             alignItems: "center",
           }}
         >
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("Home");
+            }}
+          >
             <MaterialIcons
               name="keyboard-arrow-left"
               color={"#fff"}
@@ -98,7 +102,12 @@ const ReciveQr = () => {
             alignItems: "center",
           }}
         >
-          <Button title={"Request payment"} />
+          <Button
+            onPress={() => {
+              navigation.navigate("RequestPayment");
+            }}
+            title={"Request payment"}
+          />
         </View>
       </View>
     </SafeAreaView>

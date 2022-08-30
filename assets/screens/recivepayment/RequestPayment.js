@@ -13,7 +13,7 @@ import Button from "../../components/Button";
 import { SIZES } from "../../theme";
 import DropDownPicker from "react-native-dropdown-picker";
 
-const RequestPayment = () => {
+const RequestPayment = ({ navigation }) => {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
   const [items, setItems] = useState([
@@ -39,7 +39,11 @@ const RequestPayment = () => {
             alignItems: "center",
           }}
         >
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("Recive");
+            }}
+          >
             <MaterialIcons
               name="keyboard-arrow-left"
               color={"#fff"}
@@ -204,7 +208,15 @@ const RequestPayment = () => {
               alignItems: "center",
             }}
           >
-            <Button title={"Request payment"} />
+            <Button
+              title={"Request payment"}
+              onPress={() => {
+                navigation.navigate("Loading", {
+                  meesage: "Sending payment request",
+                  next: "Home",
+                });
+              }}
+            />
           </View>
         </View>
       </View>

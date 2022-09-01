@@ -11,6 +11,7 @@ import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import Button from "../../components/Button";
 import QRImage from "../../qr.svg";
 import { SIZES } from "../../theme";
+import QRCode from "react-native-qrcode-svg";
 
 const ReciveQr = ({ navigation }) => {
   return (
@@ -59,7 +60,15 @@ const ReciveQr = ({ navigation }) => {
             justifyContent: "center",
           }}
         >
-          <QRImage />
+          <QRCode
+            size={200}
+            color="white"
+            backgroundColor="black"
+            logoSize={50}
+            value="Just some string value"
+            logo={"../../splash.png"}
+          />
+
           <Text
             style={{
               marginVertical: 20,

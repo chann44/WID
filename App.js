@@ -28,6 +28,7 @@ import CreateWalletSuccess from "./assets/screens/createWallet.js/createWalletSu
 import ImportWallet from "./assets/screens/createWallet.js/importWallet";
 import Profile from "./assets/screens/Profile";
 import Paymentrequest from "./assets/components/paymentrequest";
+import Scanner from "./assets/screens/scanqr";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -96,6 +97,7 @@ export default function App() {
         <Stack.Screen name="Recive" component={ReciveQr} />
         <Stack.Screen name="RequestPayment" component={RequestPayment} />
         <Stack.Screen name="PaymentRequest" component={Paymentrequest} />
+        <Stack.Screen name="Scanner" component={Scanner} />
         <Stack.Screen
           name="CreateWalletOnBoarding"
           component={CreateWalletOnBoarding}

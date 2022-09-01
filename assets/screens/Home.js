@@ -49,7 +49,11 @@ const Home = ({ navigation }) => {
               </LinearGradient>
             </View>
             <View>
-              <TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate("Scanner");
+                }}
+              >
                 <MaterialCommunityIcons
                   name="line-scan"
                   color={"#ffffff"}
@@ -100,7 +104,6 @@ const Home = ({ navigation }) => {
               <LinearGradient
                 style={{
                   padding: 1,
-
                   borderRadius: SIZES.small,
                   width: "100%",
                 }}
@@ -111,7 +114,7 @@ const Home = ({ navigation }) => {
                 <View
                   style={{
                     height: 54,
-                    width: 160,
+                    width: 190,
                     backgroundColor: "#000",
                     justifyContent: "center",
                     alignItems: "center",

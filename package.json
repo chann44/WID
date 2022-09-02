@@ -38,8 +38,10 @@
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
-    "@types/react": "^18.0.15",
-    "@types/react-native": "^0.69.3"
+    "@types/expo": "^33.0.1",
+    "@types/react": "^18.0.18",
+    "@types/react-native": "^0.69.6",
+    "typescript": "~4.3.5"
   },
   "private": true
 }

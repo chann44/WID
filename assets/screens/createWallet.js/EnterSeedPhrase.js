@@ -8,10 +8,10 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import Button from "../../components/Button";
 import { SIZES } from "../../theme";
+import Button from "../../components/Button";
 
-const ImportWallet = ({ navigation }) => {
+const EnterSeedPhrase = ({ navigation }) => {
   return (
     <SafeAreaView
       style={{
@@ -48,7 +48,7 @@ const ImportWallet = ({ navigation }) => {
               flexGrow: 1,
             }}
           >
-            <Text style={styles.headerText}>Import Wallet</Text>
+            <Text style={styles.headerText}>Enter seedphraset</Text>
           </View>
         </View>
         <View
@@ -86,14 +86,16 @@ const ImportWallet = ({ navigation }) => {
                   color: "#fff",
                 }}
               >
-                Secret recovery phrase
+                Copy and store this Secret recovery phrase
               </Text>
               <TextInput
                 multiline={true}
+                value="this a seedphrase that you need to know you know that "
                 numberOfLines={4}
                 style={{
                   justifyContent: "flex-start",
                   width: "100%",
+                  color: "#fff",
                   paddingVertical: 12,
                   backgroundColor: "#000000",
                   borderRadius: 8,
@@ -111,12 +113,9 @@ const ImportWallet = ({ navigation }) => {
             }}
           >
             <Button
-              title={"import wallets"}
+              title={"Next"}
               onPress={() => {
-                navigation.navigate("Loading", {
-                  meesage: "Importing wallet",
-                  next: "CreateWalletOnSuccess",
-                });
+                navigation.navigate("CreateWalletOnSuccess");
               }}
             />
           </View>
@@ -126,7 +125,7 @@ const ImportWallet = ({ navigation }) => {
   );
 };
 
-export default ImportWallet;
+export default EnterSeedPhrase;
 
 const styles = StyleSheet.create({
   container: {

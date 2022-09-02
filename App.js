@@ -29,6 +29,9 @@ import ImportWallet from "./assets/screens/createWallet.js/importWallet";
 import Profile from "./assets/screens/Profile";
 import Paymentrequest from "./assets/components/paymentrequest";
 import Scanner from "./assets/screens/scanqr";
+import CreateWalletLoading from "./assets/screens/createWallet.js/CreatewalletLoadin";
+import ShowSeedPhrase from "./assets/screens/seedphraseshow";
+import EnterSeedPhrase from "./assets/screens/createWallet.js/EnterSeedPhrase";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
@@ -101,6 +104,12 @@ export default function App() {
         <Stack.Screen
           name="CreateWalletOnBoarding"
           component={CreateWalletOnBoarding}
+        />
+        <Stack.Screen name="ShowSeedPhrase" component={ShowSeedPhrase} />
+        <Stack.Screen name="EnterSeedPhrase" component={EnterSeedPhrase} />
+        <Stack.Screen
+          name="CreateWalletLoading"
+          component={CreateWalletLoading}
         />
         <Stack.Screen
           name="CreateWalletOnSuccess"

@@ -1,11 +1,25 @@
+import { useEffect } from "react";
 import { View, Text, Image, ActivityIndicator } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { SIZES } from "../theme";
 
-const Loading = ({ navigation, route }) => {
-  setTimeout(() => {
-    navigation.navigate(route.params.next);
-  }, 3000);
+import "@ethersproject/shims";
+
+import { ethers } from "ethers";
+import { SIZES } from "../../theme";
+
+const CreateWallet = async (navigation, route) => {
+  const wallet = ethers.Wallet.createRandom();
+  console.log("address:", wallet.address);
+  console.log("mnemonic:", wallet.mnemonic.phrase);
+  console.log("privateKey:", wallet.privateKey);
+  navigation.navigate(route.params.next);
+};
+
+const CreateWalletLoading = ({ navigation, route }) => {
+  useEffect(() => {
+    CreateWallet(navigation, route);
+  }, []);
+
   return (
     <SafeAreaView
       style={{
@@ -40,4 +54,4 @@ const Loading = ({ navigation, route }) => {
   );
 };
 
-export default Loading;
+export default CreateWalletLoading;

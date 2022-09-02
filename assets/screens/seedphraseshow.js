@@ -8,10 +8,12 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import Button from "../../components/Button";
-import { SIZES } from "../../theme";
+import Button from "../components/Button";
+import { SIZES } from "../theme";
 
-const ImportWallet = ({ navigation }) => {
+const ShowSeedPhrase = ({ navigation }) => {
+  const [showNext, setShowNext] = useState(false);
+
   return (
     <SafeAreaView
       style={{
@@ -48,7 +50,7 @@ const ImportWallet = ({ navigation }) => {
               flexGrow: 1,
             }}
           >
-            <Text style={styles.headerText}>Import Wallet</Text>
+            <Text style={styles.headerText}>Create wallet</Text>
           </View>
         </View>
         <View
@@ -86,17 +88,20 @@ const ImportWallet = ({ navigation }) => {
                   color: "#fff",
                 }}
               >
-                Secret recovery phrase
+                Copy and store this Secret recovery phrase
               </Text>
               <TextInput
                 multiline={true}
+                value="this a seedphrase that you need to know you know that "
                 numberOfLines={4}
                 style={{
                   justifyContent: "flex-start",
                   width: "100%",
                   paddingVertical: 12,
+                  paddingHorizontal: 20,
                   backgroundColor: "#000000",
                   borderRadius: 8,
+                  color: "#fff",
                 }}
                 placeholder="Enter your secret recovery phrase"
                 placeholderTextColor="#777E90"
@@ -110,15 +115,21 @@ const ImportWallet = ({ navigation }) => {
               alignItems: "center",
             }}
           >
-            <Button
-              title={"import wallets"}
-              onPress={() => {
-                navigation.navigate("Loading", {
-                  meesage: "Importing wallet",
-                  next: "CreateWalletOnSuccess",
-                });
-              }}
-            />
+            {showNext ? (
+              <Button
+                title={"Next"}
+                onPress={() => {
+                  navigation.navigate("EnterSeedPhrase");
+                }}
+              />
+            ) : (
+              <Button
+                title={"copy"}
+                onPress={() => {
+                  setShowNext(true);
+                }}
+              />
+            )}
           </View>
         </View>
       </View>
@@ -126,7 +137,7 @@ const ImportWallet = ({ navigation }) => {
   );
 };
 
-export default ImportWallet;
+export default ShowSeedPhrase;
 
 const styles = StyleSheet.create({
   container: {

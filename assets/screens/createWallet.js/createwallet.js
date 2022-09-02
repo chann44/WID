@@ -8,9 +8,6 @@
 // } from "react-native";
 // import "react-native-get-random-values";
 
-// import "@ethersproject/shims";
-
-// import { ethers } from "ethers";
 // import React, { useEffect } from "react";
 // import Button from "../../components/Button";
 
@@ -152,6 +149,7 @@ const App = ({ navigation }) => {
   const [showRemoveButton, setShowRemoveButton] = useState(false);
   const [enteredPin, setEnteredPin] = useState("");
   const [showCompletedButton, setShowCompletedButton] = useState(false);
+
   useEffect(() => {
     if (enteredPin.length > 0) {
       setShowRemoveButton(true);
@@ -229,9 +227,9 @@ const App = ({ navigation }) => {
             showCompletedButton ? (
               <TouchableOpacity
                 onPress={() => {
-                  navigation.navigate("Loading", {
+                  navigation.navigate("CreateWalletLoading", {
                     meesage: "creating wallet",
-                    next: "CreateWalletOnSuccess",
+                    next: "ShowSeedPhrase",
                   });
                 }}
               >

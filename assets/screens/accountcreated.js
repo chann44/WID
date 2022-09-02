@@ -4,7 +4,10 @@ import { SIZES } from "../theme";
 import { SvgUri } from "react-native-svg";
 import SVGImg from "../../assets/done.svg";
 
-const AccoundCreated = () => {
+const AccoundCreated = ({ navigation }) => {
+  setTimeout(() => {
+    navigation.navigate("ConnectWallet1");
+  }, 3000);
   return (
     <SafeAreaView
       style={{

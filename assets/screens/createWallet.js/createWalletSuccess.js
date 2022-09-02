@@ -6,7 +6,7 @@ import SVGImg from "../../done.svg";
 
 const CreateWalletSuccess = ({ navigation }) => {
   setTimeout(() => {
-    navigation.navigate("TabNavigation");
+    navigation.navigate("UserRegistration");
   }, 3000);
   return (
     <SafeAreaView

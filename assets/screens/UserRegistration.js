@@ -62,7 +62,7 @@ const UserRegistration = ({ navigation }) => {
         <Button
           title={"Next"}
           onPress={() => {
-            navigation.navigate("ConnectWallet1");
+            navigation.navigate("createAccountSuccess");
           }}
         />
       </View>

@@ -65,7 +65,7 @@ const ReciveQr = ({ navigation }) => {
             color="white"
             backgroundColor="black"
             logoSize={50}
-            value="Just some string value"
+            value="Just some string value goes here and you dont this"
             logo={"../../splash.png"}
           />
 

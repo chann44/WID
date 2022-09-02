@@ -6,12 +6,22 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import Button from "../../components/Button";
 import { SIZES } from "../../../assets/theme";
+import { useAppContext } from "../../context";
 
-const EnterSeedPhrase = ({ navigation }: any) => {
+const EnterSeedPhrase = ({ navigation, route }: any) => {
+  const { userWalletInfo } = useAppContext();
+  const [val, setVal] = useState("");
+  const [showNext, setShowNext] = useState(false);
+  useEffect(() => {
+    if (val === userWalletInfo?.seedPhrase) {
+      setShowNext(true);
+    }
+  }, [val]);
+
   return (
     <SafeAreaView
       style={{
@@ -85,14 +95,18 @@ const EnterSeedPhrase = ({ navigation }: any) => {
                   color: "#fff",
                 }}
               >
-                Copy and store this Secret recovery phrase
+                Enter the Secret recovery phrase
               </Text>
               <TextInput
+                keyboardType="ascii-capable"
                 multiline={true}
-                value="this a seedphrase that you need to know you know that "
                 numberOfLines={4}
+                onChange={(e: any) => {
+                  setVal(e.target.valueOf);
+                }}
                 style={{
                   justifyContent: "flex-start",
+                  fontSize: 16,
                   width: "100%",
                   color: "#fff",
                   paddingVertical: 12,
@@ -111,12 +125,14 @@ const EnterSeedPhrase = ({ navigation }: any) => {
               alignItems: "center",
             }}
           >
-            <Button
-              title={"Next"}
-              onPress={() => {
-                navigation.navigate("CreateWalletOnSuccess");
-              }}
-            />
+            {showNext ? (
+              <Button
+                title={"Next"}
+                onPress={() => {
+                  navigation.navigate("CreateWalletOnSuccess");
+                }}
+              />
+            ) : null}
           </View>
         </View>
       </View>

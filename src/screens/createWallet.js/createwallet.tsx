@@ -144,11 +144,13 @@ import { ImageBackground, SafeAreaView, StatusBar, Text } from "react-native";
 import ReactNativePinView from "react-native-pin-view";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native";
+import { useAppContext, UserWalletInfo } from "../../context";
 export const CreateWallet = ({ navigation }: any) => {
   const pinView = useRef(null);
   const [showRemoveButton, setShowRemoveButton] = useState(false);
   const [enteredPin, setEnteredPin] = useState("");
   const [showCompletedButton, setShowCompletedButton] = useState(false);
+  const { userWalletInfo, setUserWalletInfo } = useAppContext();
 
   useEffect(() => {
     if (enteredPin.length > 0) {
@@ -226,6 +228,9 @@ export const CreateWallet = ({ navigation }: any) => {
             showCompletedButton ? (
               <TouchableOpacity
                 onPress={() => {
+                  setUserWalletInfo((prev: any) => {
+                    return { ...prev, password: enteredPin };
+                  });
                   navigation.navigate("CreateWalletLoading", {
                     meesage: "creating wallet",
                     next: "ShowSeedPhrase",

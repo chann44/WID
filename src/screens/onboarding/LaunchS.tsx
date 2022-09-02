@@ -1,11 +1,20 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
+import { useAppContext } from "../../context";
+import { useEffect } from "react";
 
 export function LaunchS({ navigation }: any) {
-  setTimeout(() => {
-    navigation.navigate("Onboarding1");
-  }, 2000);
+  const { userWalletInfo } = useAppContext();
+
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      navigation.navigate(userWalletInfo ? "TabNavigation" : "Onboarding1");
+    }, 700);
+    return () => {
+      clearTimeout(timeout);
+    };
+  });
   return (
     <View style={styles.container}>
       <View style={styles.circle2}>

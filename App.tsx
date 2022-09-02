@@ -28,6 +28,8 @@ import { Transections } from "./src/screens/Transactions";
 import { Profile } from "./src/screens/Profile";
 import { Home } from "./src/screens/Home";
 import { ConnectWallet1 } from "./src/screens/ConnectWallet1";
+import { AppCOntextProveder, useAppContext } from "./src/context";
+import { useEffect } from "react";
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
@@ -80,50 +82,63 @@ export function TabNavigation() {
 }
 
 export default function App() {
+  const { setUserWalletInfo, userWalletInfo } = useAppContext();
+
   return (
-    <NavigationContainer>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="LaunchS" component={LaunchS} />
-        <Stack.Screen name="Onboarding1" component={Onboarding1} />
-        <Stack.Screen name="Onboarding2" component={Onboarding2} />
-        <Stack.Screen name="Onboarding3" component={Onboarding3} />
-        <Stack.Screen name="UserRegistration" component={UserRegistration} />
-        <Stack.Screen name="ConnectWallet1" component={ConnectWallet1} />
-        <Stack.Screen name="ConnectWalletMain" component={ConnectWalletMain} />
-        <Stack.Screen name="TabNavigation" component={TabNavigation} />
-        <Stack.Screen name="Send" component={Send} />
-        <Stack.Screen name="Recive" component={ReciveQr} />
-        <Stack.Screen name="RequestPayment" component={RequestPayment} />
-        <Stack.Screen name="PaymentRequest" component={Paymentrequest} />
-        <Stack.Screen name="Scanner" component={Scanner} />
-        <Stack.Screen
-          name="CreateWalletOnBoarding"
-          component={CreateWalletOnBoarding}
-        />
-        <Stack.Screen name="ShowSeedPhrase" component={ShowSeedPhrase} />
-        <Stack.Screen name="EnterSeedPhrase" component={EnterSeedPhrase} />
-        <Stack.Screen
-          name="CreateWalletLoading"
-          component={CreateWalletLoading}
-        />
-        <Stack.Screen
-          name="CreateWalletOnSuccess"
-          component={CreateWalletSuccess}
-        />
-        <Stack.Screen name="CreateWallet" component={CreateWallet} />
-        <Stack.Screen
-          name="CreateWalletSuccess"
-          component={CreateWalletSuccess}
-        />
-        <Stack.Screen
-          name="TransectionSuccess"
-          component={TransectionSuccess}
-        />
-        <Stack.Screen name="ImportWallet" component={ImportWallet} />
-        <Stack.Screen name="Loading" component={Loading} />
-        <Stack.Screen name="Transections" component={Transections} />
-        <Stack.Screen name="createAccountSuccess" component={AccoundCreated} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <AppCOntextProveder>
+      <NavigationContainer>
+        <Stack.Navigator
+          screenOptions={{ headerShown: false }}
+          initialRouteName={"Launchs"}
+        >
+          <Stack.Screen name="LaunchS" component={LaunchS} />
+          <Stack.Screen name="Onboarding1" component={Onboarding1} />
+          <Stack.Screen name="Onboarding2" component={Onboarding2} />
+          <Stack.Screen name="Onboarding3" component={Onboarding3} />
+          <Stack.Screen name="UserRegistration" component={UserRegistration} />
+          <Stack.Screen name="ConnectWallet1" component={ConnectWallet1} />
+          <Stack.Screen
+            name="ConnectWalletMain"
+            component={ConnectWalletMain}
+          />
+          <Stack.Screen name="TabNavigation" component={TabNavigation} />
+          <Stack.Screen name="Send" component={Send} />
+          <Stack.Screen name="Recive" component={ReciveQr} />
+          <Stack.Screen name="RequestPayment" component={RequestPayment} />
+          <Stack.Screen name="PaymentRequest" component={Paymentrequest} />
+          <Stack.Screen name="Scanner" component={Scanner} />
+          <Stack.Screen
+            name="CreateWalletOnBoarding"
+            component={CreateWalletOnBoarding}
+          />
+          <Stack.Screen name="ShowSeedPhrase" component={ShowSeedPhrase} />
+          <Stack.Screen name="EnterSeedPhrase" component={EnterSeedPhrase} />
+          <Stack.Screen
+            name="CreateWalletLoading"
+            component={CreateWalletLoading}
+          />
+          <Stack.Screen
+            name="CreateWalletOnSuccess"
+            component={CreateWalletSuccess}
+          />
+          <Stack.Screen name="CreateWallet" component={CreateWallet} />
+          <Stack.Screen
+            name="CreateWalletSuccess"
+            component={CreateWalletSuccess}
+          />
+          <Stack.Screen
+            name="TransectionSuccess"
+            component={TransectionSuccess}
+          />
+          <Stack.Screen name="ImportWallet" component={ImportWallet} />
+          <Stack.Screen name="Loading" component={Loading} />
+          <Stack.Screen name="Transections" component={Transections} />
+          <Stack.Screen
+            name="createAccountSuccess"
+            component={AccoundCreated}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
+    </AppCOntextProveder>
   );
 }

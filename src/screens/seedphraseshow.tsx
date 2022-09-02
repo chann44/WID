@@ -10,9 +10,11 @@ import React, { useState } from "react";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import Button from "../components/Button";
 import { SIZES } from "../../assets/theme";
+import { useAppContext } from "../context";
 
 const ShowSeedPhrase = ({ navigation }: any) => {
   const [showNext, setShowNext] = useState(false);
+  const { userWalletInfo } = useAppContext();
 
   return (
     <SafeAreaView
@@ -89,11 +91,10 @@ const ShowSeedPhrase = ({ navigation }: any) => {
               >
                 Copy and store this Secret recovery phrase
               </Text>
-              <TextInput
-                multiline={true}
-                value="this a seedphrase that you need to know you know that "
-                numberOfLines={4}
+              <Text
                 style={{
+                  borderWidth: 1,
+                  borderColor: "777E90",
                   justifyContent: "flex-start",
                   width: "100%",
                   paddingVertical: 12,
@@ -101,10 +102,11 @@ const ShowSeedPhrase = ({ navigation }: any) => {
                   backgroundColor: "#000000",
                   borderRadius: 8,
                   color: "#fff",
+                  fontSize: 16,
                 }}
-                placeholder="Enter your secret recovery phrase"
-                placeholderTextColor="#777E90"
-              />
+              >
+                {userWalletInfo?.seedPhrase}
+              </Text>
             </View>
           </View>
           <View

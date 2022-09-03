@@ -103,7 +103,7 @@ const ShowSeedPhrase = ({ navigation }: any) => {
                   backgroundColor: "#000000",
                   borderRadius: 8,
                   color: "#fff",
-                  fontSize: 16,
+                  fontSize: 20,
                 }}
               >
                 {userWalletInfo?.seedPhrase}
@@ -117,21 +117,12 @@ const ShowSeedPhrase = ({ navigation }: any) => {
               alignItems: "center",
             }}
           >
-            {showNext ? (
-              <Button
-                title={"Next"}
-                onPress={() => {
-                  navigation.navigate("EnterSeedPhrase");
-                }}
-              />
-            ) : (
-              <Button
-                title={"copy"}
-                onPress={() => {
-                  setShowNext(true);
-                }}
-              />
-            )}
+            <Button
+              title={"Next"}
+              onPress={() => {
+                navigation.navigate("EnterSeedPhrase");
+              }}
+            />
           </View>
         </View>
       </View>

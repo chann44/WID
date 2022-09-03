@@ -14,6 +14,12 @@ export interface UserWalletInfo {
   seedPhrase: string;
   privateKey: string;
   address: string;
+  id: string | null;
+}
+
+export interface WID {
+  id: string;
+  address: string;
 }
 
 interface AppContext {
@@ -40,21 +46,6 @@ export const AppCOntextProveder = ({ children }: IAppContextProps) => {
   );
   const [importSeedPhrase, setImportSeedPhrase] = useState<string>("");
 
-  const _retrieveData = async () => {
-    try {
-      const value = await AsyncStorage.getItem("userwalletinfo");
-      if (value !== null) {
-        // We have data!!
-        setUserWalletInfo(JSON.parse(value));
-        console.log(value);
-      }
-    } catch (error) {
-      console.log(error);
-      setUserWalletInfo(null);
-      // Error retrieving data
-    }
-  };
-
   const delteItem = async () => {
     try {
       const val = await AsyncStorage.removeItem("userwalletinfo");
@@ -70,10 +61,6 @@ export const AppCOntextProveder = ({ children }: IAppContextProps) => {
   useEffect(() => {
     console.log(userWalletInfo);
   }, [userWalletInfo]);
-
-  useEffect(() => {
-    _retrieveData();
-  }, []);
 
   const sharedState = {
     userWalletInfo,

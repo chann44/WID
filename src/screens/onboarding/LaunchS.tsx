@@ -1,14 +1,37 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
+import { AsyncStorage, StyleSheet, Text, View } from "react-native";
 import { useAppContext } from "../../context";
 import { useEffect } from "react";
 
 export function LaunchS({ navigation }: any) {
-  const { userWalletInfo } = useAppContext();
+  const { setUserWalletInfo } = useAppContext();
+
+  const _retrieveData = async () => {
+    try {
+      const value = await AsyncStorage.getItem("userwalletinfo");
+      console.log(value);
+      if (value !== null) {
+        // We have data!!
+        setUserWalletInfo(JSON.parse(value));
+        const parsedVal = JSON.parse(value);
+        console.log("parsed val");
+        navigation.navigate(
+          parsedVal.id ? "TabNavigation" : "UserRegistration"
+        );
+        console.log(value);
+      } else {
+        navigation.navigate("Onboarding1");
+      }
+    } catch (error) {
+      console.log(error);
+      setUserWalletInfo(null);
+      // Error retrieving data
+    }
+  };
 
   useEffect(() => {
     const timeout = setTimeout(() => {
-      navigation.navigate(userWalletInfo ? "TabNavigation" : "Onboarding1");
+      _retrieveData();
     }, 700);
     return () => {
       clearTimeout(timeout);

@@ -1,5 +1,4 @@
 import { NavigationContainer } from "@react-navigation/native";
-import "react-native-url-polyfill/auto";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import AntDesign from "@expo/vector-icons/AntDesign";
@@ -18,7 +17,7 @@ import Scanner from "./src/screens/recivepayment/scanqr";
 import EnterSeedPhrase from "./src/screens/createWallet.js/EnterSeedPhrase";
 import { CreateWalletLoading } from "./src/screens/createWallet.js/CreatewalletLoadin";
 import { CreateWalletSuccess } from "./src/screens/createWallet.js/createWalletSuccess";
-import { CreateWallet } from "./src/screens/createWallet.js/createwallet";
+import { Password } from "./src/screens/createWallet.js/password";
 import TransectionSuccess from "./src/screens/transection/transectionsuccess";
 import CreateWalletOnBoarding from "./src/screens/createWallet.js/onBoardincreateWallet";
 import ImportWallet from "./src/screens/createWallet.js/importWallet";
@@ -117,7 +116,7 @@ export default function App() {
             name="CreateWalletOnSuccess"
             component={CreateWalletSuccess}
           />
-          <Stack.Screen name="CreateWallet" component={CreateWallet} />
+          <Stack.Screen name="CreateWallet" component={Password} />
           <Stack.Screen
             name="CreateWalletSuccess"
             component={CreateWalletSuccess}

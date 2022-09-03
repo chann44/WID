@@ -8,45 +8,10 @@ import {
 import React, { useState } from "react";
 import Button from "../components/Button";
 import { useAppContext } from "../context";
-import { useID } from "../hooks/useID";
 
 export const UserRegistration = ({ navigation }: any) => {
   const [username, setUserName] = useState("");
   const { userWalletInfo } = useAppContext();
-  const { createId } = useID();
-
-  createId({
-    wagpay_id: "chan@wagpay",
-    default: {
-      address: "0x444A900d6CC95F8d4568cB6e3096f518B9606294",
-      network: {
-        id: 2,
-        name: "polygon",
-        chain_type: "evm",
-      },
-    },
-    others: [
-      {
-        address: "0x444A900d6CC95F8d4568cB6e3096f518B9606294",
-        network: [
-          {
-            id: 1,
-            name: "ethereum",
-            chain_type: "evm",
-          },
-          {
-            id: 2,
-            name: "polygon",
-            chain_type: "evm",
-          },
-        ],
-      },
-    ],
-    forced_same_chain_payment: false,
-    signedMsg: "", // signed message from default address
-  })
-    .then((res: any) => console.log(res))
-    .catch((e: any) => console.error(e));
 
   return (
     <View style={styles.Container}>

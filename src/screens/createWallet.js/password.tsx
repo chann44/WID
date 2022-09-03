@@ -145,7 +145,7 @@ import ReactNativePinView from "react-native-pin-view";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native";
 import { useAppContext, UserWalletInfo } from "../../context";
-export const CreateWallet = ({ navigation }: any) => {
+export const Password = ({ navigation, route }: any) => {
   const pinView = useRef(null);
   const [showRemoveButton, setShowRemoveButton] = useState(false);
   const [enteredPin, setEnteredPin] = useState("");
@@ -179,8 +179,8 @@ export const CreateWallet = ({ navigation }: any) => {
           style={{
             paddingTop: 24,
             paddingBottom: 48,
-            color: "rgba(255,255,255,0.7)",
-            fontSize: 20,
+            color: "white",
+            fontSize: 28,
           }}
         >
           Enter 6 digit password
@@ -231,10 +231,16 @@ export const CreateWallet = ({ navigation }: any) => {
                   setUserWalletInfo((prev: any) => {
                     return { ...prev, password: enteredPin };
                   });
-                  navigation.navigate("CreateWalletLoading", {
-                    meesage: "creating wallet",
-                    next: "ShowSeedPhrase",
-                  });
+                  console.log(route);
+
+                  if (!route.params.import) {
+                    navigation.navigate("CreateWalletLoading", {
+                      meesage: "creating wallet",
+                      next: "ShowSeedPhrase",
+                    });
+                  } else {
+                    navigation.navigate("ImportWallet");
+                  }
                 }}
               >
                 <MaterialCommunityIcons

@@ -2,7 +2,7 @@ import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import React from "react";
 import { LinearGradient } from "expo-linear-gradient";
 
-const CreateWalletOnBoarding = ({ navigation }) => {
+const CreateWalletOnBoarding = ({ navigation }: any) => {
   return (
     <View style={styles.container}>
       <View style={{ marginBottom: 20 }}>
@@ -26,7 +26,7 @@ const CreateWalletOnBoarding = ({ navigation }) => {
             width: "100%",
           }}
           onPress={() => {
-            navigation.navigate("CreateWallet");
+            navigation.navigate("CreateWallet", { import: null });
           }}
         >
           <LinearGradient
@@ -40,7 +40,7 @@ const CreateWalletOnBoarding = ({ navigation }) => {
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate("ImportWallet");
+            navigation.navigate("CreateWallet", { import: true });
           }}
           style={{
             marginTop: 5,

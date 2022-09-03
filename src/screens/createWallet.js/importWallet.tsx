@@ -6,12 +6,17 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import Button from "../../components/Button";
+import "@ethersproject/shims";
+
+import { ethers } from "ethers";
 import { SIZES } from "../../../assets/theme";
+import { useAppContext } from "../../context";
 
 const ImportWallet = ({ navigation }: any) => {
+  const { setImportSeedPhrase, importSeedPhrase } = useAppContext();
   return (
     <SafeAreaView
       style={{
@@ -90,6 +95,9 @@ const ImportWallet = ({ navigation }: any) => {
               <TextInput
                 multiline={true}
                 numberOfLines={4}
+                onChangeText={(text) => {
+                  setImportSeedPhrase(text);
+                }}
                 style={{
                   justifyContent: "flex-start",
                   width: "100%",
@@ -112,7 +120,8 @@ const ImportWallet = ({ navigation }: any) => {
             <Button
               title={"import wallets"}
               onPress={() => {
-                navigation.navigate("Loading", {
+                navigation.navigate("CreateWalletLoading", {
+                  importwallet: true,
                   meesage: "Importing wallet",
                   next: "CreateWalletOnSuccess",
                 });

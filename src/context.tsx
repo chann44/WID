@@ -19,6 +19,9 @@ export interface UserWalletInfo {
 interface AppContext {
   userWalletInfo: UserWalletInfo | null;
   setUserWalletInfo: Dispatch<SetStateAction<UserWalletInfo | null>>;
+  importSeedPhrase: string;
+
+  setImportSeedPhrase: Dispatch<SetStateAction<string>>;
 }
 
 const AppContext = createContext<AppContext>({} as AppContext);
@@ -35,6 +38,7 @@ export const AppCOntextProveder = ({ children }: IAppContextProps) => {
   const [userWalletInfo, setUserWalletInfo] = useState<UserWalletInfo | null>(
     null
   );
+  const [importSeedPhrase, setImportSeedPhrase] = useState<string>("");
 
   const _retrieveData = async () => {
     try {
@@ -74,6 +78,8 @@ export const AppCOntextProveder = ({ children }: IAppContextProps) => {
   const sharedState = {
     userWalletInfo,
     setUserWalletInfo,
+    importSeedPhrase,
+    setImportSeedPhrase,
   };
 
   return (

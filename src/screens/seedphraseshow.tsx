@@ -92,9 +92,10 @@ const ShowSeedPhrase = ({ navigation }: any) => {
                 Copy and store this Secret recovery phrase
               </Text>
               <Text
+                selectable={true}
                 style={{
                   borderWidth: 1,
-                  borderColor: "777E90",
+                  borderColor: "#777E90",
                   justifyContent: "flex-start",
                   width: "100%",
                   paddingVertical: 12,

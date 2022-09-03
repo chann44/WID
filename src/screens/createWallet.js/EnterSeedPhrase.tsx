@@ -17,6 +17,9 @@ const EnterSeedPhrase = ({ navigation, route }: any) => {
   const [val, setVal] = useState("");
   const [showNext, setShowNext] = useState(false);
   useEffect(() => {
+    console.log(userWalletInfo?.seedPhrase);
+    console.log(val);
+
     if (val === userWalletInfo?.seedPhrase) {
       setShowNext(true);
     }
@@ -101,8 +104,8 @@ const EnterSeedPhrase = ({ navigation, route }: any) => {
                 keyboardType="ascii-capable"
                 multiline={true}
                 numberOfLines={4}
-                onChange={(e: any) => {
-                  setVal(e.target.valueOf);
+                onChangeText={(text) => {
+                  setVal(text);
                 }}
                 style={{
                   justifyContent: "flex-start",

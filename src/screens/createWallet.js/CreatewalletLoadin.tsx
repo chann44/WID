@@ -30,28 +30,41 @@ const CreateWallet = async (
       seedPhrase: phrase,
     };
   });
-  const _storeData = async () => {
-    try {
-      await AsyncStorage.setItem(
-        "userwalletinfo",
-        JSON.stringify(userWalletInfo)
-      );
-    } catch (error) {
-      // Error saving data
-      console.log(error);
-    }
-  };
+  navigation.navigate(route.params.next);
+};
 
-  _storeData();
-
+const importWallet = async (
+  seedPhrase: string,
+  navigation: any,
+  route: any,
+  setUserWalletInfo: any
+) => {
+  const wallet = ethers.Wallet.fromMnemonic(seedPhrase);
+  const phrase = wallet.mnemonic.phrase;
+  const address = wallet.address;
+  const privatekey = wallet.privateKey;
+  setUserWalletInfo((prev: any) => {
+    return {
+      ...prev,
+      address: address,
+      privateKey: privatekey,
+      seedPhrase: phrase,
+    };
+  });
   navigation.navigate(route.params.next);
 };
 
 export const CreateWalletLoading = ({ navigation, route }: any) => {
-  const { userWalletInfo, setUserWalletInfo } = useAppContext();
+  const { userWalletInfo, setUserWalletInfo, importSeedPhrase } =
+    useAppContext();
 
   useEffect(() => {
-    CreateWallet(navigation, route, setUserWalletInfo, userWalletInfo);
+    if (route.params.importwallet) {
+      console.log("importing");
+      importWallet(importSeedPhrase, navigation, route, setUserWalletInfo);
+    } else {
+      CreateWallet(navigation, route, setUserWalletInfo, userWalletInfo);
+    }
   }, []);
 
   return (

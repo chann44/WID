@@ -1,56 +1,34 @@
-// import { create_id, get_id } from "@wagpay/id";
+import { pay } from "@wagpay/id";
 
-// const API_KEY = "";
+const API_KEY = "";
 
-// export const useID = () => {
-//   // @types - params
+export const usePay = () => {
+  // @types
 
-//   // "wagpay did this"
+  // export interface UserPayConfig {
+  //     from_id: string
+  //     from_address: string
+  //     from_chain: string
+  //     from_token: string
+  // }
 
-//   // {
-//   //     id?: "satyam@wagpay",
-//   //     signed_msg: "0x0"
-//   // }
+  // export interface PaymentConfig {
+  //     to_id: string
+  //     amount: string
+  //     payment_request_id?: string
+  //     to_token?: string
+  //     to_address?: string
+  //     to_chain?: string
+  // }
 
-//   const getId = (params) => {
-//     return get_id({
-//       apiKey: API_KEY,
-//       ...params,
-//     });
-//   };
+  // config - PaymentConfig
+  // user_config - UserPayConfig
 
-//   // @types params
+  const payment = (config: any, user_config: any) => {
+    return pay(config, user_config, API_KEY);
+  };
 
-//   // wagpay_id: string
-//   // default: DefaultAddress,
-//   // others?: OtherAddress[],
-//   // forced_same_chain_payment?: boolean
-//   // phone_number?: string
-//   // requests?: Request[]
-//   // signedMsg: string
-
-//   // export interface Network {
-//   //     name: string
-//   //     id: string
-//   //     chain_type: ChainType
-//   // }
-
-//   // export interface DefaultAddress {
-//   //     address: string
-//   //     network: Network
-//   // }
-
-//   // export interface OtherAddress {
-//   //     address: string
-//   //     network: Network[]
-//   // }
-
-//   const createId = (params) => {
-//     return create_id(params, API_KEY);
-//   };
-
-//   return {
-//     getId,
-//     createId,
-//   };
-// };
+  return {
+    payment,
+  };
+};

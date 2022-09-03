@@ -2,7 +2,7 @@ import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import React from "react";
 import { LinearGradient } from "expo-linear-gradient";
 import SVGImg from "../../assets/done.svg";
-import { SIZES } from "../../assets/theme";
+import { SIZES } from "../../../assets/theme";
 const TransectionSuccess = ({ navigation }: any) => {
   return (
     <View style={styles.container}>

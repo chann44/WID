@@ -9,10 +9,10 @@ import {
 import React from "react";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import Button from "../components/Button";
+import Button from "../../components/Button";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { SIZES } from "../../assets/theme";
-import { Transection } from "../components/transection";
+import { SIZES } from "../../../assets/theme";
+import { Transection } from "../../components/transection";
 
 export const Transections = ({ navigation }: any) => {
   return (

@@ -1,7 +1,7 @@
 import { View, Text, Image, TouchableOpacity, Button } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { SvgUri } from "react-native-svg";
-import { SIZES } from "../../assets/theme";
+import { SIZES } from "../../../assets/theme";
 import SVGImg from "../../assets/tryagain.svg";
 
 const TryAgain = () => {

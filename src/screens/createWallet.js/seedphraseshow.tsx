@@ -8,9 +8,9 @@ import {
 } from "react-native";
 import React, { useState } from "react";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
-import Button from "../components/Button";
-import { SIZES } from "../../assets/theme";
-import { useAppContext } from "../context";
+import { useAppContext } from "../../context";
+import { SIZES } from "../../../assets/theme";
+import Button from "../../components/Button";
 
 const ShowSeedPhrase = ({ navigation }: any) => {
   const [showNext, setShowNext] = useState(false);

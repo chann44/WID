@@ -1,4 +1,5 @@
 import { NavigationContainer } from "@react-navigation/native";
+import "react-native-url-polyfill/auto";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import AntDesign from "@expo/vector-icons/AntDesign";
@@ -7,29 +8,28 @@ import { AccoundCreated } from "./src/screens/accountcreated/accountcreated";
 import { LaunchS } from "./src/screens/onboarding/LaunchS";
 import { Onboarding1 } from "./src/screens/onboarding/Onboarding1";
 import { Onboarding2 } from "./src/screens/onboarding/Onboarding2";
-import Onboarding3 from "./src/screens/Onboarding3";
+import Onboarding3 from "./src/screens/createWallet.js/Onboarding3";
 import { UserRegistration } from "./src/screens/UserRegistration";
-import { ConnectWalletMain } from "./src/screens/ConnectWalletMain";
 import { Send } from "./src/screens/Send";
 import { ReciveQr } from "./src/screens/recivepayment/ReciveQr";
 import RequestPayment from "./src/screens/recivepayment/RequestPayment";
 import { Paymentrequest } from "./src/components/paymentrequest";
-import Scanner from "./src/screens/scanqr";
-import ShowSeedPhrase from "./src/screens/seedphraseshow";
+import Scanner from "./src/screens/recivepayment/scanqr";
 import EnterSeedPhrase from "./src/screens/createWallet.js/EnterSeedPhrase";
 import { CreateWalletLoading } from "./src/screens/createWallet.js/CreatewalletLoadin";
 import { CreateWalletSuccess } from "./src/screens/createWallet.js/createWalletSuccess";
 import { CreateWallet } from "./src/screens/createWallet.js/createwallet";
-import TransectionSuccess from "./src/screens/transectionsuccess";
+import TransectionSuccess from "./src/screens/transection/transectionsuccess";
 import CreateWalletOnBoarding from "./src/screens/createWallet.js/onBoardincreateWallet";
 import ImportWallet from "./src/screens/createWallet.js/importWallet";
 import Loading from "./src/screens/Loading";
-import { Transections } from "./src/screens/Transactions";
+import { Transections } from "./src/screens/transection/Transactions";
 import { Profile } from "./src/screens/Profile";
 import { Home } from "./src/screens/Home";
 import { ConnectWallet1 } from "./src/screens/ConnectWallet1";
 import { AppCOntextProveder, useAppContext } from "./src/context";
 import { useEffect } from "react";
+import ShowSeedPhrase from "./src/screens/createWallet.js/seedphraseshow";
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
@@ -97,10 +97,6 @@ export default function App() {
           <Stack.Screen name="Onboarding3" component={Onboarding3} />
           <Stack.Screen name="UserRegistration" component={UserRegistration} />
           <Stack.Screen name="ConnectWallet1" component={ConnectWallet1} />
-          <Stack.Screen
-            name="ConnectWalletMain"
-            component={ConnectWalletMain}
-          />
           <Stack.Screen name="TabNavigation" component={TabNavigation} />
           <Stack.Screen name="Send" component={Send} />
           <Stack.Screen name="Recive" component={ReciveQr} />

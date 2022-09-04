@@ -5,7 +5,7 @@ import {
   View,
   ScrollView,
 } from "react-native";
-import React from "react";
+import React, { useCallback, useState } from "react";
 import { LinearGradient } from "expo-linear-gradient";
 import { StatusBar } from "expo-status-bar";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
@@ -16,9 +16,27 @@ import { Paymentrequest } from "../components/paymentrequest";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { SIZES } from "../../assets/theme";
 import { useAppContext } from "../context";
+import { useFocusEffect } from "@react-navigation/native";
+import { useBalance } from "../hooks";
+import { ethers } from "ethers";
 
 export const Home = ({ navigation }: any) => {
   const { wid } = useAppContext();
+  const { getNativeBalance } = useBalance()
+
+  const [balance, setBalance] = useState('$500')
+
+  useFocusEffect(
+    useCallback(() => {
+      if(wid) {
+        getNativeBalance(wid.address, "137")
+          .then(res => {
+            // console.log(res)
+            setBalance(ethers.utils.formatEther(res.balance).toString())
+          }).catch(e => console.log(e))
+      }
+    }, [wid])
+  )
 
   return (
     <SafeAreaView
@@ -67,7 +85,7 @@ export const Home = ({ navigation }: any) => {
           </View>
           <View style={{ alignItems: "center", marginTop: 44 }}>
             <Text style={{ fontSize: 42, fontWeight: "600", color: "#fff" }}>
-              $50,050.56
+              {balance.substring(0, 5)} MATIC
             </Text>
             <View style={styles.shadow}></View>
           </View>

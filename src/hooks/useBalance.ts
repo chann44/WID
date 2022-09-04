@@ -5,17 +5,17 @@ const API_KEY = "FEX8KK9SREHZTD874Z8T82CU77NYP5I5H9"
 export const useBalance = () => {
     const getNativeBalance = async (address: string, chain: string) => {
         try {
-            const URL = "https://api.polygonscan.com/api"
+            const URL = `https://deep-index.moralis.io/api/v2/${address}/balance`
     
             const params = {
-                module: 'account',
-                action: 'balance',
-                address: address,
-                apiKey: API_KEY
+                chain: '0x13881'
             }
     
             const res = await axios.get(URL, {
-                params: params
+                params: params,
+                headers: {
+                    'x-api-key': "2sGps1ah6lIVQogNYcu46kcX7pcDVR4sSTkpHjKwGG04HrBq67b7i3LsZTRyXFhF"
+                }
             })
     
             const data = await res.data
@@ -31,7 +31,7 @@ export const useBalance = () => {
             const URL = `https://deep-index.moralis.io/api/v2/${address}/erc20`
     
             const params = {
-                chain: '0x89'
+                chain: '0x13881'
             }
     
             const res = await axios.get(URL, {

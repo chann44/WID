@@ -1,6 +1,6 @@
 import { pay } from "@wagpay/id";
 
-const API_KEY = "";
+const API_KEY = "fa73b623-8a69-48f6-8997-6fc9cc3c8712";
 
 export const usePay = () => {
   // @types

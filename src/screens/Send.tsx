@@ -11,12 +11,15 @@ import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import Button from "../components/Button";
 import { useFocusEffect } from "@react-navigation/native";
-import { useBalance } from "../hooks";
+import { useBalance, usePay } from "../hooks";
 import { useAppContext } from "../context";
+import { ethers } from "ethers";
+import { get_provider } from "@wagpay/id/dist/utils"
 
 export const Send = ({ navigation }: any) => {
-  const { wid } = useAppContext();
+  const { wid, userWalletInfo } = useAppContext();
   const { getERC20Balance } = useBalance()
+  const { payment } = usePay()
 
   const [next, setNext] = useState(false);
 
@@ -27,18 +30,59 @@ export const Send = ({ navigation }: any) => {
 
   const [tokens, setTokens] = useState()
 
-  useEffect(() => console.log(id), [id])
+  const [paymentRequest, setPaymentRequest] = useState<any>({})
 
-  useFocusEffect(
-    useCallback(() => {
-      console.log("dsa", wid)
-      if(wid?.address) {
-        getERC20Balance(wid.address, '0x89').then((res) => {
-          console.log(res)
+  const takeNext = async () => {
+    await pay()
+    
+    setNext(true);
+  }
+
+  const pay = async () => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        console.log("payment started")
+        const request = await payment({
+          to_id: id,
+          amount: amount
+        }, {
+          from_id: wid?.wagpay_id,
+          from_address: wid?.address,
+          from_token: "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+          from_chain: "2"
         })
+  
+        console.log(request)
+        setPaymentRequest(request)
+  
+        resolve(request)
+      } catch (e) {
+        console.log(e)
+        reject(e)
       }
-    }, [wid])
-  )
+    })
+  }
+
+  const executePayment = async () => {
+    try {
+      if(userWalletInfo) {
+        let signer = new ethers.Wallet(userWalletInfo.privateKey)
+        const provider = ethers.getDefaultProvider('https://polygon-mumbai.g.alchemy.com/v2/Tv9MYE2mD4zn3ziBLd6S94HvLLjTocju')
+        if(!provider) throw "Chain not supported"
+        signer = signer.connect(provider)
+
+        const tx = await signer.sendTransaction(paymentRequest.transaction_data)
+
+        console.log(tx)
+
+        navigation.navigate("TransectionSuccess");
+      }
+    } catch (e) {
+      console.log(e)
+    }
+  }
+
+  useEffect(() => console.log(id), [id])
 
   return (
     <SafeAreaView
@@ -202,7 +246,7 @@ export const Send = ({ navigation }: any) => {
                   color: "white",
                 }}
               >
-                $0.04
+                {paymentRequest && paymentRequest.transaction_data.gasLimit}
               </Text>
             </View>
           ) : null}
@@ -218,15 +262,11 @@ export const Send = ({ navigation }: any) => {
           {next ? (
             <Button
               title={"Send"}
-              onPress={() => {
-                navigation.navigate("TransectionSuccess");
-              }}
+              onPress={() => executePayment()}
             />
           ) : (
             <Button
-              onPress={() => {
-                setNext(true);
-              }}
+              onPress={() => takeNext()}
               title={"Next"}
             />
           )}

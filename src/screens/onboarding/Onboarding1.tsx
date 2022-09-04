@@ -1,9 +1,24 @@
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
-import React from "react";
+import { StyleSheet, Text, View, TouchableOpacity, AsyncStorage } from "react-native";
+import React, { useCallback, useEffect } from "react";
 import Button from "../../components/Button";
 import { LinearGradient } from "expo-linear-gradient";
+import { useAppContext } from "../../context";
+import { useFocusEffect } from "@react-navigation/native";
 
-export const Onboarding1 = ({ navigation }: any) => {
+export const Onboarding1 = ({ navigation }: any) => {  
+  useFocusEffect(
+    useCallback(() => {
+      AsyncStorage.getItem('userwalletinfo').then(res => {
+        console.log(res, "res")
+        if(res) {
+          navigation.navigate("TabNavigation")
+        }
+
+        return () => {}
+      })
+    }, [])
+  )
+  
   return (
     <View style={styles.container}>
       <View style={{ marginBottom: 20 }}>

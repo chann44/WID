@@ -52,7 +52,7 @@ const testCreateId = () => {
       },
     ],
     forced_same_chain_payment: false,
-    signedMsg: "", // signed message from default address
+    signedMsg: , // signed message from default address
   })
     .then((res: any) => console.log(res))
     .catch((e: any) => console.error(e));

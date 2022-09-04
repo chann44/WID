@@ -15,8 +15,11 @@ import AssetContainer from "../components/AssetContainer";
 import { Paymentrequest } from "../components/paymentrequest";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { SIZES } from "../../assets/theme";
+import { useAppContext } from "../context";
 
 export const Home = ({ navigation }: any) => {
+  const { wid } = useAppContext();
+
   return (
     <SafeAreaView
       style={{
@@ -44,7 +47,7 @@ export const Home = ({ navigation }: any) => {
                 <Text
                   style={{ fontSize: 15, color: "#ffffff", fontWeight: "bold" }}
                 >
-                  R
+                  {wid?.wagpay_id.slice(0, 1)}
                 </Text>
               </LinearGradient>
             </View>

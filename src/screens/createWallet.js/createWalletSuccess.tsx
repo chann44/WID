@@ -4,19 +4,18 @@ import { SIZES } from "../../../assets/theme";
 import SVGImg from "../../../assets/done.svg";
 import { useAppContext } from "../../context";
 import { useEffect } from "react";
+export const _storeData = async (value: any) => {
+  try {
+    await AsyncStorage.setItem("userwalletinfo", JSON.stringify(value));
+    console.log("done");
+  } catch (error) {
+    // Error saving data
+    console.log(error);
+  }
+};
 
 export const CreateWalletSuccess = ({ navigation }: any) => {
   const { userWalletInfo } = useAppContext();
-
-  const _storeData = async (value: any) => {
-    try {
-      await AsyncStorage.setItem("userwalletinfo", JSON.stringify(value));
-      console.log("done");
-    } catch (error) {
-      // Error saving data
-      console.log(error);
-    }
-  };
 
   useEffect(() => {
     _storeData(userWalletInfo);

@@ -2,6 +2,13 @@ import { create_id, get_id } from "@wagpay/id";
 
 const API_KEY = "fa73b623-8a69-48f6-8997-6fc9cc3c8712";
 
+export const getId = (params: any) => {
+  return get_id({
+    apiKey: API_KEY,
+    ...params,
+  });
+};
+
 export const useID = () => {
   // @types - params
 
@@ -11,13 +18,6 @@ export const useID = () => {
   //     id?: "satyam@wagpay",
   //     signed_msg: "0x0"
   // }
-
-  const getId = (params: any) => {
-    return get_id({
-      apiKey: API_KEY,
-      ...params,
-    });
-  };
 
   // @types params
 

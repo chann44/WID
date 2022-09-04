@@ -9,21 +9,18 @@ export function LaunchS({ navigation }: any) {
   const _retrieveData = async () => {
     try {
       const value = await AsyncStorage.getItem("userwalletinfo");
-      console.log(value);
       if (value !== null) {
         // We have data!!
         setUserWalletInfo(JSON.parse(value));
         const parsedVal = JSON.parse(value);
-        console.log("parsed val");
+        console.log(value);
         navigation.navigate(
           parsedVal.id ? "TabNavigation" : "UserRegistration"
         );
-        console.log(value);
       } else {
         navigation.navigate("Onboarding1");
       }
     } catch (error) {
-      console.log(error);
       setUserWalletInfo(null);
       // Error retrieving data
     }

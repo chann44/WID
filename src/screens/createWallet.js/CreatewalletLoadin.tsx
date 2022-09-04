@@ -28,6 +28,7 @@ const CreateWallet = async (
       address: address,
       privateKey: privatekey,
       seedPhrase: phrase,
+      id: "",
     };
   });
   navigation.navigate(route.params.next);
@@ -49,6 +50,7 @@ const importWallet = async (
       address: address,
       privateKey: privatekey,
       seedPhrase: phrase,
+      id: "",
     };
   });
   navigation.navigate(route.params.next);

@@ -10,8 +10,11 @@ import React from "react";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { SIZES } from "../../assets/theme";
+import { useAppContext } from "../context";
 
 export const Profile = ({ navigation }: any) => {
+  const { wid } = useAppContext();
+
   return (
     <SafeAreaView
       style={{
@@ -75,7 +78,7 @@ export const Profile = ({ navigation }: any) => {
                   color: "white",
                 }}
               >
-                Vikash@wagpay
+                {wid?.wagpay_id}
               </Text>
               <MaterialIcons name="content-copy" color="#fff" size={20} />
             </View>
@@ -87,7 +90,7 @@ export const Profile = ({ navigation }: any) => {
                 color: "#374151",
               }}
             >
-              0x1238030489
+              {wid?.address}
             </Text>
           </View>
           <View>

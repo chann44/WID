@@ -29,6 +29,7 @@ import { ConnectWallet1 } from "./src/screens/ConnectWallet1";
 import { AppCOntextProveder, useAppContext } from "./src/context";
 import { useEffect } from "react";
 import ShowSeedPhrase from "./src/screens/createWallet.js/seedphraseshow";
+import { CreateAccountLoading } from "./src/screens/accountcreated/createaccountloading";
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
@@ -131,6 +132,10 @@ export default function App() {
           <Stack.Screen
             name="createAccountSuccess"
             component={AccoundCreated}
+          />
+          <Stack.Screen
+            name="CreateAccountLoading"
+            component={CreateAccountLoading}
           />
         </Stack.Navigator>
       </NavigationContainer>

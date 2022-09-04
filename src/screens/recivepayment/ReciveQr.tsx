@@ -12,14 +12,16 @@ import Button from "../../components/Button";
 import QRImage from "../../qr.svg";
 import QRCode from "react-native-qrcode-svg";
 import { SIZES } from "../../../assets/theme";
+import { useAppContext } from "../../context";
 
 export const ReciveQr = ({ navigation }: any) => {
+  const { wid } = useAppContext();
+
   return (
     <SafeAreaView
       style={{
         flex: 1,
         backgroundColor: "#000000",
-        flex: 1,
         width: "100%",
         paddingTop: 40,
         paddingBottom: 20,
@@ -66,7 +68,6 @@ export const ReciveQr = ({ navigation }: any) => {
             backgroundColor="black"
             logoSize={50}
             value="Just some string value goes here and you dont this"
-            logo={"../../splash.png"}
           />
 
           <Text
@@ -100,7 +101,7 @@ export const ReciveQr = ({ navigation }: any) => {
                 color: "white",
               }}
             >
-              Vikash@wagpay
+              {wid?.wagpay_id}
             </Text>
             <MaterialIcons name="content-copy" color="#fff" size={20} />
           </View>

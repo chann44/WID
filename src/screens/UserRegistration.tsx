@@ -5,13 +5,16 @@ import {
   KeyboardAvoidingView,
   TextInput,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useId, useState } from "react";
 import Button from "../components/Button";
 import { useAppContext } from "../context";
+import { useID, getId } from "../hooks/useID";
 
+import "@ethersproject/shims";
+
+import { ethers } from "ethers";
 export const UserRegistration = ({ navigation }: any) => {
-  const [username, setUserName] = useState("");
-  const { userWalletInfo } = useAppContext();
+  const { setUserName } = useAppContext();
 
   return (
     <View style={styles.Container}>
@@ -51,6 +54,7 @@ export const UserRegistration = ({ navigation }: any) => {
               placeholderTextColor={"#636363"}
               style={styles.textInputS}
               onChangeText={(text) => {
+                setUserName(text);
                 console.log(text);
               }}
             />
@@ -72,7 +76,9 @@ export const UserRegistration = ({ navigation }: any) => {
         <Button
           title={"Next"}
           onPress={() => {
-            navigation.navigate("createAccountSuccess");
+            navigation.navigate("CreateAccountLoading", {
+              next: "createAccountSuccess",
+            });
           }}
         />
       </View>

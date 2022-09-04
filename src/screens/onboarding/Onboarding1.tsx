@@ -4,13 +4,21 @@ import Button from "../../components/Button";
 import { LinearGradient } from "expo-linear-gradient";
 import { useAppContext } from "../../context";
 import { useFocusEffect } from "@react-navigation/native";
+import { useID } from "../../hooks";
 
 export const Onboarding1 = ({ navigation }: any) => {  
+  const { setWid, setUserWalletInfo } = useAppContext()
+  const { getId } = useID()
+  
   useFocusEffect(
     useCallback(() => {
       AsyncStorage.getItem('userwalletinfo').then(res => {
+        if(res === null) return
         console.log(res, "res")
-        if(res) {
+        if(JSON.parse(res).address) {
+          setUserWalletInfo(JSON.parse(res))
+          console.log(res, "res")
+
           navigation.navigate("TabNavigation")
         }
 

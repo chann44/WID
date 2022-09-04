@@ -6,13 +6,39 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import Button from "../components/Button";
+import { useFocusEffect } from "@react-navigation/native";
+import { useBalance } from "../hooks";
+import { useAppContext } from "../context";
 
 export const Send = ({ navigation }: any) => {
+  const { wid } = useAppContext();
+  const { getERC20Balance } = useBalance()
+
   const [next, setNext] = useState(false);
+
+  const [id, setID] = useState('')
+  const [amount, setAmount] = useState('')
+  const [chain, setChain] = useState('')
+  const [token, setToken] = useState('')
+
+  const [tokens, setTokens] = useState()
+
+  useEffect(() => console.log(id), [id])
+
+  useFocusEffect(
+    useCallback(() => {
+      console.log("dsa", wid)
+      if(wid?.address) {
+        getERC20Balance(wid.address, '0x89').then((res) => {
+          console.log(res)
+        })
+      }
+    }, [wid])
+  )
 
   return (
     <SafeAreaView
@@ -85,7 +111,16 @@ export const Send = ({ navigation }: any) => {
             >
               Receipent wagpay id
             </Text>
-            <TextInput placeholder="" />
+            <TextInput 
+              defaultValue={id}
+              onChangeText={a => setID(a)}
+              placeholder="satyam@wagpay" 
+              style={{
+                color: 'white',
+                paddingVertical: 16,
+                fontSize: 16
+              }} 
+            />
           </View>
           <View
             style={{
@@ -109,6 +144,8 @@ export const Send = ({ navigation }: any) => {
                 Amount
               </Text>
               <TextInput
+                defaultValue={amount}
+                onChangeText={a => setAmount(a)}
                 placeholder="--"
                 placeholderTextColor={"#ffff"}
                 style={{ fontSize: 18, color: "#fff", marginTop: 12 }}

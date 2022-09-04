@@ -2,7 +2,7 @@ import axios from "axios"
 
 const API_KEY = "FEX8KK9SREHZTD874Z8T82CU77NYP5I5H9"
 
-const useBalance = () => {
+export const useBalance = () => {
     const getNativeBalance = async (address: string, chain: string) => {
         try {
             const URL = "https://api.polygonscan.com/api"

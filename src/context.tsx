@@ -70,35 +70,30 @@ export const AppCOntextProveder = ({ children }: IAppContextProps) => {
   };
 
   useEffect(() => {
-    console.log(userWalletInfo, "Dsadsasa")
-    if(userWalletInfo && userWalletInfo.address) {
-      AsyncStorage.setItem('userwalletinfo', JSON.stringify(userWalletInfo))
+    console.log(userWalletInfo, "Dsadsasa");
+    if (userWalletInfo && userWalletInfo.address) {
+      AsyncStorage.setItem("userwalletinfo", JSON.stringify(userWalletInfo));
       setWid({
         address: userWalletInfo.address,
         wagpay_id: userWalletInfo.id as string,
         id: "",
         provider: "",
         phone_number: "",
-        owner: ""
-      })
+        owner: "",
+      });
     }
-  }, [userWalletInfo])
+  }, [userWalletInfo]);
 
   useEffect(() => {
-    (async () => {
-
-      const a = await AsyncStorage.getItem('userwalletinfo')
-      console.log(a)
-    })
-  }, [])
+    async () => {
+      const a = await AsyncStorage.getItem("userwalletinfo");
+      console.log(a);
+    };
+  }, []);
 
   // useEffect(() => {
   //   delteItem();
   // }, []);
-
-  useEffect(() => {
-    _storeData(userWalletInfo);
-  }, [userWalletInfo]);
 
   const sharedState = {
     userWalletInfo,

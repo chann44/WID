@@ -132,18 +132,6 @@ const RequestPayment = ({ navigation }: any) => {
               >
                 Select chain
               </Text>
-              {/* <DropDownPicker
-                style={{
-                  backgroundColor: "#000",
-                }}
-                theme="DARK"
-                open={open}
-                value={value}
-                items={items}
-                setOpen={setOpen}
-                setValue={setValue}
-                setItems={setItems}
-              /> */}
               <DropDown
                 setValue={setChain}
                 value={chain}

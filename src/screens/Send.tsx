@@ -1,4 +1,5 @@
 import {
+  ActivityIndicator,
   SafeAreaView,
   StyleSheet,
   Text,
@@ -15,6 +16,8 @@ import { useBalance, usePay } from "../hooks";
 import { useAppContext } from "../context";
 import { ethers } from "ethers";
 import { get_provider } from "@wagpay/id/dist/utils";
+import { SIZES } from "../../assets/theme";
+import { DropDown } from "../components/DropDown";
 
 export const Send = ({ navigation }: any) => {
   const { wid, userWalletInfo, scannedwid, setScannedWid } = useAppContext();
@@ -25,15 +28,17 @@ export const Send = ({ navigation }: any) => {
 
   // const [id, setID] = useState("");
   const [amount, setAmount] = useState("");
-  const [chain, setChain] = useState("");
-  const [token, setToken] = useState("");
+  const [chain, setChain] = useState("Etherium");
+  const [token, setToken] = useState("USDC");
   const [tokens, setTokens] = useState();
+  const [loading, setLoading] = useState(false);
 
   const [paymentRequest, setPaymentRequest] = useState<any>({});
 
   const takeNext = async () => {
+    setLoading(true);
     await pay();
-
+    setLoading(false);
     setNext(true);
   };
 
@@ -59,6 +64,8 @@ export const Send = ({ navigation }: any) => {
 
         resolve(request);
       } catch (e) {
+        setNext(false);
+        setLoading(false);
         console.log(e);
         reject(e);
       }
@@ -66,6 +73,7 @@ export const Send = ({ navigation }: any) => {
   };
 
   const executePayment = async () => {
+    setLoading(true);
     try {
       if (userWalletInfo) {
         let signer = new ethers.Wallet(userWalletInfo.privateKey);
@@ -80,10 +88,12 @@ export const Send = ({ navigation }: any) => {
         );
 
         console.log(tx);
-
+        setLoading(false);
         navigation.navigate("TransectionSuccess");
       }
     } catch (e) {
+      setNext(false);
+      setLoading(false);
       console.log(e);
     }
   };
@@ -178,6 +188,37 @@ export const Send = ({ navigation }: any) => {
           </View>
           <View
             style={{
+              position: "relative",
+              zIndex: 50,
+              marginBottom: 10,
+              width: "100%",
+            }}
+          >
+            <Text
+              style={{
+                fontSize: SIZES.large,
+                fontWeight: "500",
+                lineHeight: 20,
+                marginTop: 16,
+                marginBottom: 12,
+                color: "white",
+              }}
+            >
+              Select chain
+            </Text>
+            <DropDown
+              setValue={setChain}
+              value={chain}
+              textColor="white"
+              bgcolor="#000"
+              items={[
+                { key: "Etherium", value: "Etherium" },
+                { key: "Polygon", value: "polygon" },
+              ]}
+            />
+          </View>
+          <View
+            style={{
               width: "100%",
               paddingHorizontal: 16,
               backgroundColor: "#000000",
@@ -218,20 +259,21 @@ export const Send = ({ navigation }: any) => {
                 alignItems: "center",
               }}
             >
-              <Text
-                style={{
-                  fontSize: 16,
-                  fontWeight: "500",
-                  lineHeight: 20,
-                  color: "#FFFFFF",
-                }}
-              >
-                USDC
-              </Text>
-              <MaterialIcons
-                name="keyboard-arrow-down"
-                color={"#fff"}
-                size={25}
+              <DropDown
+                bgcolor="#303030"
+                setValue={setToken}
+                value={token}
+                textColor="white"
+                items={[
+                  {
+                    key: "USDC",
+                    value: "USDC",
+                  },
+                  {
+                    key: "Matic",
+                    value: "Matic",
+                  },
+                ]}
               />
             </View>
           </View>
@@ -270,9 +312,19 @@ export const Send = ({ navigation }: any) => {
           }}
         >
           {next ? (
-            <Button title={"Send"} onPress={() => executePayment()} />
+            <Button
+              title={
+                loading ? <ActivityIndicator size={20} color="white" /> : "Send"
+              }
+              onPress={() => executePayment()}
+            />
           ) : (
-            <Button onPress={() => takeNext()} title={"Next"} />
+            <Button
+              onPress={() => takeNext()}
+              title={
+                loading ? <ActivityIndicator size={20} color="white" /> : "Next"
+              }
+            />
           )}
         </View>
       </View>

@@ -14,75 +14,81 @@ import { useFocusEffect } from "@react-navigation/native";
 import { useBalance, usePay } from "../hooks";
 import { useAppContext } from "../context";
 import { ethers } from "ethers";
-import { get_provider } from "@wagpay/id/dist/utils"
+import { get_provider } from "@wagpay/id/dist/utils";
 
 export const Send = ({ navigation }: any) => {
-  const { wid, userWalletInfo } = useAppContext();
-  const { getERC20Balance } = useBalance()
-  const { payment } = usePay()
+  const { wid, userWalletInfo, scannedwid, setScannedWid } = useAppContext();
+  const { getERC20Balance } = useBalance();
+  const { payment } = usePay();
 
   const [next, setNext] = useState(false);
 
-  const [id, setID] = useState('')
-  const [amount, setAmount] = useState('')
-  const [chain, setChain] = useState('')
-  const [token, setToken] = useState('')
+  // const [id, setID] = useState("");
+  const [amount, setAmount] = useState("");
+  const [chain, setChain] = useState("");
+  const [token, setToken] = useState("");
+  const [tokens, setTokens] = useState();
 
-  const [tokens, setTokens] = useState()
-
-  const [paymentRequest, setPaymentRequest] = useState<any>({})
+  const [paymentRequest, setPaymentRequest] = useState<any>({});
 
   const takeNext = async () => {
-    await pay()
-    
+    await pay();
+
     setNext(true);
-  }
+  };
 
   const pay = async () => {
     return new Promise(async (resolve, reject) => {
       try {
-        console.log("payment started")
-        const request = await payment({
-          to_id: id,
-          amount: amount
-        }, {
-          from_id: wid?.wagpay_id,
-          from_address: wid?.address,
-          from_token: "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
-          from_chain: "2"
-        })
-  
-        console.log(request)
-        setPaymentRequest(request)
-  
-        resolve(request)
+        console.log("payment started");
+        const request = await payment(
+          {
+            to_id: scannedwid,
+            amount: amount,
+          },
+          {
+            from_id: wid?.wagpay_id,
+            from_address: wid?.address,
+            from_token: "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+            from_chain: "2",
+          }
+        );
+
+        console.log(request);
+        setPaymentRequest(request);
+
+        resolve(request);
       } catch (e) {
-        console.log(e)
-        reject(e)
+        console.log(e);
+        reject(e);
       }
-    })
-  }
+    });
+  };
 
   const executePayment = async () => {
     try {
-      if(userWalletInfo) {
-        let signer = new ethers.Wallet(userWalletInfo.privateKey)
-        const provider = ethers.getDefaultProvider('https://polygon-mumbai.g.alchemy.com/v2/Tv9MYE2mD4zn3ziBLd6S94HvLLjTocju')
-        if(!provider) throw "Chain not supported"
-        signer = signer.connect(provider)
+      if (userWalletInfo) {
+        let signer = new ethers.Wallet(userWalletInfo.privateKey);
+        const provider = ethers.getDefaultProvider(
+          "https://polygon-mumbai.g.alchemy.com/v2/Tv9MYE2mD4zn3ziBLd6S94HvLLjTocju"
+        );
+        if (!provider) throw "Chain not supported";
+        signer = signer.connect(provider);
 
-        const tx = await signer.sendTransaction(paymentRequest.transaction_data)
+        const tx = await signer.sendTransaction(
+          paymentRequest.transaction_data
+        );
 
-        console.log(tx)
+        console.log(tx);
 
         navigation.navigate("TransectionSuccess");
       }
     } catch (e) {
-      console.log(e)
+      console.log(e);
     }
-  }
+  };
 
-  useEffect(() => console.log(id), [id])
+  useEffect(() => console.log(scannedwid), [scannedwid]);
 
   return (
     <SafeAreaView
@@ -116,7 +122,11 @@ export const Send = ({ navigation }: any) => {
             />
           </TouchableOpacity>
           <Text style={styles.headerText}>Send</Text>
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("Scanner");
+            }}
+          >
             <MaterialCommunityIcons
               name="line-scan"
               color={"#ffffff"}
@@ -155,15 +165,15 @@ export const Send = ({ navigation }: any) => {
             >
               Receipent wagpay id
             </Text>
-            <TextInput 
-              defaultValue={id}
-              onChangeText={a => setID(a)}
-              placeholder="satyam@wagpay" 
+            <TextInput
+              defaultValue={scannedwid}
+              onChangeText={(a) => setScannedWid(a)}
+              placeholder="satyam@wagpay"
               style={{
-                color: 'white',
+                color: "white",
                 paddingVertical: 16,
-                fontSize: 16
-              }} 
+                fontSize: 16,
+              }}
             />
           </View>
           <View
@@ -189,7 +199,7 @@ export const Send = ({ navigation }: any) => {
               </Text>
               <TextInput
                 defaultValue={amount}
-                onChangeText={a => setAmount(a)}
+                onChangeText={(a) => setAmount(a)}
                 placeholder="--"
                 placeholderTextColor={"#ffff"}
                 style={{ fontSize: 18, color: "#fff", marginTop: 12 }}
@@ -260,15 +270,9 @@ export const Send = ({ navigation }: any) => {
           }}
         >
           {next ? (
-            <Button
-              title={"Send"}
-              onPress={() => executePayment()}
-            />
+            <Button title={"Send"} onPress={() => executePayment()} />
           ) : (
-            <Button
-              onPress={() => takeNext()}
-              title={"Next"}
-            />
+            <Button onPress={() => takeNext()} title={"Next"} />
           )}
         </View>
       </View>

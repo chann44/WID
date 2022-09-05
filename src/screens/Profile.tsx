@@ -82,7 +82,10 @@ export const Profile = ({ navigation }: any) => {
               >
                 {wid?.wagpay_id}
               </Text>
-              <MaterialIcons name="content-copy" color="#fff" size={20} />
+
+              <TouchableOpacity>
+                <MaterialIcons name="content-copy" color="#fff" size={20} />
+              </TouchableOpacity>
             </View>
           </View>
           <View

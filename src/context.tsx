@@ -8,6 +8,7 @@ import {
   useEffect,
 } from "react";
 import { AsyncStorage } from "react-native";
+import { string } from "superstruct";
 import { _storeData } from "./screens/createWallet.js/createWalletSuccess";
 
 export interface UserWalletInfo {
@@ -40,6 +41,8 @@ interface AppContext {
   setLastName: Dispatch<SetStateAction<string>>;
   wid: WID | null;
   setWid: Dispatch<SetStateAction<WID | null>>;
+  scannedwid: string;
+  setScannedWid: Dispatch<SetStateAction<string>>;
 }
 
 const AppContext = createContext<AppContext>({} as AppContext);
@@ -61,6 +64,7 @@ export const AppCOntextProveder = ({ children }: IAppContextProps) => {
   const [lastName, setLastName] = useState("");
   const [firstName, setFirstName] = useState("");
   const [wid, setWid] = useState<WID | null>(null);
+  const [scannedwid, setScannedWid] = useState<string>("");
   const delteItem = async () => {
     try {
       const val = await AsyncStorage.removeItem("userwalletinfo");
@@ -108,6 +112,8 @@ export const AppCOntextProveder = ({ children }: IAppContextProps) => {
     setLastName,
     wid,
     setWid,
+    setScannedWid,
+    scannedwid,
   };
 
   return (

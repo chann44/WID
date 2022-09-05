@@ -1,4 +1,6 @@
 import axios from "axios"
+import { BigNumber } from "ethers"
+import { useAppContext } from "../context"
 
 const API_KEY = "FEX8KK9SREHZTD874Z8T82CU77NYP5I5H9"
 
@@ -8,7 +10,7 @@ export const useBalance = () => {
             const URL = `https://deep-index.moralis.io/api/v2/${address}/balance`
     
             const params = {
-                chain: '0x13881'
+                chain: BigNumber.from(chain).toHexString()
             }
     
             const res = await axios.get(URL, {
@@ -26,12 +28,12 @@ export const useBalance = () => {
         }
     }
 
-    const getERC20Balance = async (address: string, chain: string) => {
+    const getERC20Balance = async (address: string, chain: string) => {        
         try {
             const URL = `https://deep-index.moralis.io/api/v2/${address}/erc20`
     
             const params = {
-                chain: '0x13881'
+                chain: BigNumber.from(chain).toHexString()
             }
     
             const res = await axios.get(URL, {

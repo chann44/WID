@@ -18,9 +18,11 @@ import { ethers } from "ethers";
 import { get_provider } from "@wagpay/id/dist/utils";
 import { SIZES } from "../../assets/theme";
 import { DropDown } from "../components/DropDown";
+import { chainData, getChain, getToken } from "fetcch-chain-data";
+import { tokens as tokenData } from "fetcch-chain-data/dist/tokens"
 
 export const Send = ({ navigation }: any) => {
-  const { wid, userWalletInfo, scannedwid, setScannedWid } = useAppContext();
+  const { wid, userWalletInfo, scannedwid, setScannedWid, chain } = useAppContext();
   const { getERC20Balance } = useBalance();
   const { payment } = usePay();
 
@@ -28,9 +30,9 @@ export const Send = ({ navigation }: any) => {
 
   // const [id, setID] = useState("");
   const [amount, setAmount] = useState("");
-  const [chain, setChain] = useState("Etherium");
-  const [token, setToken] = useState("USDC");
-  const [tokens, setTokens] = useState();
+  const [selectedChain, setSelectedChain] = useState(chain);
+  const [token, setToken] = useState(tokenData['1'].find((t: any) => t.symbol === 'USDC'));
+  const [tokens, setTokens] = useState(getERC20Balance(wid?.address as string, chain?.internalId.toString() as string));
   const [loading, setLoading] = useState(false);
 
   const [paymentRequest, setPaymentRequest] = useState<any>({});
@@ -45,7 +47,16 @@ export const Send = ({ navigation }: any) => {
   const pay = async () => {
     return new Promise(async (resolve, reject) => {
       try {
-        console.log("payment started");
+        console.log("payment started", {
+          to_id: scannedwid,
+          amount: amount,
+        },
+        {
+          from_id: wid?.wagpay_id,
+          from_address: wid?.address,
+          from_token: token?.address,
+          from_chain: selectedChain?.internalId.toString(),
+        });
         const request = await payment(
           {
             to_id: scannedwid,
@@ -54,12 +65,12 @@ export const Send = ({ navigation }: any) => {
           {
             from_id: wid?.wagpay_id,
             from_address: wid?.address,
-            from_token: "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
-            from_chain: "2",
+            from_token: "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+            from_chain: selectedChain?.internalId.toString(),
           }
         );
 
-        console.log(request);
+        console.log(request.transaction_data);
         setPaymentRequest(request);
 
         resolve(request);
@@ -97,6 +108,26 @@ export const Send = ({ navigation }: any) => {
       console.log(e);
     }
   };
+
+  const updateChain = (cD: string) => {
+    const c = chainData.find(c => c.name === cD)
+
+    if(!c) return
+
+    const chain = getChain({ internalId: c.internalId })
+
+    setSelectedChain(chain)
+  }
+
+  const updateToken = (t: string) => {
+    const tokens = tokenData[selectedChain?.internalId.toString() as string]
+
+    const tk = tokens.find((tkK: any) => tkK.name === t)
+
+    if(!tk) return
+    console.log(tk)
+    setToken(tk)
+  }
 
   useEffect(() => console.log(scannedwid), [scannedwid]);
 
@@ -207,14 +238,11 @@ export const Send = ({ navigation }: any) => {
               Select chain
             </Text>
             <DropDown
-              setValue={setChain}
-              value={chain}
+              setValue={(e) => updateChain(e.toString())}
+              value={selectedChain ? selectedChain.name : ''}
               textColor="white"
               bgcolor="#000"
-              items={[
-                { key: "Etherium", value: "Etherium" },
-                { key: "Polygon", value: "polygon" },
-              ]}
+              items={chainData.map(c => { return {key: c.internalId.toString(), value: c.name} })}
             />
           </View>
           <View
@@ -261,19 +289,10 @@ export const Send = ({ navigation }: any) => {
             >
               <DropDown
                 bgcolor="#303030"
-                setValue={setToken}
-                value={token}
+                setValue={(e) => updateToken(e.toString())}
+                value={token ? token.name : ""}
                 textColor="white"
-                items={[
-                  {
-                    key: "USDC",
-                    value: "USDC",
-                  },
-                  {
-                    key: "Matic",
-                    value: "Matic",
-                  },
-                ]}
+                items={tokenData[selectedChain?.internalId.toString() as string].map((t: any) => { return { key: t.address, value: t.name } })}
               />
             </View>
           </View>

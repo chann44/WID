@@ -1,3 +1,4 @@
+import { Chain, getChain } from "fetcch-chain-data";
 import {
   createContext,
   ReactNode,
@@ -43,6 +44,8 @@ interface AppContext {
   setWid: Dispatch<SetStateAction<WID | null>>;
   scannedwid: string;
   setScannedWid: Dispatch<SetStateAction<string>>;
+  chain: Chain | undefined;
+  setChain: Dispatch<SetStateAction<Chain | undefined>>
 }
 
 const AppContext = createContext<AppContext>({} as AppContext);
@@ -65,6 +68,8 @@ export const AppCOntextProveder = ({ children }: IAppContextProps) => {
   const [firstName, setFirstName] = useState("");
   const [wid, setWid] = useState<WID | null>(null);
   const [scannedwid, setScannedWid] = useState<string>("");
+  const [chain, setChain] = useState<Chain | undefined>(getChain({ internalId: 2 }))
+
   const delteItem = async () => {
     try {
       const val = await AsyncStorage.removeItem("userwalletinfo");
@@ -114,6 +119,8 @@ export const AppCOntextProveder = ({ children }: IAppContextProps) => {
     setWid,
     setScannedWid,
     scannedwid,
+    chain,
+    setChain
   };
 
   return (

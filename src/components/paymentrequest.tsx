@@ -7,19 +7,10 @@ export const Paymentrequest = ({ navigation }: any) => {
   return (
     <View
       style={{
+        width: "100%",
         marginBottom: 8,
       }}
     >
-      <Text
-        style={{
-          fontSize: 18,
-          color: "#FFFFFF",
-          fontWeight: "600",
-          lineHeight: 22.5,
-        }}
-      >
-        Payment Requests
-      </Text>
       <View
         style={{
           backgroundColor: "#1C1C1C",
@@ -37,6 +28,7 @@ export const Paymentrequest = ({ navigation }: any) => {
         </Text>
         <View
           style={{
+            paddingHorizontal: 12,
             marginVertical: 12,
             flexDirection: "row",
             justifyContent: "space-between",

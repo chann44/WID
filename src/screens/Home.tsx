@@ -4,8 +4,9 @@ import {
   Text,
   View,
   ScrollView,
+  FlatList,
 } from "react-native";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import { LinearGradient } from "expo-linear-gradient";
 import { StatusBar } from "expo-status-bar";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
@@ -19,24 +20,28 @@ import { useAppContext } from "../context";
 import { useFocusEffect } from "@react-navigation/native";
 import { useBalance } from "../hooks";
 import { ethers } from "ethers";
+import RequestPayment from "./recivepayment/RequestPayment";
+import Carousel from "react-native-snap-carousel";
 
 export const Home = ({ navigation }: any) => {
   const { wid } = useAppContext();
-  const { getNativeBalance } = useBalance()
+  const { getNativeBalance } = useBalance();
+  const c = useRef();
 
-  const [balance, setBalance] = useState('$500')
+  const [balance, setBalance] = useState("$500");
 
   useFocusEffect(
     useCallback(() => {
-      if(wid) {
+      if (wid) {
         getNativeBalance(wid.address, "137")
-          .then(res => {
+          .then((res) => {
             // console.log(res)
-            setBalance(ethers.utils.formatEther(res.balance).toString())
-          }).catch(e => console.log(e))
+            setBalance(ethers.utils.formatEther(res.balance).toString());
+          })
+          .catch((e) => console.log(e));
       }
     }, [wid])
-  )
+  );
 
   return (
     <SafeAreaView
@@ -55,20 +60,30 @@ export const Home = ({ navigation }: any) => {
               justifyContent: "space-between",
             }}
           >
-            <View>
-              <LinearGradient
-                colors={["#4B74FF", "#9281FF"]}
-                style={styles.avatar}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 0 }}
-              >
-                <Text
-                  style={{ fontSize: 15, color: "#ffffff", fontWeight: "bold" }}
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate("Profile");
+              }}
+            >
+              <View>
+                <LinearGradient
+                  colors={["#4B74FF", "#9281FF"]}
+                  style={styles.avatar}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 0 }}
                 >
-                  {wid?.wagpay_id.slice(0, 1)}
-                </Text>
-              </LinearGradient>
-            </View>
+                  <Text
+                    style={{
+                      fontSize: 15,
+                      color: "#ffffff",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    {wid?.wagpay_id.slice(0, 1)}
+                  </Text>
+                </LinearGradient>
+              </View>
+            </TouchableOpacity>
             <View>
               <TouchableOpacity
                 onPress={() => {
@@ -152,7 +167,27 @@ export const Home = ({ navigation }: any) => {
           </View>
           <View style={{ marginHorizontal: 16 }}>
             {/* payment request */}
-            <Paymentrequest navigation={navigation}></Paymentrequest>
+            <Text
+              style={{
+                fontSize: 18,
+                color: "#FFFFFF",
+                fontWeight: "600",
+                lineHeight: 22.5,
+              }}
+            >
+              Payment Requests
+            </Text>
+            <Carousel
+              data={[1, 2, 3, 4]}
+              renderItem={(item: any) => {
+                return <Paymentrequest></Paymentrequest>;
+              }}
+              itemHeight={120}
+              sliderWidth={360}
+              itemWidth={360}
+              apparitionDelay={1}
+              sliderHeight={120}
+            />
             <View
               style={{
                 flexDirection: "row",

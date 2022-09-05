@@ -67,7 +67,7 @@ export const ReciveQr = ({ navigation }: any) => {
             color="white"
             backgroundColor="black"
             logoSize={50}
-            value="Just some string value goes here and you dont this"
+            value={wid?.wagpay_id}
           />
 
           <Text

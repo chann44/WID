@@ -12,6 +12,7 @@ import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import Button from "../../components/Button";
 import DropDownPicker from "react-native-dropdown-picker";
 import { SIZES } from "../../../assets/theme";
+import { DropDown } from "../../components/DropDown";
 
 const RequestPayment = ({ navigation }: any) => {
   const [open, setOpen] = useState(false);
@@ -20,6 +21,8 @@ const RequestPayment = ({ navigation }: any) => {
     { label: "Polygon", value: "Polygon" },
     { label: "Etherium", value: "Etherium" },
   ]);
+  const [coin, setCoin] = useState("USDC");
+  const [chain, setChain] = useState("Polygon");
   return (
     <SafeAreaView
       style={{
@@ -39,6 +42,9 @@ const RequestPayment = ({ navigation }: any) => {
           }}
         >
           <TouchableOpacity
+            style={{
+              marginRight: "33%",
+            }}
             onPress={() => {
               navigation.navigate("Recive");
             }}
@@ -46,7 +52,7 @@ const RequestPayment = ({ navigation }: any) => {
             <MaterialIcons
               name="keyboard-arrow-left"
               color={"#fff"}
-              size={25}
+              size={30}
             />
           </TouchableOpacity>
           <View
@@ -108,6 +114,8 @@ const RequestPayment = ({ navigation }: any) => {
             </View>
             <View
               style={{
+                position: "relative",
+                zIndex: 50,
                 marginBottom: 10,
                 width: "100%",
               }}
@@ -124,7 +132,7 @@ const RequestPayment = ({ navigation }: any) => {
               >
                 Select chain
               </Text>
-              <DropDownPicker
+              {/* <DropDownPicker
                 style={{
                   backgroundColor: "#000",
                 }}
@@ -135,6 +143,16 @@ const RequestPayment = ({ navigation }: any) => {
                 setOpen={setOpen}
                 setValue={setValue}
                 setItems={setItems}
+              /> */}
+              <DropDown
+                setValue={setChain}
+                value={chain}
+                textColor="white"
+                bgcolor="#000"
+                items={[
+                  { key: "Etherium", value: "Etherium" },
+                  { key: "Polygon", value: "polygon" },
+                ]}
               />
             </View>
             <View
@@ -169,34 +187,22 @@ const RequestPayment = ({ navigation }: any) => {
                     keyboardType="number-pad"
                   />
 
-                  <View
-                    style={{
-                      height: 34,
-                      width: 83,
-                      backgroundColor: "#303030",
-                      borderRadius: 8,
-                      flexDirection: "row",
-                      marginVertical: 10,
-                      justifyContent: "center",
-                      alignItems: "center",
-                    }}
-                  >
-                    <Text
-                      style={{
-                        fontSize: 12,
-                        fontWeight: "500",
-                        lineHeight: 12,
-                        color: "#FFFFFF",
-                      }}
-                    >
-                      USDC
-                    </Text>
-                    <MaterialIcons
-                      name="keyboard-arrow-down"
-                      color={"#fff"}
-                      size={18}
-                    />
-                  </View>
+                  <DropDown
+                    bgcolor="#303030"
+                    setValue={setCoin}
+                    value={coin}
+                    textColor="white"
+                    items={[
+                      {
+                        key: "USDC",
+                        value: "USDC",
+                      },
+                      {
+                        key: "Matic",
+                        value: "Matic",
+                      },
+                    ]}
+                  />
                 </View>
               </View>
             </View>
@@ -233,8 +239,7 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   headerText: {
-    fontSize: 18,
-    textAlign: "center",
+    fontSize: 20,
     fontWeight: "600",
     lineHeight: 22.5,
     color: "#ffffff",

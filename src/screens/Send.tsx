@@ -14,7 +14,7 @@ import Button from "../components/Button";
 import { useFocusEffect } from "@react-navigation/native";
 import { useBalance, usePay } from "../hooks";
 import { useAppContext } from "../context";
-import { ethers } from "ethers";
+import { BigNumber, ethers } from "ethers";
 import { get_provider } from "@wagpay/id/dist/utils";
 import { SIZES } from "../../assets/theme";
 import { DropDown } from "../components/DropDown";
@@ -49,23 +49,23 @@ export const Send = ({ navigation }: any) => {
       try {
         console.log("payment started", {
           to_id: scannedwid,
-          amount: amount,
+          amount: ethers.utils.parseUnits(amount, token.decimals).toString(),
         },
         {
           from_id: wid?.wagpay_id,
           from_address: wid?.address,
-          from_token: token?.address,
+          from_token: token?.address.toLowerCase(),
           from_chain: selectedChain?.internalId.toString(),
         });
         const request = await payment(
           {
             to_id: scannedwid,
-            amount: amount,
+            amount: ethers.utils.parseUnits(amount, token.decimals),
           },
           {
             from_id: wid?.wagpay_id,
             from_address: wid?.address,
-            from_token: "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48",
+            from_token: token?.address.toLowerCase(),
             from_chain: selectedChain?.internalId.toString(),
           }
         );
@@ -94,8 +94,10 @@ export const Send = ({ navigation }: any) => {
         if (!provider) throw "Chain not supported";
         signer = signer.connect(provider);
 
+        const { chainId, ...request } = paymentRequest.transaction_data
+          console.log(request)
         const tx = await signer.sendTransaction(
-          paymentRequest.transaction_data
+          request
         );
 
         console.log(tx);
@@ -317,7 +319,7 @@ export const Send = ({ navigation }: any) => {
                   color: "white",
                 }}
               >
-                {paymentRequest && paymentRequest.transaction_data.gasLimit}
+                {paymentRequest && typeof(paymentRequest.transaction_data.gasLimit) === 'object' ? parseInt(paymentRequest.transaction_data.gasLimit.hex) : paymentRequest.transaction_data.gasLimit}
               </Text>
             </View>
           ) : null}
@@ -325,7 +327,7 @@ export const Send = ({ navigation }: any) => {
         <View
           style={{
             position: "absolute",
-            bottom: 40,
+            bottom: 40, 
             alignSelf: "center",
             width: "100%",
           }}
@@ -333,7 +335,7 @@ export const Send = ({ navigation }: any) => {
           {next ? (
             <Button
               title={
-                loading ? <ActivityIndicator size={20} color="white" /> : "Send"
+                "Send"
               }
               onPress={() => executePayment()}
             />
@@ -341,7 +343,7 @@ export const Send = ({ navigation }: any) => {
             <Button
               onPress={() => takeNext()}
               title={
-                loading ? <ActivityIndicator size={20} color="white" /> : "Next"
+                "Next"
               }
             />
           )}

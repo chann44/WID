@@ -2,7 +2,8 @@ import { View, Text, Image } from "react-native";
 import React from "react";
 import { SIZES } from "../../assets/theme";
 import USDCCOIN from "../../assets/USDCicon.png";
-export function Transection() {
+import { TransetionInfo } from "../screens/transection/Transactions";
+export function Transection({ hash, address, ammount, date }: TransetionInfo) {
   return (
     <View
       style={{
@@ -70,7 +71,7 @@ export function Transection() {
             color: "white",
           }}
         >
-          1000 USDC
+          {ammount.toString().slice(0, 4)}
         </Text>
       </View>
       <View
@@ -93,7 +94,7 @@ export function Transection() {
             color: "white",
           }}
         >
-          0x23930sjoijrweo
+          {address.slice(0, 10)}
         </Text>
       </View>
 
@@ -117,7 +118,7 @@ export function Transection() {
             color: "#777E90",
           }}
         >
-          0xwklje09390239408934
+          {hash.slice(0, 10)}
         </Text>
       </View>
       <View
@@ -141,7 +142,7 @@ export function Transection() {
             color: "#777E90",
           }}
         >
-          2022-08-17 04:22
+          {date}
         </Text>
       </View>
     </View>

@@ -349,9 +349,13 @@ export const Send = ({ navigation }: any) => {
           }}
         >
           {next ? (
-            <Button title={"Send"} onPress={() => executePayment()} />
+            <Button title={
+              loading ? <ActivityIndicator size={20} color="white" /> : "Send"
+            } onPress={() => executePayment()} />
           ) : (
-            <Button onPress={() => takeNext()} title={"Next"} />
+            <Button onPress={() => takeNext()} title={
+              loading ? <ActivityIndicator size={20} color="white" /> : "Next"
+            } />
           )}
         </View>
       </View>

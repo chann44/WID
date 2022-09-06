@@ -1,0 +1,11 @@
+--2022-09-06 13:48:14--  https://keys.anydesk.com/repos/DEB-GPG-KEY
+Resolving keys.anydesk.com (keys.anydesk.com)... 2a01:4f8:221:2841::2, 188.40.104.135
+Connecting to keys.anydesk.com (keys.anydesk.com)|2a01:4f8:221:2841::2|:443... connected.
+HTTP request sent, awaiting response... 200 OK
+Length: 1778 (1.7K) [application/octet-stream]
+Saving to: ‘STDOUT’
+
+-                     0%[                    ]       0  --.-KB/s               -                   100%[===================>]   1.74K  --.-KB/s    in 0s      
+
+2022-09-06 13:48:16 (439 MB/s) - written to stdout [1778/1778]
+

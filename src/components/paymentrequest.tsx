@@ -2,8 +2,19 @@ import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
 import React from "react";
 import { SIZES } from "../../assets/theme";
 import { LinearGradient } from "expo-linear-gradient";
+import { Request } from "../screens/Home";
 
-export const Paymentrequest = ({ navigation }: any) => {
+interface PaymentrequestProps {
+  naivgation: any;
+  route: any;
+  request: Request;
+}
+
+export const Paymentrequest = ({
+  naivgation,
+  route,
+  request,
+}: PaymentrequestProps) => {
   return (
     <View
       style={{
@@ -40,7 +51,7 @@ export const Paymentrequest = ({ navigation }: any) => {
               fontSize: SIZES.large,
             }}
           >
-            Amount
+            {request.amount}
           </Text>
           <View>
             <Text
@@ -71,8 +82,7 @@ export const Paymentrequest = ({ navigation }: any) => {
         >
           <TouchableOpacity
             onPress={() => {
-              console.log(navigation);
-              navigation.navigate("Send");
+              naivgation.navigate("Send", {});
             }}
             style={{
               marginHorizontal: 10,

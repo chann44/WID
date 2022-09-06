@@ -6,7 +6,7 @@ import {
   ScrollView,
   FlatList,
 } from "react-native";
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { LinearGradient } from "expo-linear-gradient";
 import { StatusBar } from "expo-status-bar";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
@@ -22,12 +22,27 @@ import { useBalance } from "../hooks";
 import { ethers } from "ethers";
 import RequestPayment from "./recivepayment/RequestPayment";
 import Carousel from "react-native-snap-carousel";
+import { getId } from "../hooks";
 
-export const Home = ({ navigation }: any) => {
+export interface Request {
+  amount: number;
+  chainID: number;
+  created_at: string;
+  data: string;
+  executed: boolean;
+  from_id: string;
+  id: number;
+  message: string;
+  token: string;
+  transection_hash: string;
+}
+
+export const Home = ({ navigation, route }: any) => {
   const { wid } = useAppContext();
   const { getNativeBalance } = useBalance();
 
   const [balance, setBalance] = useState("$500");
+  const [requests, setRequests] = useState<Request[] | []>([]);
 
   useFocusEffect(
     useCallback(() => {
@@ -41,6 +56,18 @@ export const Home = ({ navigation }: any) => {
       }
     }, [wid])
   );
+
+  useEffect(() => {
+    (async () => {
+      try {
+        console.log(wid?.wagpay_id);
+        const data: any = await getId({ id: "satyamxx@wagpay" });
+        setRequests(data.requests);
+      } catch (E) {
+        console.log(E);
+      }
+    })();
+  }, []);
 
   return (
     <SafeAreaView
@@ -166,7 +193,7 @@ export const Home = ({ navigation }: any) => {
           </View>
           <View style={{ marginHorizontal: 16 }}>
             {/* payment request */}
-            <Text
+            {/* <Text
               style={{
                 fontSize: 18,
                 color: "#FFFFFF",
@@ -175,18 +202,24 @@ export const Home = ({ navigation }: any) => {
               }}
             >
               Payment Requests
-            </Text>
-            <Carousel
-              data={[1, 2, 3, 4]}
+            </Text> */}
+            {/* <Carousel
+              data={requests}
               renderItem={(item: any) => {
-                return <Paymentrequest></Paymentrequest>;
+                return (
+                  <Paymentrequest
+                    naivgation={navigation}
+                    route={route}
+                    request={item}
+                  ></Paymentrequest>
+                );
               }}
               itemHeight={120}
               sliderWidth={360}
               itemWidth={360}
               apparitionDelay={1}
               sliderHeight={120}
-            />
+            /> */}
             <View
               style={{
                 flexDirection: "row",

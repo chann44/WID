@@ -15,7 +15,11 @@ import { useFocusEffect } from "@react-navigation/native";
 import { useBalance, useID, usePay } from "../hooks";
 import { useAppContext } from "../context";
 import { BigNumber, ethers } from "ethers";
-import { find_recipient, get_provider, is_native_token } from "@wagpay/id/dist/utils";
+import {
+  find_recipient,
+  get_provider,
+  is_native_token,
+} from "@wagpay/id/dist/utils";
 import { SIZES } from "../../assets/theme";
 import { DropDown } from "../components/DropDown";
 import { chainData, getChain, getToken } from "fetcch-chain-data";
@@ -27,7 +31,7 @@ export const Send = ({ navigation }: any) => {
     useAppContext();
   const { getERC20Balance } = useBalance();
   const { payment } = usePay();
-  const { getId } = useID()
+  const { getId } = useID();
 
   const [next, setNext] = useState(false);
 
@@ -102,31 +106,45 @@ export const Send = ({ navigation }: any) => {
       if (userWalletInfo) {
         let signer = new ethers.Wallet(userWalletInfo.privateKey);
         // const provider = get_provider(selectedChain?.internalId.toString() as string, "y141okG6TC3PecBM1mL0BfST9f4WQmLx")
-        const provider = ethers.getDefaultProvider('https://data-seed-prebsc-1-s1.binance.org:8545/')
+        const provider = ethers.getDefaultProvider(
+          "https://data-seed-prebsc-1-s1.binance.org:8545/"
+        );
         if (!provider) throw "Chain not supported";
         signer = signer.connect(provider);
 
-        console.log(await (await signer.getBalance()).toString())
-        
-        if(!is_native_token(token?.address.toLowerCase() as string, "evm")) {
-          const erc20 = new ethers.Contract(token.address, [
-            "function approve(address _spender, uint256 _value) public returns (bool success)",
-          ], signer)
-          console.log(paymentRequest.transaction_data.to, ethers.utils.parseUnits(amount, token.decimals).toString())
-          const tx = await erc20.approve(paymentRequest.transaction_data.to, ethers.utils.parseUnits(amount, token.decimals).toString(), {
-            gasPrice: provider.getGasPrice(),
-            gasLimit: BigNumber.from(1500000)
-          })
+        console.log(await (await signer.getBalance()).toString());
 
-          console.log(tx, "erc20")
+        if (!is_native_token(token?.address.toLowerCase() as string, "evm")) {
+          const erc20 = new ethers.Contract(
+            token.address,
+            [
+              "function approve(address _spender, uint256 _value) public returns (bool success)",
+            ],
+            signer
+          );
+          console.log(
+            paymentRequest.transaction_data.to,
+            ethers.utils.parseUnits(amount, token.decimals).toString()
+          );
+          const tx = await erc20.approve(
+            paymentRequest.transaction_data.to,
+            ethers.utils.parseUnits(amount, token.decimals).toString(),
+            {
+              gasPrice: provider.getGasPrice(),
+              gasLimit: BigNumber.from(1500000),
+            }
+          );
 
-          await tx.wait()
+          console.log(tx, "erc20");
+
+          await tx.wait();
         }
-        const { gasLimit, chainId, from, value, ...request } = paymentRequest.transaction_data
+        const { gasLimit, chainId, from, value, ...request } =
+          paymentRequest.transaction_data;
         const tx = await signer.sendTransaction({
           gasLimit: BigNumber.from(15000000).toHexString(),
-          value: ethers.utils.parseEther('0.01'),
-          ...request
+          value: ethers.utils.parseEther("0.01"),
+          ...request,
         });
 
         console.log(tx, "bridge");
@@ -162,16 +180,16 @@ export const Send = ({ navigation }: any) => {
 
   useEffect(() => {
     (async () => {
-      console.log("alpaca", scannedwid)
-      if(scannedwid) {
-        const id = await getId({ id: scannedwid })
-        if(id) {
-          console.log(id)
-          setAddress(id.default.address)
+      console.log("alpaca", scannedwid);
+      if (scannedwid) {
+        const id = await getId({ id: scannedwid });
+        if (id) {
+          console.log(id);
+          setAddress(id.default.address);
         }
       }
-    })()
-  }, [scannedwid])
+    })();
+  }, [scannedwid]);
 
   return (
     <SafeAreaView
@@ -266,7 +284,9 @@ export const Send = ({ navigation }: any) => {
                 marginTop: 16,
                 color: "#9B9B9B",
               }}
-            >{address}</Text>
+            >
+              {address}
+            </Text>
           </View>
           <View
             style={{
@@ -391,13 +411,19 @@ export const Send = ({ navigation }: any) => {
           }}
         >
           {next ? (
-            <Button title={
-              loading ? <ActivityIndicator size={20} color="white" /> : "Send"
-            } onPress={() => executePayment()} />
+            <Button
+              title={
+                loading ? <ActivityIndicator size={20} color="white" /> : "Send"
+              }
+              onPress={() => executePayment()}
+            />
           ) : (
-            <Button onPress={() => takeNext()} title={
-              loading ? <ActivityIndicator size={20} color="white" /> : "Next"
-            } />
+            <Button
+              onPress={() => takeNext()}
+              title={
+                loading ? <ActivityIndicator size={20} color="white" /> : "Next"
+              }
+            />
           )}
         </View>
       </View>

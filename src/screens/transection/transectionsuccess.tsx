@@ -37,7 +37,7 @@ const TransectionSuccess = ({ navigation, route }: any) => {
             color: "white",
           }}
         >
-          Transection Hash: {route.tx}
+          Transection Hash: {route.params.tx}
         </Text>
       </View>
       <View style={{ alignItems: "center", justifyContent: "center" }}>

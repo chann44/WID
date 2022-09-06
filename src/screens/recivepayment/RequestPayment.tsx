@@ -14,7 +14,8 @@ import DropDownPicker from "react-native-dropdown-picker";
 import { SIZES } from "../../../assets/theme";
 import { DropDown } from "../../components/DropDown";
 
-const RequestPayment = ({ navigation }: any) => {
+const RequestPayment = ({ navigation, name }: any) => {
+  console.log(name);
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
   const [items, setItems] = useState([

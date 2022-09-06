@@ -9,11 +9,11 @@ import {
   useEffect,
 } from "react";
 import { AsyncStorage } from "react-native";
-import { string } from "superstruct";
 import { _storeData } from "./screens/createWallet.js/createWalletSuccess";
 
 export interface UserWalletInfo {
-  password: number;
+  username: string;
+  password: string;
   seedPhrase: string;
   privateKey: string;
   address: string;
@@ -45,7 +45,9 @@ interface AppContext {
   scannedwid: string;
   setScannedWid: Dispatch<SetStateAction<string>>;
   chain: Chain | undefined;
-  setChain: Dispatch<SetStateAction<Chain | undefined>>
+  setChain: Dispatch<SetStateAction<Chain | undefined>>;
+  widUsername: string;
+  setWidUsername: Dispatch<SetStateAction<string>>;
 }
 
 const AppContext = createContext<AppContext>({} as AppContext);
@@ -68,7 +70,11 @@ export const AppCOntextProveder = ({ children }: IAppContextProps) => {
   const [firstName, setFirstName] = useState("");
   const [wid, setWid] = useState<WID | null>(null);
   const [scannedwid, setScannedWid] = useState<string>("");
-  const [chain, setChain] = useState<Chain | undefined>(getChain({ internalId: 2 }))
+  const [chain, setChain] = useState<Chain | undefined>(
+    getChain({ internalId: 2 })
+  );
+
+  const [widUsername, setWidUsername] = useState("");
 
   const delteItem = async () => {
     try {
@@ -100,9 +106,9 @@ export const AppCOntextProveder = ({ children }: IAppContextProps) => {
     };
   }, []);
 
-  // useEffect(() => {
-  //   delteItem();
-  // }, []);
+  useEffect(() => {
+    delteItem();
+  }, []);
 
   const sharedState = {
     userWalletInfo,
@@ -120,7 +126,9 @@ export const AppCOntextProveder = ({ children }: IAppContextProps) => {
     setScannedWid,
     scannedwid,
     chain,
-    setChain
+    setChain,
+    widUsername,
+    setWidUsername,
   };
 
   return (

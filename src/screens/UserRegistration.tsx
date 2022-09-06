@@ -14,7 +14,7 @@ import "@ethersproject/shims";
 
 import { ethers } from "ethers";
 export const UserRegistration = ({ navigation }: any) => {
-  const { setUserName } = useAppContext();
+  const { setUserName, widUsername } = useAppContext();
 
   return (
     <View style={styles.Container}>
@@ -53,6 +53,7 @@ export const UserRegistration = ({ navigation }: any) => {
               placeholder="username@wagpay"
               placeholderTextColor={"#636363"}
               style={styles.textInputS}
+              value={widUsername}
               onChangeText={(text) => {
                 setUserName(text);
                 console.log(text);

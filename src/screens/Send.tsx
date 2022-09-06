@@ -12,7 +12,7 @@ import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import Button from "../components/Button";
 import { useFocusEffect } from "@react-navigation/native";
-import { useBalance, usePay } from "../hooks";
+import { useBalance, useID, usePay } from "../hooks";
 import { useAppContext } from "../context";
 import { BigNumber, ethers } from "ethers";
 import { get_provider } from "@wagpay/id/dist/utils";
@@ -20,16 +20,18 @@ import { SIZES } from "../../assets/theme";
 import { DropDown } from "../components/DropDown";
 import { chainData, getChain, getToken } from "fetcch-chain-data";
 import { tokens as tokenData } from "fetcch-chain-data/dist/tokens";
+import { get_id } from "@wagpay/id";
 
 export const Send = ({ navigation }: any) => {
   const { wid, userWalletInfo, scannedwid, setScannedWid, chain } =
     useAppContext();
   const { getERC20Balance } = useBalance();
   const { payment } = usePay();
+  const { getId } = useID()
 
   const [next, setNext] = useState(false);
 
-  // const [id, setID] = useState("");
+  const [address, setAddress] = useState("");
   const [amount, setAmount] = useState("");
   const [selectedChain, setSelectedChain] = useState(chain);
   const [token, setToken] = useState(
@@ -138,7 +140,19 @@ export const Send = ({ navigation }: any) => {
     setToken(tk);
   };
 
-  useEffect(() => console.log(scannedwid), [scannedwid]);
+  useEffect(() => {
+    (async () => {
+      console.log("alpaca", scannedwid)
+      if(scannedwid) {
+        const id = await getId({ id: scannedwid })
+    
+        if(id) {
+          console.log(id)
+          setAddress(id.default.address)
+        }
+      }
+    })()
+  }, [scannedwid])
 
   return (
     <SafeAreaView
@@ -225,6 +239,15 @@ export const Send = ({ navigation }: any) => {
                 fontSize: 16,
               }}
             />
+            <Text
+              style={{
+                fontSize: 10,
+                fontWeight: "500",
+                lineHeight: 20,
+                marginTop: 16,
+                color: "#9B9B9B",
+              }}
+            >{address}</Text>
           </View>
           <View
             style={{

@@ -4616,10 +4616,10 @@ fbjs@^3.0.0:
     setimmediate "^1.0.5"
     ua-parser-js "^0.7.30"
 
-fetcch-chain-data@^0.0.2:
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/fetcch-chain-data/-/fetcch-chain-data-0.0.2.tgz#aaa6382aa47004d0b35985e9883c1ffeaea7ae33"
-  integrity sha512-8jHE6arM+5qcQsDlrUbITgwYVJRTskPO6syQCBGQSeC3OfxhzkM3lkYmwn7jtVSer/dyXBhjwaOxurE2cxwUBw==
+fetcch-chain-data@^0.0.3:
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/fetcch-chain-data/-/fetcch-chain-data-0.0.3.tgz#95e4426b7a75d3f535c69c36267933124978c8db"
+  integrity sha512-v3tWBwyOBYgY0D3mdAVLny68ORNGPwwiwhgj2SV4rsQxMTVdP6zJyV4bubaOBVrYTrg9c74mZ6YeCZ747fJmsg==
   dependencies:
     ts-node "^10.9.1"
 

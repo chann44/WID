@@ -73,7 +73,7 @@ export const Send = ({ navigation }: any) => {
         const request = await payment(
           {
             to_id: scannedwid,
-            amount: ethers.utils.parseUnits(amount, token.decimals).toString(),
+            amount: amount,
           },
           {
             from_id: wid?.wagpay_id,
@@ -101,8 +101,8 @@ export const Send = ({ navigation }: any) => {
     try {
       if (userWalletInfo) {
         let signer = new ethers.Wallet(userWalletInfo.privateKey);
-        const provider = get_provider(selectedChain?.internalId.toString() as string, "y141okG6TC3PecBM1mL0BfST9f4WQmLx")
-        // const provider = ethers.getDefaultProvider('https://polygon-mumbai.g.alchemy.com/v2/y141okG6TC3PecBM1mL0BfST9f4WQmLx')
+        // const provider = get_provider(selectedChain?.internalId.toString() as string, "y141okG6TC3PecBM1mL0BfST9f4WQmLx")
+        const provider = ethers.getDefaultProvider('https://data-seed-prebsc-1-s1.binance.org:8545/')
         if (!provider) throw "Chain not supported";
         signer = signer.connect(provider);
 
@@ -118,15 +118,18 @@ export const Send = ({ navigation }: any) => {
             gasLimit: BigNumber.from(1500000)
           })
 
+          console.log(tx, "erc20")
+
           await tx.wait()
         }
-        const { gasLimit, ...request } = paymentRequest.transaction_data
+        const { gasLimit, chainId, from, value, ...request } = paymentRequest.transaction_data
         const tx = await signer.sendTransaction({
-          gasLimit: provider.estimateGas(paymentRequest.transaction_data),
+          gasLimit: BigNumber.from(15000000).toHexString(),
+          value: ethers.utils.parseEther('0.01'),
           ...request
         });
 
-        console.log(tx);
+        console.log(tx, "bridge");
         setLoading(false);
         navigation.navigate("TransectionSuccess", { tx: tx.hash });
       }
@@ -290,7 +293,7 @@ export const Send = ({ navigation }: any) => {
               value={selectedChain ? selectedChain.name : ""}
               textColor="white"
               bgcolor="#000"
-              items={chainData.map((c) => {
+              items={chainData.reverse().map((c) => {
                 return { key: c.internalId.toString(), value: c.name };
               })}
             />

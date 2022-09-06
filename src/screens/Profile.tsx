@@ -61,7 +61,7 @@ export const Profile = ({ navigation }: any) => {
                 color: "white",
               }}
             >
-              VIkash
+              {wid?.wagpay_id.split("@")[0]}
             </Text>
             <View
               style={{

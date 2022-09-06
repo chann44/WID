@@ -3,7 +3,7 @@ import React from "react";
 import { LinearGradient } from "expo-linear-gradient";
 import SVGImg from "../../../assets/done.svg";
 import { SIZES } from "../../../assets/theme";
-const TransectionSuccess = ({ navigation }: any) => {
+const TransectionSuccess = ({ navigation, route }: any) => {
   return (
     <View style={styles.container}>
       <View
@@ -25,6 +25,19 @@ const TransectionSuccess = ({ navigation }: any) => {
           }}
         >
           Transaction Successfull
+        </Text>
+
+        <Text
+          selectable={true}
+          style={{
+            textAlign: "center",
+            marginTop: SIZES.large,
+            fontSize: SIZES.small,
+            fontWeight: "bold",
+            color: "white",
+          }}
+        >
+          Transection Hash: {route.tx}
         </Text>
       </View>
       <View style={{ alignItems: "center", justifyContent: "center" }}>

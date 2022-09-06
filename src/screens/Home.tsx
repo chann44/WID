@@ -26,7 +26,6 @@ import Carousel from "react-native-snap-carousel";
 export const Home = ({ navigation }: any) => {
   const { wid } = useAppContext();
   const { getNativeBalance } = useBalance();
-  const c = useRef();
 
   const [balance, setBalance] = useState("$500");
 

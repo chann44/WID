@@ -19,10 +19,11 @@ import { get_provider } from "@wagpay/id/dist/utils";
 import { SIZES } from "../../assets/theme";
 import { DropDown } from "../components/DropDown";
 import { chainData, getChain, getToken } from "fetcch-chain-data";
-import { tokens as tokenData } from "fetcch-chain-data/dist/tokens"
+import { tokens as tokenData } from "fetcch-chain-data/dist/tokens";
 
 export const Send = ({ navigation }: any) => {
-  const { wid, userWalletInfo, scannedwid, setScannedWid, chain } = useAppContext();
+  const { wid, userWalletInfo, scannedwid, setScannedWid, chain } =
+    useAppContext();
   const { getERC20Balance } = useBalance();
   const { payment } = usePay();
 
@@ -31,8 +32,15 @@ export const Send = ({ navigation }: any) => {
   // const [id, setID] = useState("");
   const [amount, setAmount] = useState("");
   const [selectedChain, setSelectedChain] = useState(chain);
-  const [token, setToken] = useState(tokenData['1'].find((t: any) => t.symbol === 'USDC'));
-  const [tokens, setTokens] = useState(getERC20Balance(wid?.address as string, chain?.internalId.toString() as string));
+  const [token, setToken] = useState(
+    tokenData["1"].find((t: any) => t.symbol === "USDC")
+  );
+  const [tokens, setTokens] = useState(
+    getERC20Balance(
+      wid?.address as string,
+      chain?.internalId.toString() as string
+    )
+  );
   const [loading, setLoading] = useState(false);
 
   const [paymentRequest, setPaymentRequest] = useState<any>({});
@@ -47,16 +55,19 @@ export const Send = ({ navigation }: any) => {
   const pay = async () => {
     return new Promise(async (resolve, reject) => {
       try {
-        console.log("payment started", {
-          to_id: scannedwid,
-          amount: ethers.utils.parseUnits(amount, token.decimals).toString(),
-        },
-        {
-          from_id: wid?.wagpay_id,
-          from_address: wid?.address,
-          from_token: token?.address.toLowerCase(),
-          from_chain: selectedChain?.internalId.toString(),
-        });
+        console.log(
+          "payment started",
+          {
+            to_id: scannedwid,
+            amount: ethers.utils.parseUnits(amount, token.decimals).toString(),
+          },
+          {
+            from_id: wid?.wagpay_id,
+            from_address: wid?.address,
+            from_token: token?.address.toLowerCase(),
+            from_chain: selectedChain?.internalId.toString(),
+          }
+        );
         const request = await payment(
           {
             to_id: scannedwid,
@@ -94,15 +105,13 @@ export const Send = ({ navigation }: any) => {
         if (!provider) throw "Chain not supported";
         signer = signer.connect(provider);
 
-        const { chainId, ...request } = paymentRequest.transaction_data
-          console.log(request)
-        const tx = await signer.sendTransaction(
-          request
-        );
+        const { chainId, ...request } = paymentRequest.transaction_data;
+        console.log(request);
+        const tx = await signer.sendTransaction(request);
 
         console.log(tx);
         setLoading(false);
-        navigation.navigate("TransectionSuccess");
+        navigation.navigate("TransectionSuccess", { tx: tx.hash });
       }
     } catch (e) {
       setNext(false);
@@ -112,24 +121,24 @@ export const Send = ({ navigation }: any) => {
   };
 
   const updateChain = (cD: string) => {
-    const c = chainData.find(c => c.name === cD)
+    const c = chainData.find((c) => c.name === cD);
 
-    if(!c) return
+    if (!c) return;
 
-    const chain = getChain({ internalId: c.internalId })
+    const chain = getChain({ internalId: c.internalId });
 
-    setSelectedChain(chain)
-  }
+    setSelectedChain(chain);
+  };
 
   const updateToken = (t: string) => {
-    const tokens = tokenData[selectedChain?.internalId.toString() as string]
+    const tokens = tokenData[selectedChain?.internalId.toString() as string];
 
-    const tk = tokens.find((tkK: any) => tkK.name === t)
+    const tk = tokens.find((tkK: any) => tkK.name === t);
 
-    if(!tk) return
-    console.log(tk)
-    setToken(tk)
-  }
+    if (!tk) return;
+    console.log(tk);
+    setToken(tk);
+  };
 
   useEffect(() => console.log(scannedwid), [scannedwid]);
 
@@ -241,10 +250,12 @@ export const Send = ({ navigation }: any) => {
             </Text>
             <DropDown
               setValue={(e) => updateChain(e.toString())}
-              value={selectedChain ? selectedChain.name : ''}
+              value={selectedChain ? selectedChain.name : ""}
               textColor="white"
               bgcolor="#000"
-              items={chainData.map(c => { return {key: c.internalId.toString(), value: c.name} })}
+              items={chainData.map((c) => {
+                return { key: c.internalId.toString(), value: c.name };
+              })}
             />
           </View>
           <View
@@ -294,7 +305,11 @@ export const Send = ({ navigation }: any) => {
                 setValue={(e) => updateToken(e.toString())}
                 value={token ? token.name : ""}
                 textColor="white"
-                items={tokenData[selectedChain?.internalId.toString() as string].map((t: any) => { return { key: t.address, value: t.name } })}
+                items={tokenData[
+                  selectedChain?.internalId.toString() as string
+                ].map((t: any) => {
+                  return { key: t.address, value: t.name };
+                })}
               />
             </View>
           </View>
@@ -319,7 +334,10 @@ export const Send = ({ navigation }: any) => {
                   color: "white",
                 }}
               >
-                {paymentRequest && typeof(paymentRequest.transaction_data.gasLimit) === 'object' ? parseInt(paymentRequest.transaction_data.gasLimit.hex) : paymentRequest.transaction_data.gasLimit}
+                {paymentRequest &&
+                typeof paymentRequest.transaction_data.gasLimit === "object"
+                  ? parseInt(paymentRequest.transaction_data.gasLimit.hex)
+                  : paymentRequest.transaction_data.gasLimit}
               </Text>
             </View>
           ) : null}
@@ -327,25 +345,15 @@ export const Send = ({ navigation }: any) => {
         <View
           style={{
             position: "absolute",
-            bottom: 40, 
+            bottom: 40,
             alignSelf: "center",
             width: "100%",
           }}
         >
           {next ? (
-            <Button
-              title={
-                "Send"
-              }
-              onPress={() => executePayment()}
-            />
+            <Button title={"Send"} onPress={() => executePayment()} />
           ) : (
-            <Button
-              onPress={() => takeNext()}
-              title={
-                "Next"
-              }
-            />
+            <Button onPress={() => takeNext()} title={"Next"} />
           )}
         </View>
       </View>

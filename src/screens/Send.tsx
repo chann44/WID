@@ -149,7 +149,7 @@ export const Send = ({ navigation }: any) => {
 
         console.log(tx, "bridge");
         setLoading(false);
-        navigation.navigate("TransectionSuccess", { tx: tx.hash });
+        navigation.navigate("TransectionSuccess", { tx: tx.hash, chain: selectedChain });
       }
     } catch (e) {
       setNext(false);

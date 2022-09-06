@@ -1,9 +1,11 @@
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, Linking } from "react-native";
 import React from "react";
 import { LinearGradient } from "expo-linear-gradient";
 import SVGImg from "../../../assets/done.svg";
 import { SIZES } from "../../../assets/theme";
 const TransectionSuccess = ({ navigation, route }: any) => {
+  console.log(route, "route")
+
   return (
     <View style={styles.container}>
       <View
@@ -47,7 +49,7 @@ const TransectionSuccess = ({ navigation, route }: any) => {
             marginBottom: 20,
           }}
           onPress={() => {
-            navigation.navigate("Transections");
+            Linking.openURL(`https://testnet.bscscan.com/tx/${route.params.tx}`)
           }}
         >
           <LinearGradient

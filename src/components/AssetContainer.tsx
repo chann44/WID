@@ -1,12 +1,18 @@
 import { Image, StyleSheet, Text, View } from "react-native";
 import React from "react";
 import USDCIMAGE from "../../assets/USDCicon.png";
-const AssetContainer = () => {
+import { ethers } from "ethers";
+
+interface IProps {
+  token: any
+}
+
+const AssetContainer = ({ token }: IProps) => {
   return (
     <View style={styles.container}>
       <View style={{ flexDirection: "row", alignItems: "center" }}>
         <View style={{ marginRight: 12 }}>
-          <Image source={USDCIMAGE} style={{ height: 32, width: 32 }} />
+          <Image source={token.logo ? token.logo : USDCIMAGE} style={{ height: 32, width: 32 }} />
         </View>
         <View>
           <Text
@@ -18,42 +24,22 @@ const AssetContainer = () => {
               marginBottom: 4,
             }}
           >
-            USDC
+            {token.name}
           </Text>
+        </View>
+      </View>
+      <View>
           <Text
             style={{
               fontSize: 14,
               color: "#C3C3C3",
               fontWeight: "400",
-              lineHeight: 17.5,
+              lineHeight: 40,
+              marginBottom: 6,
             }}
           >
-            1000 USDC
+            {ethers.utils.formatUnits(token.balance, token.decimals).toString()} {token.symbol}
           </Text>
-        </View>
-      </View>
-      <View>
-        <Text
-          style={{
-            fontSize: 18,
-            color: "#FFFFFF",
-            fontWeight: "400",
-            lineHeight: 22.5,
-            marginBottom: 4,
-          }}
-        >
-          $1000.00
-        </Text>
-        <Text
-          style={{
-            fontSize: 12,
-            color: "#00CD5E",
-            fontWeight: "400",
-            lineHeight: 15,
-          }}
-        >
-          +0.28%
-        </Text>
       </View>
     </View>
   );

@@ -1,10 +1,30 @@
 import { StatusBar } from "expo-status-bar";
 import { AsyncStorage, StyleSheet, Text, View } from "react-native";
 import { useAppContext } from "../../context";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
+import { useFocusEffect } from "@react-navigation/native";
+import { useID } from "../../hooks";
 
 export function LaunchS({ navigation }: any) {
-  const { setUserWalletInfo } = useAppContext();
+  const { setWid, setUserWalletInfo } = useAppContext()
+  const { getId } = useID()
+  
+  useFocusEffect(
+    useCallback(() => {
+      AsyncStorage.getItem('userwalletinfo').then(res => {
+        if(res === null) return
+        console.log(res, "res")
+        if(JSON.parse(res).address) {
+          setUserWalletInfo(JSON.parse(res))
+          console.log(res, "res")
+
+          navigation.navigate("TabNavigation")
+        }
+
+        return () => {}
+      })
+    }, [])
+  )
 
   const _retrieveData = async () => {
     try {

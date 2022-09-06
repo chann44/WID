@@ -89,7 +89,7 @@ export default function App() {
       <NavigationContainer>
         <Stack.Navigator
           screenOptions={{ headerShown: false }}
-          initialRouteName={"Onboarding1"}
+          initialRouteName={"LaunchS"}
         >
           <Stack.Screen name="LaunchS" component={LaunchS} />
           <Stack.Screen name="Onboarding1" component={Onboarding1} />

@@ -1,4 +1,5 @@
 import {
+  ActivityIndicator,
   SafeAreaView,
   StyleSheet,
   Text,
@@ -6,31 +7,180 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import Button from "../../components/Button";
-import DropDownPicker from "react-native-dropdown-picker";
+import { useFocusEffect } from "@react-navigation/native";
+import { useBalance, useID, usePay } from "../../hooks";
+import { useAppContext } from "../../context";
+import { BigNumber, ethers } from "ethers";
+import { find_recipient, get_provider, is_native_token } from "@wagpay/id/dist/utils";
 import { SIZES } from "../../../assets/theme";
 import { DropDown } from "../../components/DropDown";
+import { chainData, getChain, getToken } from "fetcch-chain-data";
+import { tokens as tokenData } from "fetcch-chain-data/dist/tokens";
+import { get_id } from "@wagpay/id";
 
-const RequestPayment = ({ navigation, name }: any) => {
-  console.log(name);
-  const [open, setOpen] = useState(false);
-  const [value, setValue] = useState(null);
-  const [items, setItems] = useState([
-    { label: "Polygon", value: "Polygon" },
-    { label: "Etherium", value: "Etherium" },
-  ]);
-  const [coin, setCoin] = useState("USDC");
-  const [chain, setChain] = useState("Polygon");
+const RequestPayment = ({ navigation }: any) => {
+  const { wid, userWalletInfo, scannedwid, setScannedWid, chain } =
+    useAppContext();
+  const { getERC20Balance } = useBalance();
+  const { payment } = usePay();
+  const { getId } = useID()
+
+  const [next, setNext] = useState(false);
+
+  const [address, setAddress] = useState("");
+  const [amount, setAmount] = useState("");
+  const [selectedChain, setSelectedChain] = useState(chain);
+  const [token, setToken] = useState(
+    tokenData["2"].find((t: any) => t.symbol === "USDC")
+  );
+  const [tokens, setTokens] = useState(
+    getERC20Balance(
+      wid?.address as string,
+      chain?.internalId.toString() as string
+    )
+  );
+  const [loading, setLoading] = useState(false);
+
+  const [paymentRequest, setPaymentRequest] = useState<any>({});
+
+  const takeNext = async () => {
+    setLoading(true);
+    await pay();
+    setLoading(false);
+    setNext(true);
+  };
+
+  const pay = async () => {
+    return new Promise(async (resolve, reject) => {
+      try {
+        console.log(
+          "payment started",
+          {
+            to_id: scannedwid,
+            amount: amount,
+          },
+          {
+            from_id: wid?.wagpay_id,
+            from_address: wid?.address,
+            from_token: token?.address.toLowerCase(),
+            from_chain: selectedChain?.internalId.toString(),
+          }
+        );
+        const request = await payment(
+          {
+            to_id: scannedwid,
+            amount: amount,
+          },
+          {
+            from_id: wid?.wagpay_id,
+            from_address: wid?.address,
+            from_token: token?.address.toLowerCase(),
+            from_chain: selectedChain?.internalId.toString(),
+          }
+        );
+
+        console.log(request.transaction_data);
+        setPaymentRequest(request);
+
+        resolve(request);
+      } catch (e) {
+        setNext(false);
+        setLoading(false);
+        console.log(e);
+        reject(e);
+      }
+    });
+  };
+
+  const executePayment = async () => {
+    setLoading(true);
+    try {
+      if (userWalletInfo) {
+        let signer = new ethers.Wallet(userWalletInfo.privateKey);
+        // const provider = get_provider(selectedChain?.internalId.toString() as string, "y141okG6TC3PecBM1mL0BfST9f4WQmLx")
+        const provider = ethers.getDefaultProvider('https://data-seed-prebsc-1-s1.binance.org:8545/')
+        if (!provider) throw "Chain not supported";
+        signer = signer.connect(provider);
+
+        console.log(await (await signer.getBalance()).toString())
+        
+        if(!is_native_token(token?.address.toLowerCase() as string, "evm")) {
+          const erc20 = new ethers.Contract(token.address, [
+            "function approve(address _spender, uint256 _value) public returns (bool success)",
+          ], signer)
+          console.log(paymentRequest.transaction_data.to, ethers.utils.parseUnits(amount, token.decimals).toString())
+          const tx = await erc20.approve(paymentRequest.transaction_data.to, ethers.utils.parseUnits(amount, token.decimals).toString(), {
+            gasPrice: provider.getGasPrice(),
+            gasLimit: BigNumber.from(1500000)
+          })
+
+          console.log(tx, "erc20")
+
+          await tx.wait()
+        }
+        const { gasLimit, chainId, from, value, ...request } = paymentRequest.transaction_data
+        const tx = await signer.sendTransaction({
+          gasLimit: BigNumber.from(15000000).toHexString(),
+          value: ethers.utils.parseEther('0.01'),
+          ...request
+        });
+
+        console.log(tx, "bridge");
+        setLoading(false);
+        navigation.navigate("TransectionSuccess", { tx: tx.hash });
+      }
+    } catch (e) {
+      setNext(false);
+      setLoading(false);
+      console.log(e);
+    }
+  };
+
+  const updateChain = (cD: string) => {
+    const c = chainData.find((c) => c.name === cD);
+
+    if (!c) return;
+
+    const chain = getChain({ internalId: c.internalId });
+
+    setSelectedChain(chain);
+  };
+
+  const updateToken = (t: string) => {
+    const tokens = tokenData[selectedChain?.internalId.toString() as string];
+
+    const tk = tokens.find((tkK: any) => tkK.name === t);
+
+    if (!tk) return;
+    console.log(tk);
+    setToken(tk);
+  };
+
+  useEffect(() => {
+    (async () => {
+      console.log("alpaca", scannedwid)
+      if(scannedwid) {
+        const id = await getId({ id: scannedwid })
+        if(id) {
+          console.log(id)
+          setAddress(id.default.address)
+        }
+      }
+    })()
+  }, [scannedwid])
+
   return (
     <SafeAreaView
       style={{
-        backgroundColor: "#000000",
         flex: 1,
+        backgroundColor: "#000000",
         width: "100%",
-        paddingVertical: 40,
+        paddingTop: 40,
+        paddingBottom: 20,
         paddingHorizontal: 12,
       }}
     >
@@ -39,119 +189,126 @@ const RequestPayment = ({ navigation, name }: any) => {
           style={{
             flexDirection: "row",
             justifyContent: "space-between",
+            paddingHorizontal: 4,
             alignItems: "center",
           }}
         >
           <TouchableOpacity
-            style={{
-              marginRight: "33%",
-            }}
             onPress={() => {
-              navigation.navigate("Recive");
+              navigation.navigate("Home");
             }}
           >
             <MaterialIcons
               name="keyboard-arrow-left"
               color={"#fff"}
-              size={30}
+              size={25}
             />
           </TouchableOpacity>
-          <View
-            style={{
-              flexGrow: 1,
+          <Text style={styles.headerText}>Send</Text>
+          <TouchableOpacity
+            onPress={() => {
+              navigation.navigate("Scanner");
             }}
           >
-            <Text style={styles.headerText}>Recive</Text>
-          </View>
+            <MaterialCommunityIcons
+              name="line-scan"
+              color={"#ffffff"}
+              size={25}
+            />
+          </TouchableOpacity>
         </View>
         <View
           style={{
-            flex: 1,
+            backgroundColor: "#111111",
+            width: "100%",
+            borderRadius: 8,
             alignItems: "center",
-            justifyContent: "space-between",
+            paddingHorizontal: 8,
+            paddingVertical: 12,
+            marginTop: 60,
           }}
         >
           <View
             style={{
-              backgroundColor: "#111111",
               width: "100%",
+              paddingHorizontal: 16,
+              backgroundColor: "#000000",
               borderRadius: 8,
-              alignItems: "center",
-              justifyContent: "space-between",
-              paddingHorizontal: 8,
-              paddingVertical: 12,
-              marginTop: 60,
+              marginBottom: 10,
             }}
           >
-            <View
+            <Text
               style={{
-                marginBottom: 10,
-                width: "100%",
+                fontSize: 16,
+                fontWeight: "500",
+                lineHeight: 20,
+                marginTop: 16,
+                color: "#9B9B9B",
               }}
             >
-              <Text
-                style={{
-                  fontSize: SIZES.large,
-                  fontWeight: "500",
-                  lineHeight: 20,
-                  marginTop: 16,
-                  marginBottom: 12,
-                  color: "#fff",
-                }}
-              >
-                Sender's wagpay id
-              </Text>
-              <TextInput
-                style={{
-                  width: "100%",
-                  paddingHorizontal: 16,
-                  paddingVertical: 12,
-                  backgroundColor: "#000000",
-                  borderRadius: 8,
-                }}
-                placeholder="vikash@wagpay"
-                placeholderTextColor="#777E90"
-              />
-            </View>
-            <View
+              Receipent wagpay id
+            </Text>
+            <TextInput
+              defaultValue={scannedwid}
+              onChangeText={(a) => setScannedWid(a)}
+              placeholder="satyam@wagpay"
               style={{
-                position: "relative",
-                zIndex: 50,
-                marginBottom: 10,
-                width: "100%",
+                color: "white",
+                paddingVertical: 16,
+                fontSize: 16,
+              }}
+            />
+            <Text
+              style={{
+                fontSize: 10,
+                fontWeight: "500",
+                lineHeight: 20,
+                marginTop: 16,
+                color: "#9B9B9B",
+              }}
+            >{address}</Text>
+          </View>
+          <View
+            style={{
+              position: "relative",
+              zIndex: 50,
+              marginBottom: 10,
+              width: "100%",
+            }}
+          >
+            <Text
+              style={{
+                fontSize: SIZES.large,
+                fontWeight: "500",
+                lineHeight: 20,
+                marginTop: 16,
+                marginBottom: 12,
+                color: "white",
               }}
             >
-              <Text
-                style={{
-                  fontSize: SIZES.large,
-                  fontWeight: "500",
-                  lineHeight: 20,
-                  marginTop: 16,
-                  marginBottom: 12,
-                  color: "#fff",
-                }}
-              >
-                Select chain
-              </Text>
-              <DropDown
-                setValue={setChain}
-                value={chain}
-                textColor="white"
-                bgcolor="#000"
-                items={[
-                  { key: "Etherium", value: "Etherium" },
-                  { key: "Polygon", value: "polygon" },
-                ]}
-              />
-            </View>
-            <View
-              style={{
-                width: "100%",
-                paddingHorizontal: 16,
-                borderRadius: 8,
-                justifyContent: "space-between",
-              }}
-            >
+              Select chain
+            </Text>
+            <DropDown
+              setValue={(e) => updateChain(e.toString())}
+              value={selectedChain ? selectedChain.name : ""}
+              textColor="white"
+              bgcolor="#000"
+              items={chainData.reverse().map((c) => {
+                return { key: c.internalId.toString(), value: c.name };
+              })}
+            />
+          </View>
+          <View
+            style={{
+              width: "100%",
+              paddingHorizontal: 16,
+              backgroundColor: "#000000",
+              borderRadius: 8,
+              flexDirection: "row",
+              justifyContent: "space-between",
+            }}
+          >
+            <View style={{ marginVertical: 16 }}>
               <Text
                 style={{
                   fontSize: 16,
@@ -162,75 +319,105 @@ const RequestPayment = ({ navigation, name }: any) => {
               >
                 Amount
               </Text>
-              <View style={{ marginVertical: 16, backgroundColor: "#000" }}>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <TextInput
-                    placeholder="$00"
-                    placeholderTextColor={"#777E90"}
-                    style={{ fontSize: 18, color: "#fff" }}
-                    keyboardType="number-pad"
-                  />
-
-                  <DropDown
-                    bgcolor="#303030"
-                    setValue={setCoin}
-                    value={coin}
-                    textColor="white"
-                    items={[
-                      {
-                        key: "USDC",
-                        value: "USDC",
-                      },
-                      {
-                        key: "Matic",
-                        value: "Matic",
-                      },
-                    ]}
-                  />
-                </View>
-              </View>
+              <TextInput
+                defaultValue={amount}
+                onChangeText={(a) => setAmount(a)}
+                placeholder="--"
+                placeholderTextColor={"#ffff"}
+                style={{ fontSize: 18, color: "#fff", marginTop: 12 }}
+                keyboardType="number-pad"
+              />
+            </View>
+            <View
+              style={{
+                height: 54,
+                width: 83,
+                backgroundColor: "#303030",
+                borderRadius: 8,
+                flexDirection: "row",
+                marginVertical: 16,
+                justifyContent: "center",
+                alignItems: "center",
+              }}
+            >
+              <DropDown
+                bgcolor="#303030"
+                setValue={(e) => updateToken(e.toString())}
+                value={token ? token.name : ""}
+                textColor="white"
+                items={tokenData[
+                  selectedChain?.internalId.toString() as string
+                ].map((t: any) => {
+                  return { key: t.address, value: t.name };
+                })}
+              />
             </View>
           </View>
-          <View
-            style={{
-              marginHorizontal: 40,
-              alignItems: "center",
-              width: "100%",
-            }}
-          >
-            <Button
-              title={"Request payment"}
-              onPress={() => {
-                navigation.navigate("Loading", {
-                  meesage: "Sending payment request",
-                  next: "TabNavigation",
-                });
+          {next ? (
+            <View
+              style={{
+                marginVertical: 10,
+                width: "100%",
+                flexDirection: "row",
+                justifyContent: "space-between",
               }}
-            />
-          </View>
+            >
+              <Text
+                style={{
+                  color: "white",
+                }}
+              >
+                Gas fees
+              </Text>
+              <Text
+                style={{
+                  color: "white",
+                }}
+              >
+                {paymentRequest &&
+                typeof paymentRequest.transaction_data.gasLimit === "object"
+                  ? parseInt(paymentRequest.transaction_data.gasLimit.hex)
+                  : paymentRequest.transaction_data.gasLimit}
+              </Text>
+            </View>
+          ) : null}
+        </View>
+        <View
+          style={{
+            position: "absolute",
+            bottom: 40,
+            alignSelf: "center",
+            width: "100%",
+          }}
+        >
+          {next ? (
+            <Button title={
+              loading ? <ActivityIndicator size={20} color="white" /> : "Send"
+            } onPress={() => executePayment()} />
+          ) : (
+            <Button onPress={() => takeNext()} title={
+              loading ? <ActivityIndicator size={20} color="white" /> : "Next"
+            } />
+          )}
         </View>
       </View>
     </SafeAreaView>
   );
 };
 
-export default RequestPayment;
-
 const styles = StyleSheet.create({
   container: {
+    width: "100%",
     backgroundColor: "#000000",
     flex: 1,
-    width: "100%",
+    paddingHorizontal: 10,
   },
   headerText: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: "600",
     lineHeight: 22.5,
     color: "#ffffff",
   },
 });
+
+export default RequestPayment

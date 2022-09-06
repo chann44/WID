@@ -1,5 +1,5 @@
 import axios from "axios"
-import { BigNumber } from "ethers"
+import { BigNumber, ethers } from "ethers"
 import { useAppContext } from "../context"
 
 const API_KEY = "FEX8KK9SREHZTD874Z8T82CU77NYP5I5H9"
@@ -10,8 +10,9 @@ export const useBalance = () => {
             const URL = `https://deep-index.moralis.io/api/v2/${address}/balance`
     
             const params = {
-                chain: BigNumber.from(chain).toHexString()
+                chain: ethers.utils.hexStripZeros(BigNumber.from(chain).toHexString())
             }
+            console.log(params)
     
             const res = await axios.get(URL, {
                 params: params,
@@ -33,7 +34,7 @@ export const useBalance = () => {
             const URL = `https://deep-index.moralis.io/api/v2/${address}/erc20`
     
             const params = {
-                chain: BigNumber.from(chain).toHexString()
+                chain: ethers.utils.hexStripZeros(BigNumber.from(chain).toHexString())
             }
     
             const res = await axios.get(URL, {

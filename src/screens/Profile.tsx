@@ -6,14 +6,26 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { SIZES } from "../../assets/theme";
 import { useAppContext } from "../context";
+import { DropDown } from "../components/DropDown";
+import { chainData, getChain } from "fetcch-chain-data";
 
 export const Profile = ({ navigation }: any) => {
-  const { wid } = useAppContext();
+  const { wid, chain, setChain } = useAppContext();
+
+  const updateChain = (cD: string) => {
+    const c = chainData.find((c) => c.name === cD);
+
+    if (!c) return;
+
+    const chain = getChain({ internalId: c.internalId });
+
+    setChain(chain);
+  };
 
   return (
     <SafeAreaView
@@ -122,28 +134,24 @@ export const Profile = ({ navigation }: any) => {
                   size={30}
                 />
               </TouchableOpacity>
-              <TouchableOpacity
+              <Text
                 style={{
-                  flexDirection: "row",
-                  justifyContent: "space-between",
-                  padding: 19,
-                  backgroundColor: "#1F1F1F",
+                  color: "#fff",
+                  fontSize: 20,
+                  marginBottom: 5
                 }}
               >
-                <Text
-                  style={{
-                    color: "#fff",
-                    fontSize: 20,
-                  }}
-                >
-                  Manage wallets
-                </Text>
-                <MaterialIcons
-                  name="keyboard-arrow-right"
-                  color="#fff"
-                  size={30}
-                />
-              </TouchableOpacity>
+                Change Chain
+              </Text>
+              <DropDown
+                setValue={(e) => updateChain(e.toString())}
+                value={chain ? chain.name : ""}
+                textColor="white"
+                bgcolor="#000"
+                items={chainData.reverse().map((c) => {
+                  return { key: c.internalId.toString(), value: c.name };
+                })}
+              />
             </View>
             <View>
               <TouchableOpacity

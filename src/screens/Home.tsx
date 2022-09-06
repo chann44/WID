@@ -38,23 +38,33 @@ export interface Request {
 }
 
 export const Home = ({ navigation, route }: any) => {
-  const { wid } = useAppContext();
-  const { getNativeBalance } = useBalance();
+  const { wid, chain } = useAppContext();
+  const { getNativeBalance, getERC20Balance } = useBalance();
 
-  const [balance, setBalance] = useState("$500");
   const [requests, setRequests] = useState<Request[] | []>([]);
+
+  const [balance, setBalance] = useState("0.00");
+  const [erc20Balances, setERC20Balances] = useState<any[]>([])
 
   useFocusEffect(
     useCallback(() => {
       if (wid) {
-        getNativeBalance(wid.address, "137")
+        getNativeBalance(wid.address, chain?.chainId.toString() as string)
           .then((res) => {
             // console.log(res)
             setBalance(ethers.utils.formatEther(res.balance).toString());
           })
           .catch((e) => console.log(e));
+        
+        getERC20Balance(wid.address, chain?.chainId.toString() as string)
+          .then(res => {
+            setERC20Balances(res)
+          })
+          .catch((e) => {
+            console.error(e)
+          })
       }
-    }, [wid])
+    }, [wid, chain])
   );
 
   useEffect(() => {
@@ -126,7 +136,7 @@ export const Home = ({ navigation, route }: any) => {
           </View>
           <View style={{ alignItems: "center", marginTop: 44 }}>
             <Text style={{ fontSize: 42, fontWeight: "600", color: "#fff" }}>
-              {balance.substring(0, 5)} MATIC
+              {balance.substring(0, 5)} {chain?.nativeCurrency.symbol}
             </Text>
             <View style={styles.shadow}></View>
           </View>
@@ -250,11 +260,9 @@ export const Home = ({ navigation, route }: any) => {
                 </Text>
               </TouchableOpacity>
             </View>
-            <AssetContainer />
-            <AssetContainer />
-            <AssetContainer />
-            <AssetContainer />
-            <AssetContainer />
+            {erc20Balances.map(erc20 => (
+              <AssetContainer token={erc20} />
+            ))}
           </View>
         </ScrollView>
       </View>

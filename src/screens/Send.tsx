@@ -71,7 +71,7 @@ export const Send = ({ navigation }: any) => {
         const request = await payment(
           {
             to_id: scannedwid,
-            amount: ethers.utils.parseUnits(amount, token.decimals),
+            amount: ethers.utils.parseUnits(amount, token.decimals).toString(),
           },
           {
             from_id: wid?.wagpay_id,
@@ -99,12 +99,10 @@ export const Send = ({ navigation }: any) => {
     try {
       if (userWalletInfo) {
         let signer = new ethers.Wallet(userWalletInfo.privateKey);
-        const provider = ethers.getDefaultProvider(
-          "https://polygon-mumbai.g.alchemy.com/v2/Tv9MYE2mD4zn3ziBLd6S94HvLLjTocju"
-        );
+        const provider = get_provider(selectedChain?.internalId.toString() as string, "y141okG6TC3PecBM1mL0BfST9f4WQmLx")
         if (!provider) throw "Chain not supported";
         signer = signer.connect(provider);
-
+        console.log(provider)
         const { chainId, ...request } = paymentRequest.transaction_data;
         console.log(request);
         const tx = await signer.sendTransaction(request);

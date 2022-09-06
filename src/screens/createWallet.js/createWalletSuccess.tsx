@@ -20,7 +20,7 @@ export const CreateWalletSuccess = ({ navigation }: any) => {
   useEffect(() => {
     _storeData(userWalletInfo);
     navigation.navigate("UserRegistration");
-  });
+  }, []);
   return (
     <SafeAreaView
       style={{

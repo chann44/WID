@@ -15,7 +15,7 @@ import { useFocusEffect } from "@react-navigation/native";
 import { useBalance, useID, usePay } from "../hooks";
 import { useAppContext } from "../context";
 import { BigNumber, ethers } from "ethers";
-import { get_provider } from "@wagpay/id/dist/utils";
+import { find_recipient, get_provider, is_native_token } from "@wagpay/id/dist/utils";
 import { SIZES } from "../../assets/theme";
 import { DropDown } from "../components/DropDown";
 import { chainData, getChain, getToken } from "fetcch-chain-data";
@@ -35,7 +35,7 @@ export const Send = ({ navigation }: any) => {
   const [amount, setAmount] = useState("");
   const [selectedChain, setSelectedChain] = useState(chain);
   const [token, setToken] = useState(
-    tokenData["1"].find((t: any) => t.symbol === "USDC")
+    tokenData["2"].find((t: any) => t.symbol === "USDC")
   );
   const [tokens, setTokens] = useState(
     getERC20Balance(
@@ -61,7 +61,7 @@ export const Send = ({ navigation }: any) => {
           "payment started",
           {
             to_id: scannedwid,
-            amount: ethers.utils.parseUnits(amount, token.decimals).toString(),
+            amount: amount,
           },
           {
             from_id: wid?.wagpay_id,
@@ -104,10 +104,21 @@ export const Send = ({ navigation }: any) => {
         const provider = get_provider(selectedChain?.internalId.toString() as string, "y141okG6TC3PecBM1mL0BfST9f4WQmLx")
         if (!provider) throw "Chain not supported";
         signer = signer.connect(provider);
-        console.log(provider)
-        const { chainId, ...request } = paymentRequest.transaction_data;
-        console.log(request);
-        const tx = await signer.sendTransaction(request);
+        
+        if(!is_native_token(token?.address.toLowerCase() as string, "evm")) {
+          const erc20 = new ethers.Contract(token.address, [
+            "function approve(address _spender, uint256 _value) public returns (bool success)",
+          ], signer)
+          console.log(paymentRequest.transaction_data.to, ethers.utils.parseUnits(amount, token.decimals).toString())
+          const tx = await erc20.approve(paymentRequest.transaction_data.to, ethers.utils.parseUnits(amount, token.decimals).toString(), {
+            gasPrice: provider.getGasPrice(),
+            gasLimit: BigNumber.from(1500000)
+          })
+
+          await tx.wait()
+        }
+
+        const tx = await signer.sendTransaction(paymentRequest);
 
         console.log(tx);
         setLoading(false);
@@ -145,7 +156,6 @@ export const Send = ({ navigation }: any) => {
       console.log("alpaca", scannedwid)
       if(scannedwid) {
         const id = await getId({ id: scannedwid })
-    
         if(id) {
           console.log(id)
           setAddress(id.default.address)

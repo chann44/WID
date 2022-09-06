@@ -63,6 +63,7 @@ export const DropDown = ({
               position: "absolute",
               top: 40,
               zIndex: 40,
+              height: 100,
             }}
           >
             {items.map((item: item) => {

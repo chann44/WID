@@ -102,8 +102,11 @@ export const Send = ({ navigation }: any) => {
       if (userWalletInfo) {
         let signer = new ethers.Wallet(userWalletInfo.privateKey);
         const provider = get_provider(selectedChain?.internalId.toString() as string, "y141okG6TC3PecBM1mL0BfST9f4WQmLx")
+        // const provider = ethers.getDefaultProvider('https://polygon-mumbai.g.alchemy.com/v2/y141okG6TC3PecBM1mL0BfST9f4WQmLx')
         if (!provider) throw "Chain not supported";
         signer = signer.connect(provider);
+
+        console.log(await (await signer.getBalance()).toString())
         
         if(!is_native_token(token?.address.toLowerCase() as string, "evm")) {
           const erc20 = new ethers.Contract(token.address, [
@@ -117,8 +120,11 @@ export const Send = ({ navigation }: any) => {
 
           await tx.wait()
         }
-
-        const tx = await signer.sendTransaction(paymentRequest);
+        const { gasLimit, ...request } = paymentRequest.transaction_data
+        const tx = await signer.sendTransaction({
+          gasLimit: provider.estimateGas(paymentRequest.transaction_data),
+          ...request
+        });
 
         console.log(tx);
         setLoading(false);

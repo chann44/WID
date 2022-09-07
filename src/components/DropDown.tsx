@@ -1,100 +1,71 @@
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity, Image, ImageSourcePropType } from "react-native";
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
-import { MaterialIcons } from "@expo/vector-icons";
+import BottomSheet, {BottomSheetScrollView} from '@gorhom/bottom-sheet';
+import USDCIMAGE from "../../assets/USDCicon.png";
+import Button from "./Button";
 
-interface item {
+export interface item {
   key: string;
   value: string;
+  logo?: ImageSourcePropType
 }
 
 interface DropDownProps {
-  value: string;
-  setValue: Dispatch<SetStateAction<string>>;
-  textColor: string;
-  bgcolor: string;
-  items: item[];
+  data: item[],
+  setValue: Function,
+  handleClosePress: Function,
+  snapPoints: any,
+  bottomSheetRef: any,
+  handleSheetChanges: any,
+  onChange: any
 }
 
 export const DropDown = ({
-  value,
-  textColor,
-  bgcolor,
-  items,
+  data,
   setValue,
+  handleClosePress,
+  snapPoints,
+  bottomSheetRef,
+  handleSheetChanges,
+  onChange
 }: DropDownProps) => {
   const [showDropDown, setShowDropDown] = useState(false);
 
   return (
-    <View>
-      <TouchableOpacity
-        style={{
-          backfaceVisibility: "hidden",
-          backgroundColor: "#000"
-        }}
-        onPress={() => {
-          setShowDropDown(!showDropDown);
-        }}
-      >
-        <View
-          style={{
-            backgroundColor: bgcolor,
-            padding: 12,
-            borderStartColor: bgcolor,
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "space-between",
-          }}
+    <BottomSheet
+          onChange={onChange}
+          ref={bottomSheetRef}
+          index={1}
+          snapPoints={snapPoints}
+          onChange={handleSheetChanges}
         >
-          <Text
-            style={{
-              color: textColor,
-              fontSize: 18,
-            }}
-          >
-            {value}
-          </Text>
-          <MaterialIcons name="keyboard-arrow-down" color="white" size={22} />
-        </View>
-        {showDropDown ? (
-          <View
-            style={{
-              width: "100%",
-              marginTop: 12,
-              position: "absolute",
-              top: 40,
-              zIndex: 40,
-              height: 100,
-            }}
-          >
-            {items.map((item: item) => {
+          <BottomSheetScrollView>
+            {data.map(chain => {
               return (
-                <TouchableOpacity
-                  onPress={() => {
-                    setValue(item.value);
-                    setShowDropDown(false);
-                  }}
-                >
-                  <View
-                    key={item.key}
+                <View style={{
+                  padding: 10,
+                }} key={chain.key}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      setValue(chain.value);
+                      handleClosePress();
+                    }}
                     style={{
-                      backgroundColor: "#303030",
-                      padding: 12,
+                      width: '100%',
+                      display: 'flex',
+                      flexDirection: 'row',
+                      justifyContent: 'flex-start',
+                      alignItems: 'center'
                     }}
                   >
-                    <Text
-                      style={{
-                        color: "white",
-                      }}
-                    >
-                      {item.value}
-                    </Text>
-                  </View>
-                </TouchableOpacity>
-              );
+                    <Image source={chain.logo ? chain.logo : USDCIMAGE} style={{ height: 32, width: 32 }} />
+                    <Text style={{ marginLeft: 10, fontFamily: 'TTMedium' }}>{chain.value}</Text>
+                  </TouchableOpacity>
+                </View>
+              )
             })}
-          </View>
-        ) : null}
-      </TouchableOpacity>
-    </View>
+            <Button onPress={() => handleClosePress()} title="Back" />
+          </BottomSheetScrollView>
+      </BottomSheet>
   );
 };

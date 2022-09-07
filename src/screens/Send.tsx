@@ -1,13 +1,16 @@
 import {
   ActivityIndicator,
+  BackHandler,
+  Image,
   SafeAreaView,
+  ScrollView,
   StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
   View,
 } from "react-native";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import Button from "../components/Button";
@@ -21,10 +24,12 @@ import {
   is_native_token,
 } from "@wagpay/id/dist/utils";
 import { SIZES } from "../../assets/theme";
-import { DropDown } from "../components/DropDown";
+import { DropDown, item } from "../components/DropDown";
 import { chainData, getChain, getToken } from "fetcch-chain-data";
 import { tokens as tokenData } from "fetcch-chain-data/dist/tokens";
 import { get_id } from "@wagpay/id";
+import BottomSheet, {BottomSheetScrollView} from '@gorhom/bottom-sheet';
+import USDCIMAGE from "../../assets/USDCicon.png";
 
 export const Send = ({ navigation }: any) => {
   const { wid, userWalletInfo, scannedwid, setScannedWid, chain } =
@@ -49,7 +54,85 @@ export const Send = ({ navigation }: any) => {
   );
   const [loading, setLoading] = useState(false);
 
+  const [isShowing, setIsShowing] = useState(false);
+  const [isTokenShowing, setIsTokenShowing] = useState(false);
+
   const [paymentRequest, setPaymentRequest] = useState<any>({});
+
+  const bottomSheetRef = useRef<BottomSheet>(null);
+  const bottomTokenSheetRef = useRef<BottomSheet>(null);
+
+  // variables
+  const snapPoints = useMemo(() => ["25%", "50%"], []);
+
+  // callbacks
+  const handleSheetChanges = useCallback((index: number) => {
+    console.log('handleSheetChanges', index);
+  }, []);
+
+  const handleClosePress = () => {
+    if(!bottomSheetRef) return
+
+    (bottomSheetRef as React.MutableRefObject<BottomSheet>).current.close()
+  }
+
+  const handleOpenPress = () => {
+    if(!bottomSheetRef) return
+
+    (bottomSheetRef as React.MutableRefObject<BottomSheet>).current.expand()
+  }
+
+
+  // callbacks
+  const handleTokenSheetChanges = useCallback((index: number) => {
+    console.log('handleSheetChanges', index);
+  }, []);
+
+  const handleTokenClosePress = () => {
+    if(!bottomSheetRef) return
+
+    (bottomTokenSheetRef as React.MutableRefObject<BottomSheet>).current.close()
+  }
+
+  const handleTokenOpenPress = () => {
+    if(!bottomSheetRef) return
+
+    (bottomTokenSheetRef as React.MutableRefObject<BottomSheet>).current.expand()
+  }
+
+  useFocusEffect(
+    useCallback(() => {
+      const onBackPress = () => {
+        if (isShowing) {
+          bottomSheetRef.current?.close();
+          return true;
+        } else if (!isShowing) {
+          navigation.goBack();
+          return true;
+        }
+      };
+      BackHandler.addEventListener("hardwareBackPress", onBackPress);
+      return () =>
+        BackHandler.removeEventListener("hardwareBackPress", onBackPress);
+    }, [bottomSheetRef, isShowing])
+  );
+
+  useFocusEffect(
+    useCallback(() => {
+      const onBackPress = () => {
+        if (isShowing) {
+          bottomTokenSheetRef.current?.close();
+          return true;
+        } else if (!isTokenShowing) {
+          navigation.goBack();
+          return true;
+        }
+      };
+      BackHandler.addEventListener("hardwareBackPress", onBackPress);
+      return () =>
+        BackHandler.removeEventListener("hardwareBackPress", onBackPress);
+    }, [bottomTokenSheetRef, isTokenShowing])
+  );
 
   const takeNext = async () => {
     setLoading(true);
@@ -159,6 +242,7 @@ export const Send = ({ navigation }: any) => {
   };
 
   const updateChain = (cD: string) => {
+    console.log(cD, "cd ")
     const c = chainData.find((c) => c.name === cD);
 
     if (!c) return;
@@ -222,7 +306,7 @@ export const Send = ({ navigation }: any) => {
               size={25}
             />
           </TouchableOpacity>
-          <Text style={styles.headerText}>Send</Text>
+          <Text style={{fontFamily: 'TTBold', ...styles.headerText}}>Send</Text>
           <TouchableOpacity
             onPress={() => {
               navigation.navigate("Scanner");
@@ -257,11 +341,12 @@ export const Send = ({ navigation }: any) => {
           >
             <Text
               style={{
-                fontSize: 16,
+                fontSize: 12,
                 fontWeight: "500",
                 lineHeight: 20,
                 marginTop: 16,
                 color: "#9B9B9B",
+                fontFamily: 'TTInterfaces', 
               }}
             >
               Receipent wagpay id
@@ -290,33 +375,77 @@ export const Send = ({ navigation }: any) => {
           </View>
           <View
             style={{
-              position: "relative",
-              zIndex: 50,
-              marginBottom: 10,
               width: "100%",
+              paddingHorizontal: 16,
+              backgroundColor: "#000000",
+              borderRadius: 8,
+              marginBottom: 10,
             }}
           >
             <Text
+              onPress={() => handleOpenPress()}
               style={{
-                fontSize: SIZES.large,
+                fontSize: 12,
                 fontWeight: "500",
                 lineHeight: 20,
                 marginTop: 16,
-                marginBottom: 12,
-                color: "white",
+                color: "#9B9B9B",
+                fontFamily: 'TTInterfaces', 
               }}
             >
-              Select chain
+              Select Chain
             </Text>
-            <DropDown
-              setValue={(e) => updateChain(e.toString())}
-              value={selectedChain ? selectedChain.name : ""}
-              textColor="white"
-              bgcolor="#000"
-              items={chainData.reverse().map((c) => {
-                return { key: c.internalId.toString(), value: c.name };
-              })}
-            />
+            <Text
+              onPress={() => handleOpenPress()}
+              style={{
+                fontSize: 16,
+                fontWeight: "500",
+                lineHeight: 20,
+                marginTop: 16,
+                color: "#9B9B9B",
+                fontFamily: 'TTBold',
+                marginBottom: 20
+              }}
+            >
+              {selectedChain?.name}
+            </Text>
+          </View>
+          <View
+            style={{
+              width: "100%",
+              paddingHorizontal: 16,
+              backgroundColor: "#000000",
+              borderRadius: 8,
+              marginBottom: 10,
+            }}
+          >
+            <Text
+              onPress={() => handleTokenOpenPress()}
+              style={{
+                fontSize: 12,
+                fontWeight: "500",
+                lineHeight: 20,
+                marginTop: 16,
+                color: "#9B9B9B",
+                fontFamily: 'TTInterfaces', 
+              }}
+            >
+              Select Token
+            </Text>
+            <Text
+              onPress={() => handleTokenOpenPress()}
+              style={{
+                fontSize: 16,
+                fontWeight: "500",
+                lineHeight: 20,
+                marginTop: 16,
+                color: "#9B9B9B",
+                fontFamily: 'TTBold',
+                marginBottom: 20
+              }}
+            >
+              {token?.name}
+            </Text>
           </View>
           <View
             style={{
@@ -331,10 +460,11 @@ export const Send = ({ navigation }: any) => {
             <View style={{ marginVertical: 16 }}>
               <Text
                 style={{
-                  fontSize: 16,
+                  fontSize: 12,
                   fontWeight: "500",
                   lineHeight: 20,
-                  color: "#FFFFFF",
+                  color: "#9B9B9B",
+                  fontFamily: 'TTMedium',
                 }}
               >
                 Amount
@@ -344,32 +474,8 @@ export const Send = ({ navigation }: any) => {
                 onChangeText={(a) => setAmount(a)}
                 placeholder="--"
                 placeholderTextColor={"#ffff"}
-                style={{ fontSize: 18, color: "#fff", marginTop: 12 }}
+                style={{ fontSize: 18, color: "#fff", marginTop: 12, fontFamily: 'TTInterfaces', }}
                 keyboardType="number-pad"
-              />
-            </View>
-            <View
-              style={{
-                height: 54,
-                width: 83,
-                borderRadius: 8,
-                flexDirection: "row",
-                marginVertical: 16,
-                justifyContent: "center",
-                alignItems: "center",
-                paddingRight: 20,
-              }}
-            >
-              <DropDown
-                bgcolor="#303030"
-                setValue={(e) => updateToken(e.toString())}
-                value={token ? token.name : ""}
-                textColor="white"
-                items={tokenData[
-                  selectedChain?.internalId.toString() as string
-                ].map((t: any) => {
-                  return { key: t.address, value: t.name };
-                })}
               />
             </View>
           </View>
@@ -385,6 +491,7 @@ export const Send = ({ navigation }: any) => {
               <Text
                 style={{
                   color: "white",
+                  fontFamily: 'TTInterfaces'
                 }}
               >
                 Gas fees
@@ -392,6 +499,7 @@ export const Send = ({ navigation }: any) => {
               <Text
                 style={{
                   color: "white",
+                  fontFamily: 'TTInterfaces'
                 }}
               >
                 {paymentRequest &&
@@ -427,6 +535,32 @@ export const Send = ({ navigation }: any) => {
           )}
         </View>
       </View>
+      <DropDown 
+        onChange={(idx: any) => {
+          setIsShowing(idx < 1 ? false : true);
+        }}
+        setValue={updateChain} 
+        snapPoints={snapPoints} 
+        bottomSheetRef={bottomSheetRef} 
+        data={chainData.map(t => { return { value: t.name, key: t.chainId } as unknown as item })} 
+        handleClosePress={handleClosePress} 
+        handleSheetChanges={handleSheetChanges} 
+      />
+      <DropDown
+        onChange={(idx: any) => {
+          setIsShowing(idx < 1 ? false : true);
+        }}
+        setValue={updateToken}
+        snapPoints={snapPoints}
+        bottomSheetRef={bottomTokenSheetRef}
+        handleClosePress={handleTokenClosePress}
+        handleSheetChanges={handleTokenSheetChanges}
+        data={tokenData[
+          selectedChain?.internalId.toString() as string
+        ].map((t: any) => {
+          return { key: t.address, value: t.symbol };
+        })}
+      />
     </SafeAreaView>
   );
 };

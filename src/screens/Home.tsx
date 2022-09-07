@@ -93,7 +93,7 @@ export const Home = ({ navigation, route }: any) => {
               flexDirection: "row",
               paddingHorizontal: 17,
               paddingTop: 20,
-              justifyContent: "space-between",
+              justifyContent: "space-between"
             }}
           >
             <TouchableOpacity
@@ -113,6 +113,7 @@ export const Home = ({ navigation, route }: any) => {
                       fontSize: 15,
                       color: "#ffffff",
                       fontWeight: "bold",
+                      fontFamily: 'TTInterfaces'
                     }}
                   >
                     {wid?.wagpay_id.slice(0, 1)}
@@ -135,7 +136,7 @@ export const Home = ({ navigation, route }: any) => {
             </View>
           </View>
           <View style={{ alignItems: "center", marginTop: 44 }}>
-            <Text style={{ fontSize: 42, fontWeight: "600", color: "#fff" }}>
+            <Text style={{ fontSize: 42, fontWeight: "600", color: "#fff", fontFamily: 'TTInterfaces' }}>
               {balance.substring(0, 5)} {chain?.nativeCurrency.symbol}
             </Text>
           </View>
@@ -161,7 +162,7 @@ export const Home = ({ navigation, route }: any) => {
                 end={{ x: 1, y: 0 }}
               >
                 <Feather name="arrow-up-right" size={18} color={"#fff"} />
-                <Text style={styles.buttonText}>Send</Text>
+                <Text style={{fontFamily: 'TTInterfaces', ...styles.buttonText}}>Send</Text>
               </LinearGradient>
             </TouchableOpacity>
             <TouchableOpacity
@@ -192,7 +193,7 @@ export const Home = ({ navigation, route }: any) => {
                   }}
                 >
                   <Feather name="arrow-down-left" size={18} color={"#fff"} />
-                  <Text style={styles.buttonText}>Receive</Text>
+                  <Text style={{fontFamily: 'TTInterfaces', ...styles.buttonText}}>Receive</Text>
                 </View>
               </LinearGradient>
             </TouchableOpacity>
@@ -239,22 +240,11 @@ export const Home = ({ navigation, route }: any) => {
                   color: "#FFFFFF",
                   fontWeight: "600",
                   lineHeight: 22.5,
+                  fontFamily: 'TTInterfaces', 
                 }}
               >
                 Assets
               </Text>
-              <TouchableOpacity>
-                <Text
-                  style={{
-                    fontSize: 16,
-                    color: "#959595",
-                    fontWeight: "500",
-                    lineHeight: 20,
-                  }}
-                >
-                  view all
-                </Text>
-              </TouchableOpacity>
             </View>
             {erc20Balances.map(erc20 => (
               <AssetContainer token={erc20} />

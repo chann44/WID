@@ -22,6 +22,7 @@ const AssetContainer = ({ token }: IProps) => {
               fontWeight: "500",
               lineHeight: 22.5,
               marginBottom: 4,
+              fontFamily: 'TTInterfaces', 
             }}
           >
             {token.name}
@@ -36,6 +37,7 @@ const AssetContainer = ({ token }: IProps) => {
               fontWeight: "400",
               lineHeight: 40,
               marginBottom: 6,
+              fontFamily: 'TTInterfaces', 
             }}
           >
             {ethers.utils.formatUnits(token.balance, token.decimals).toString()} {token.symbol}

@@ -17,7 +17,7 @@ const Button = ({ title, onPress }: any) => {
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 0 }}
       >
-        <Text style={styles.text}>{title}</Text>
+        <Text style={{fontFamily: 'TTInterfaces', ...styles.text}}>{title}</Text>
       </LinearGradient>
     </TouchableOpacity>
   );

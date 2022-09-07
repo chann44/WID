@@ -30,6 +30,7 @@ import { AppCOntextProveder, useAppContext } from "./src/context";
 import { useEffect } from "react";
 import ShowSeedPhrase from "./src/screens/createWallet.js/seedphraseshow";
 import { CreateAccountLoading } from "./src/screens/accountcreated/createaccountloading";
+import { useFonts } from "expo-font";
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
@@ -83,13 +84,19 @@ export function TabNavigation() {
 
 export default function App() {
   const { setUserWalletInfo, userWalletInfo } = useAppContext();
+  const [fontsLoaded] = useFonts({
+    'TTInterfaces': require("./assets/fonts/TTInterfaces-Regular.ttf"),
+    'TTBold': require("./assets/fonts/TTInterfaces-Bold.ttf"),
+    'TTExtraBold': require("./assets/fonts/TTInterfaces-ExtraBold.ttf"),
+    'TTMedium': require("./assets/fonts/TTInterfaces-Medium.ttf"),
+  })
 
   return (
     <AppCOntextProveder>
       <NavigationContainer>
         <Stack.Navigator
           screenOptions={{ headerShown: false }}
-          initialRouteName={"LaunchS"}
+          initialRouteName={"TabNavigation"}
         >
           <Stack.Screen name="LaunchS" component={LaunchS} />
           <Stack.Screen name="Onboarding1" component={Onboarding1} />

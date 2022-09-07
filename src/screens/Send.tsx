@@ -316,7 +316,7 @@ export const Send = ({ navigation }: any) => {
               <MaterialIcons
                 name="keyboard-arrow-left"
                 color={"#fff"}
-                size={25}
+                size={30}
               />
             </TouchableOpacity>
             <Text style={{ fontFamily: "TTBold", ...styles.headerText }}>
@@ -591,11 +591,11 @@ const styles = StyleSheet.create({
     width: "100%",
     backgroundColor: "#000000",
     flex: 1,
-    paddingHorizontal: 10,
+    paddingHorizontal: 1,
     justifyContent: "space-between",
   },
   headerText: {
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: "600",
     lineHeight: 22.5,
     color: "#ffffff",

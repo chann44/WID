@@ -17,6 +17,13 @@ import { useAppContext } from "../../context";
 
 const ImportWallet = ({ navigation }: any) => {
   const { setImportSeedPhrase, importSeedPhrase } = useAppContext();
+  const [error, setErro] = useState(false);
+  useEffect(() => {
+    if (importSeedPhrase.split(" ").length! == 12) {
+      setErro(true);
+    }
+  }, [importSeedPhrase]);
+
   return (
     <SafeAreaView
       style={{
@@ -108,6 +115,22 @@ const ImportWallet = ({ navigation }: any) => {
                 placeholder="Enter your secret recovery phrase"
                 placeholderTextColor="#777E90"
               />
+
+              {error && (
+                <Text
+                  style={{
+                    fontSize: 10,
+                    fontWeight: "200",
+                    lineHeight: 20,
+                    marginTop: 16,
+                    marginBottom: 12,
+                    color: "red",
+                  }}
+                >
+                  *Incorrect letter please crosscheck your seedphrase before
+                  entering
+                </Text>
+              )}
             </View>
           </View>
           <View

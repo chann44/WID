@@ -205,7 +205,7 @@ export const Home = ({ navigation, route }: any) => {
                       backgroundColor: "#000",
                       justifyContent: "center",
                       alignItems: "center",
-                      borderRadius: SIZES.small,
+                      borderRadius: 14,
                       flexDirection: "row",
                       padding: 10,
                     }}
@@ -303,7 +303,7 @@ const styles = StyleSheet.create({
   button1: {
     height: 56,
     width: 160,
-    borderRadius: 8,
+    borderRadius: 14,
     justifyContent: "center",
     alignItems: "center",
     flexDirection: "row",

@@ -44,7 +44,7 @@ export const ReciveQr = ({ navigation }: any) => {
             <MaterialIcons
               name="keyboard-arrow-left"
               color={"#fff"}
-              size={25}
+              size={30}
             />
           </TouchableOpacity>
           <View
@@ -131,10 +131,10 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   headerText: {
-    fontSize: 18,
+    fontSize: 20,
     textAlign: "center",
     fontWeight: "600",
-    lineHeight: 22.5,
+    lineHeight: 20,
     color: "#ffffff",
   },
 });

@@ -13,7 +13,7 @@ import Onboarding3 from "./src/screens/createWallet.js/Onboarding3";
 import { UserRegistration } from "./src/screens/UserRegistration";
 import { Send } from "./src/screens/Send";
 import { ReciveQr } from "./src/screens/recivepayment/ReciveQr";
-import RequestPayment from "./src/screens/recivepayment/RequestPayment";
+import { RequestPayment } from "./src/screens/recivepayment/RequestPayment";
 import { Paymentrequest } from "./src/components/paymentrequest";
 import Scanner from "./src/screens/recivepayment/scanqr";
 import EnterSeedPhrase from "./src/screens/createWallet.js/EnterSeedPhrase";
@@ -47,7 +47,7 @@ export function TabNavigation() {
     >
       <Tab.Screen
         name="Home"
-        component={ShowSeedPhrase}
+        component={Home}
         options={{
           headerShown: false,
           tabBarIcon: () => (

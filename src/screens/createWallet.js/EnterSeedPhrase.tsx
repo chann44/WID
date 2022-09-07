@@ -16,12 +16,16 @@ const EnterSeedPhrase = ({ navigation, route }: any) => {
   const { userWalletInfo } = useAppContext();
   const [val, setVal] = useState("");
   const [showNext, setShowNext] = useState(false);
+  const [showError, setShowError] = useState(false);
   useEffect(() => {
-    console.log(userWalletInfo?.seedPhrase);
+    console.log(userWalletInfo?.seedPhrase.split(" ")[5]);
     console.log(val);
-
-    if (val === userWalletInfo?.seedPhrase) {
+    console.log(showError);
+    if (val === userWalletInfo?.seedPhrase.split(" ")[5]) {
       setShowNext(true);
+      setShowError(false);
+    } else if (val !== "" && val !== userWalletInfo?.seedPhrase.split(" ")[5]) {
+      setShowError(true);
     }
   }, [val]);
 
@@ -77,7 +81,7 @@ const EnterSeedPhrase = ({ navigation, route }: any) => {
               borderRadius: 8,
               alignItems: "center",
               justifyContent: "space-between",
-              paddingHorizontal: 8,
+              paddingHorizontal: 3,
               paddingVertical: 12,
               marginTop: 60,
             }}
@@ -90,20 +94,19 @@ const EnterSeedPhrase = ({ navigation, route }: any) => {
             >
               <Text
                 style={{
-                  fontSize: SIZES.large,
-                  fontWeight: "500",
+                  fontSize: 16,
+                  fontWeight: "200",
                   lineHeight: 20,
                   marginTop: 16,
                   marginBottom: 12,
                   color: "#fff",
                 }}
               >
-                Enter the Secret recovery phrase
+                What is the 6th letter of your secret phrase?
               </Text>
               <TextInput
                 keyboardType="ascii-capable"
                 multiline={true}
-                numberOfLines={4}
                 onChangeText={(text) => {
                   setVal(text);
                 }}
@@ -115,10 +118,26 @@ const EnterSeedPhrase = ({ navigation, route }: any) => {
                   paddingVertical: 12,
                   backgroundColor: "#000000",
                   borderRadius: 8,
+                  paddingHorizontal: 6,
                 }}
-                placeholder="Enter your secret recovery phrase"
+                placeholder="Enter here"
                 placeholderTextColor="#777E90"
               />
+              {showError && (
+                <Text
+                  style={{
+                    fontSize: 12,
+                    fontWeight: "200",
+                    lineHeight: 20,
+                    marginTop: 16,
+                    marginBottom: 12,
+                    color: "red",
+                  }}
+                >
+                  *Incorrect letter please crosscheck your seedphrase before
+                  entering
+                </Text>
+              )}
             </View>
           </View>
           <View

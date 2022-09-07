@@ -14,7 +14,25 @@ import "@ethersproject/shims";
 
 import { ethers } from "ethers";
 export const UserRegistration = ({ navigation }: any) => {
-  const { setUserName, widUsername } = useAppContext();
+  const { setUserName, username } = useAppContext();
+  const { getId } = useID()
+
+  const [valid, setIsValid] = useState(true)
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const id = await getId({ id: `${username}@wagpay` })
+        if(!id) {
+          setIsValid(false)
+          return
+        }
+        setIsValid(true)
+      } catch (e) {
+        setIsValid(false)
+      }
+    })()
+  }, [username])
 
   return (
     <View style={styles.Container}>
@@ -48,18 +66,34 @@ export const UserRegistration = ({ navigation }: any) => {
         </View>
         <View>
           <Text style={styles.inputHeader}>Username</Text>
-          <View style={styles.inputContainer}>
-            <TextInput
-              placeholder="username@wagpay"
-              placeholderTextColor={"#636363"}
-              style={styles.textInputS}
-              value={widUsername}
-              onChangeText={(text) => {
-                setUserName(text);
-                console.log(text);
-              }}
-            />
-          </View>
+          {valid && 
+            <View style={styles.inputContainerGreen}>
+              <TextInput
+                placeholder="username@wagpay"
+                placeholderTextColor={"#636363"}
+                style={styles.textInputS}
+                value={username}
+                onChangeText={(text) => {
+                  setUserName(text);
+                  console.log(text);
+                }}
+              />
+            </View>
+          }
+          {!valid && 
+            <View style={styles.inputContainerRed}>
+              <TextInput
+                placeholder="username@wagpay"
+                placeholderTextColor={"#636363"}
+                style={styles.textInputS}
+                value={username}
+                onChangeText={(text) => {
+                  setUserName(text);
+                  console.log(text);
+                }}
+              />
+            </View>
+          }
           <Text
             style={{
               color: "#ABABAB",
@@ -73,7 +107,7 @@ export const UserRegistration = ({ navigation }: any) => {
           </Text>
         </View>
       </View>
-      <View style={{ position: "absolute", bottom: 38, width: "100%" }}>
+      <View style={{ position: "absolute", bottom: 38, width: "90%" }}>
         <Button
           title={"Next"}
           onPress={() => {
@@ -111,6 +145,22 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: "#3A3A3A",
   },
+  inputContainerGreen: {
+    marginTop: 4,
+    height: 56,
+    width: 357,
+    borderRadius: 8,
+    borderWidth: 2,
+    borderColor: "green",
+  },
+  inputContainerRed: {
+    marginTop: 4,
+    height: 56,
+    width: 357,
+    borderRadius: 8,
+    borderWidth: 2,
+    borderColor: "red",
+  },
   inputHeader: {
     color: "#FFFFFF",
     lineHeight: 23,
@@ -122,5 +172,5 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     fontSize: 18,
     color: "#FFFFFF",
-  },
+  }
 });

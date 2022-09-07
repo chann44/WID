@@ -138,13 +138,13 @@ export const Home = ({ navigation, route }: any) => {
             <Text style={{ fontSize: 42, fontWeight: "600", color: "#fff" }}>
               {balance.substring(0, 5)} {chain?.nativeCurrency.symbol}
             </Text>
-            <View style={styles.shadow}></View>
           </View>
           <View
             style={{
+              width: '100%', display: 'flex', justifyContent: 'space-around', alignItems: "center",
               flexDirection: "row",
-              marginHorizontal: 16,
-              justifyContent: "space-between",
+              // marginHorizontal: 16,
+              // justifyContent: "space-between",
               marginBottom: 36,
               marginTop: 30,
             }}
@@ -169,16 +169,12 @@ export const Home = ({ navigation, route }: any) => {
                 navigation.navigate("Recive");
               }}
               style={{
-                marginHorizontal: 10,
-                flexGrow: 1,
+                // marginHorizontal: 10,
+                // flexGrow: 1,
               }}
             >
               <LinearGradient
-                style={{
-                  padding: 1,
-                  borderRadius: SIZES.small,
-                  width: "100%",
-                }}
+                style={styles.button1}
                 colors={["#4B74FF", "#A560FF80"]}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 0 }}
@@ -186,13 +182,13 @@ export const Home = ({ navigation, route }: any) => {
                 <View
                   style={{
                     height: 54,
-                    width: 190,
+                    width: "100%",
                     backgroundColor: "#000",
                     justifyContent: "center",
                     alignItems: "center",
                     borderRadius: SIZES.small,
                     flexDirection: "row",
-                    padding: 1,
+                    padding: 10,
                   }}
                 >
                   <Feather name="arrow-down-left" size={18} color={"#fff"} />

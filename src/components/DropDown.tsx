@@ -29,7 +29,7 @@ export const DropDown = ({
       <TouchableOpacity
         style={{
           backfaceVisibility: "hidden",
-          backgroundColor: "#000",
+          backgroundColor: "#000"
         }}
         onPress={() => {
           setShowDropDown(!showDropDown);

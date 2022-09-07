@@ -213,7 +213,7 @@ export const Send = ({ navigation }: any) => {
         >
           <TouchableOpacity
             onPress={() => {
-              navigation.navigate("Home");
+              navigation.navigate("TabNavigation");
             }}
           >
             <MaterialIcons
@@ -352,12 +352,12 @@ export const Send = ({ navigation }: any) => {
               style={{
                 height: 54,
                 width: 83,
-                backgroundColor: "#303030",
                 borderRadius: 8,
                 flexDirection: "row",
                 marginVertical: 16,
                 justifyContent: "center",
                 alignItems: "center",
+                paddingRight: 20,
               }}
             >
               <DropDown
@@ -407,7 +407,7 @@ export const Send = ({ navigation }: any) => {
             position: "absolute",
             bottom: 40,
             alignSelf: "center",
-            width: "100%",
+            width: "90%",
           }}
         >
           {next ? (

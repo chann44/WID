@@ -71,7 +71,7 @@ export const Transections = ({ navigation }: any) => {
                 size={25}
               />
             </TouchableOpacity>
-            <Text style={styles.headerText}>Transections</Text>
+            <Text style={styles.headerText}>Transactions</Text>
           </View>
           <View
             style={{

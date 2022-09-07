@@ -35,7 +35,7 @@ const CreateWalletOnBoarding = ({ navigation }: any) => {
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 0 }}
           >
-            <Text style={styles.buttonText}>create wallet</Text>
+            <Text style={styles.buttonText}>Create Wallet</Text>
           </LinearGradient>
         </TouchableOpacity>
         <TouchableOpacity
@@ -63,7 +63,7 @@ const CreateWalletOnBoarding = ({ navigation }: any) => {
                 marginHorizontal: 12,
               }}
             >
-              <Text style={styles.buttonText}>import existing wallet</Text>
+              <Text style={styles.buttonText}>Import Existing Wallet</Text>
             </View>
           </LinearGradient>
         </TouchableOpacity>

@@ -1,4 +1,5 @@
 import {
+  ActivityIndicator,
   ScrollView,
   StyleSheet,
   Text,
@@ -68,7 +69,7 @@ export const Transections = ({ navigation }: any) => {
               <MaterialIcons
                 name="keyboard-arrow-left"
                 color={"#fff"}
-                size={25}
+                size={30}
               />
             </TouchableOpacity>
             <Text style={styles.headerText}>Transactions</Text>
@@ -78,16 +79,26 @@ export const Transections = ({ navigation }: any) => {
               padding: 8,
             }}
           >
-            {txs?.map((tx: any) => {
-              return (
-                <Transection
-                  hash={tx.hash}
-                  address={tx.from}
-                  ammount={tx.value}
-                  date=""
-                />
-              );
-            })}
+            {txs ? (
+              txs.map((tx: any) => {
+                return (
+                  <TouchableOpacity
+                    onPress={() => {
+                      navigation.navigate("txdetails");
+                    }}
+                  >
+                    <Transection
+                      hash={tx.hash}
+                      address={tx.from}
+                      ammount={tx.value}
+                      date=""
+                    />
+                  </TouchableOpacity>
+                );
+              })
+            ) : (
+              <ActivityIndicator size={20} color="white" />
+            )}
           </View>
         </ScrollView>
       </View>
@@ -103,7 +114,7 @@ const styles = StyleSheet.create({
   headerText: {
     flexGrow: 1,
     textAlign: "center",
-    fontSize: 18,
+    fontSize: 20,
     fontWeight: "600",
     lineHeight: 22.5,
     color: "#ffffff",

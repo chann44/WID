@@ -33,6 +33,7 @@ import ShowSeedPhrase from "./src/screens/createWallet.js/seedphraseshow";
 import { CreateAccountLoading } from "./src/screens/accountcreated/createaccountloading";
 import { useFonts } from "expo-font";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import TransectionDetails from "./src/screens/transection/TransectionDetails";
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
@@ -148,6 +149,7 @@ export default function App() {
               name="createAccountSuccess"
               component={AccoundCreated}
             />
+            <Stack.Screen name="txdetails" component={TransectionDetails} />
             <Stack.Screen
               name="CreateAccountLoading"
               component={CreateAccountLoading}

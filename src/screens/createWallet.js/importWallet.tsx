@@ -111,6 +111,7 @@ const ImportWallet = ({ navigation }: any) => {
                   paddingVertical: 12,
                   backgroundColor: "#000000",
                   borderRadius: 8,
+                  color: "white",
                 }}
                 placeholder="Enter your secret recovery phrase"
                 placeholderTextColor="#777E90"

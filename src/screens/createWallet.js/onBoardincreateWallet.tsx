@@ -28,7 +28,7 @@ const CreateWalletOnBoarding = ({ navigation }: any) => {
           onPress={() => {
             navigation.navigate("CreateWalletLoading", {
               mesage: "creating wallet",
-              next: "UserRegistration",
+              next: "ShowSeedPhrase",
             });
           }}
         >

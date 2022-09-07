@@ -120,8 +120,7 @@ export const Profile = ({ navigation }: any) => {
                   color: "white",
                 }}
               >
-                {"0xf83bc109f36e766ce369f81c807c33bec4120270".substring(0, 6) +
-                  "..."}
+                {wid?.address.substring(0, 6) + "..."}
               </Text>
 
               <TouchableOpacity>
@@ -144,7 +143,7 @@ export const Profile = ({ navigation }: any) => {
                 style={{
                   flexDirection: "row",
                   justifyContent: "space-between",
-                  padding: 19,
+                  padding: 16,
                   marginVertical: 12,
                   backgroundColor: "#1F1F1F",
                 }}
@@ -152,7 +151,7 @@ export const Profile = ({ navigation }: any) => {
                 <Text
                   style={{
                     color: "#fff",
-                    fontSize: 20,
+                    fontSize: 16,
                   }}
                 >
                   Manage wallets
@@ -163,15 +162,29 @@ export const Profile = ({ navigation }: any) => {
                   size={30}
                 />
               </TouchableOpacity>
-              <Text
+              <TouchableOpacity
                 style={{
-                  color: "#fff",
-                  fontSize: 20,
-                  marginBottom: 5,
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  padding: 16,
+                  marginVertical: 12,
+                  backgroundColor: "#1F1F1F",
                 }}
               >
-                Change Chain
-              </Text>
+                <Text
+                  style={{
+                    color: "#fff",
+                    fontSize: 16,
+                  }}
+                >
+                  manage networks
+                </Text>
+                <MaterialIcons
+                  name="keyboard-arrow-right"
+                  color="#fff"
+                  size={30}
+                />
+              </TouchableOpacity>
             </View>
             <View>
               <TouchableOpacity

@@ -20,8 +20,7 @@ const CreateID = async (
   setUserWalletInfo: any
 ) => {
   const wallet =
-    userWalletInfo &&
-    (new ethers.Wallet(userWalletInfo?.privateKey));
+    userWalletInfo && new ethers.Wallet(userWalletInfo?.privateKey);
   const msg = wallet && (await wallet.signMessage("wagpay did this"));
   console.log(msg);
   const { createId } = useID();
@@ -38,43 +37,43 @@ const CreateID = async (
     },
     forced_same_chain_payment: false,
     signedMsg: msg, // signed message from default address
-  })
+  });
 
-  // createId({
-  //   wagpay_id: `${username}@wagpay`,
-  //   default: {
-  //     address: userWalletInfo?.address,
-  //     network: {
-  //       id: 2,
-  //       name: "polygon",
-  //       chain_type: "evm",
-  //     },
-  //   },
-  //   forced_same_chain_payment: false,
-  //   signedMsg: msg, // signed message from default address
-  // })
-  //   .then((res: any) => {
-  //     console.log(res);
-  //     setWid((prev: any) => {
-  //       return {
-  //         ...prev,
-  //         id: res.id,
-  //         address: res.default.address,
-  //         wagpay_id: res.wagpay_id,
-  //         provider: res.provider,
-  //         owner: res.owner,
-  //         phone_number: res.phone_number,
-  //       };
-  //     });
-  //     setUserWalletInfo((prev: any) => {
-  //       return {
-  //         ...prev,
-  //         id: res.wagpay_id,
-  //       };
-  //     });
-  //     navigation.navigate(route.params.next);
-  //   })
-  //   .catch((e: any) => console.error(e));
+  createId({
+    wagpay_id: `${username}@wagpay`,
+    default: {
+      address: userWalletInfo?.address,
+      network: {
+        id: 2,
+        name: "polygon",
+        chain_type: "evm",
+      },
+    },
+    forced_same_chain_payment: false,
+    signedMsg: msg, // signed message from default address
+  })
+    .then((res: any) => {
+      console.log(res);
+      setWid((prev: any) => {
+        return {
+          ...prev,
+          id: res.id,
+          address: res.default.address,
+          wagpay_id: res.wagpay_id,
+          provider: res.provider,
+          owner: res.owner,
+          phone_number: res.phone_number,
+        };
+      });
+      setUserWalletInfo((prev: any) => {
+        return {
+          ...prev,
+          id: res.wagpay_id,
+        };
+      });
+      navigation.navigate(route.params.next);
+    })
+    .catch((e: any) => console.error(e));
 };
 
 export const CreateAccountLoading = ({ navigation, route }: any) => {

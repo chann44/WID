@@ -1,8 +1,9 @@
 import { useEffect } from "react";
 import { View, Text, Image, ActivityIndicator } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-
+import "react-native-get-random-values";
 import "@ethersproject/shims";
+import { btoa, atob } from "react-native-quick-base64";
 
 import { ethers } from "ethers";
 import { SIZES } from "../../../assets/theme";
@@ -61,6 +62,7 @@ export const CreateWalletLoading = ({ navigation, route }: any) => {
     useAppContext();
 
   useEffect(() => {
+    console.log(route.params.mesage);
     if (route.params.importwallet) {
       console.log("importing");
       importWallet(importSeedPhrase, navigation, route, setUserWalletInfo);
@@ -96,7 +98,7 @@ export const CreateWalletLoading = ({ navigation, route }: any) => {
             color: "white",
           }}
         >
-          {route.params.meesage}
+          {route.params.mesage}
         </Text>
       </View>
     </SafeAreaView>

@@ -8,6 +8,7 @@ const Button = ({ title, onPress }: any) => {
     <TouchableOpacity
       onPress={onPress}
       style={{
+        borderRadius: 30,
         width: "100%",
       }}
     >
@@ -17,7 +18,9 @@ const Button = ({ title, onPress }: any) => {
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 0 }}
       >
-        <Text style={{fontFamily: 'TTInterfaces', ...styles.text}}>{title}</Text>
+        <Text style={{ fontFamily: "TTInterfaces", ...styles.text }}>
+          {title}
+        </Text>
       </LinearGradient>
     </TouchableOpacity>
   );
@@ -27,10 +30,10 @@ export default Button;
 
 const styles = StyleSheet.create({
   container: {
+    borderRadius: 10,
     height: 56,
     width: "100%",
     backgroundColor: "#9281FF",
-    borderRadius: 4,
     justifyContent: "center",
     alignItems: "center",
   },

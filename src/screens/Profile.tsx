@@ -101,7 +101,7 @@ export const Profile = ({ navigation }: any) => {
                 <MaterialIcons name="content-copy" color="#fff" size={20} />
               </TouchableOpacity>
             </View>
-            
+
             <View
               style={{
                 marginTop: 12,
@@ -120,14 +120,14 @@ export const Profile = ({ navigation }: any) => {
                   color: "white",
                 }}
               >
-                {'0xf83bc109f36e766ce369f81c807c33bec4120270'.substring(0, 6) + '...'}
+                {"0xf83bc109f36e766ce369f81c807c33bec4120270".substring(0, 6) +
+                  "..."}
               </Text>
 
               <TouchableOpacity>
                 <MaterialIcons name="content-copy" color="#fff" size={20} />
               </TouchableOpacity>
             </View>
-            
           </View>
           <View
             style={{
@@ -167,20 +167,11 @@ export const Profile = ({ navigation }: any) => {
                 style={{
                   color: "#fff",
                   fontSize: 20,
-                  marginBottom: 5
+                  marginBottom: 5,
                 }}
               >
                 Change Chain
               </Text>
-              <DropDown
-                setValue={(e) => updateChain(e.toString())}
-                value={chain ? chain.name : ""}
-                textColor="white"
-                bgcolor="#000"
-                items={chainData.reverse().map((c) => {
-                  return { key: c.internalId.toString(), value: c.name };
-                })}
-              />
             </View>
             <View>
               <TouchableOpacity
@@ -241,18 +232,18 @@ const styles = StyleSheet.create({
     color: "#ffffff",
   },
   modal: {
-    justifyContent: 'center',
-    alignItems: 'center'
+    justifyContent: "center",
+    alignItems: "center",
   },
 
   modal1: {
     height: 230,
-    backgroundColor: "#3B5998"
+    backgroundColor: "#3B5998",
   },
   btn: {
     margin: 10,
     backgroundColor: "#3B5998",
     color: "white",
-    padding: 10
+    padding: 10,
   },
 });

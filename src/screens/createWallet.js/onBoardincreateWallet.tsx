@@ -26,7 +26,10 @@ const CreateWalletOnBoarding = ({ navigation }: any) => {
             width: "100%",
           }}
           onPress={() => {
-            navigation.navigate("CreateWallet", { import: null });
+            navigation.navigate("CreateWalletLoading", {
+              mesage: "creating wallet",
+              next: "UserRegistration",
+            });
           }}
         >
           <LinearGradient
@@ -40,7 +43,7 @@ const CreateWalletOnBoarding = ({ navigation }: any) => {
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => {
-            navigation.navigate("CreateWallet", { import: true });
+            navigation.navigate("ImportWallet");
           }}
           style={{
             marginTop: 5,

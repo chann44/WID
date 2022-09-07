@@ -1,3 +1,5 @@
+import "react-native-get-random-values";
+import "@ethersproject/shims";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
@@ -17,7 +19,6 @@ import Scanner from "./src/screens/recivepayment/scanqr";
 import EnterSeedPhrase from "./src/screens/createWallet.js/EnterSeedPhrase";
 import { CreateWalletLoading } from "./src/screens/createWallet.js/CreatewalletLoadin";
 import { CreateWalletSuccess } from "./src/screens/createWallet.js/createWalletSuccess";
-import { Password } from "./src/screens/createWallet.js/password";
 import TransectionSuccess from "./src/screens/transection/transectionsuccess";
 import CreateWalletOnBoarding from "./src/screens/createWallet.js/onBoardincreateWallet";
 import ImportWallet from "./src/screens/createWallet.js/importWallet";
@@ -31,6 +32,7 @@ import { useEffect } from "react";
 import ShowSeedPhrase from "./src/screens/createWallet.js/seedphraseshow";
 import { CreateAccountLoading } from "./src/screens/accountcreated/createaccountloading";
 import { useFonts } from "expo-font";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
@@ -45,7 +47,7 @@ export function TabNavigation() {
     >
       <Tab.Screen
         name="Home"
-        component={Home}
+        component={ShowSeedPhrase}
         options={{
           headerShown: false,
           tabBarIcon: () => (
@@ -85,67 +87,74 @@ export function TabNavigation() {
 export default function App() {
   const { setUserWalletInfo, userWalletInfo } = useAppContext();
   const [fontsLoaded] = useFonts({
-    'TTInterfaces': require("./assets/fonts/TTInterfaces-Regular.ttf"),
-    'TTBold': require("./assets/fonts/TTInterfaces-Bold.ttf"),
-    'TTExtraBold': require("./assets/fonts/TTInterfaces-ExtraBold.ttf"),
-    'TTMedium': require("./assets/fonts/TTInterfaces-Medium.ttf"),
-  })
+    TTInterfaces: require("./assets/fonts/TTInterfaces-Regular.ttf"),
+    TTBold: require("./assets/fonts/TTInterfaces-Bold.ttf"),
+    TTExtraBold: require("./assets/fonts/TTInterfaces-ExtraBold.ttf"),
+    TTMedium: require("./assets/fonts/TTInterfaces-Medium.ttf"),
+  });
 
   return (
-    <AppCOntextProveder>
-      <NavigationContainer>
-        <Stack.Navigator
-          screenOptions={{ headerShown: false }}
-          initialRouteName={"TabNavigation"}
-        >
-          <Stack.Screen name="LaunchS" component={LaunchS} />
-          <Stack.Screen name="Onboarding1" component={Onboarding1} />
-          <Stack.Screen name="Onboarding2" component={Onboarding2} />
-          <Stack.Screen name="Onboarding3" component={Onboarding3} />
-          <Stack.Screen name="UserRegistration" component={UserRegistration} />
-          <Stack.Screen name="ConnectWallet1" component={ConnectWallet1} />
-          <Stack.Screen name="TabNavigation" component={TabNavigation} />
-          <Stack.Screen name="Send" component={Send} />
-          <Stack.Screen name="Recive" component={ReciveQr} />
-          <Stack.Screen name="RequestPayment" component={RequestPayment} />
-          <Stack.Screen name="PaymentRequest" component={Paymentrequest} />
-          <Stack.Screen name="Scanner" component={Scanner} />
-          <Stack.Screen
-            name="CreateWalletOnBoarding"
-            component={CreateWalletOnBoarding}
-          />
-          <Stack.Screen name="ShowSeedPhrase" component={ShowSeedPhrase} />
-          <Stack.Screen name="EnterSeedPhrase" component={EnterSeedPhrase} />
-          <Stack.Screen
-            name="CreateWalletLoading"
-            component={CreateWalletLoading}
-          />
-          <Stack.Screen
-            name="CreateWalletOnSuccess"
-            component={CreateWalletSuccess}
-          />
-          <Stack.Screen name="CreateWallet" component={Password} />
-          <Stack.Screen
-            name="CreateWalletSuccess"
-            component={CreateWalletSuccess}
-          />
-          <Stack.Screen
-            name="TransectionSuccess"
-            component={TransectionSuccess}
-          />
-          <Stack.Screen name="ImportWallet" component={ImportWallet} />
-          <Stack.Screen name="Loading" component={Loading} />
-          <Stack.Screen name="Transections" component={Transections} />
-          <Stack.Screen
-            name="createAccountSuccess"
-            component={AccoundCreated}
-          />
-          <Stack.Screen
-            name="CreateAccountLoading"
-            component={CreateAccountLoading}
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </AppCOntextProveder>
+    <GestureHandlerRootView
+      style={{
+        flex: 1,
+      }}
+    >
+      <AppCOntextProveder>
+        <NavigationContainer>
+          <Stack.Navigator
+            screenOptions={{ headerShown: false }}
+            initialRouteName={"LaunchS"}
+          >
+            <Stack.Screen name="LaunchS" component={LaunchS} />
+            <Stack.Screen name="Onboarding1" component={Onboarding1} />
+            <Stack.Screen name="Onboarding2" component={Onboarding2} />
+            <Stack.Screen name="Onboarding3" component={Onboarding3} />
+            <Stack.Screen
+              name="UserRegistration"
+              component={UserRegistration}
+            />
+            <Stack.Screen name="ConnectWallet1" component={ConnectWallet1} />
+            <Stack.Screen name="TabNavigation" component={TabNavigation} />
+            <Stack.Screen name="Send" component={Send} />
+            <Stack.Screen name="Recive" component={ReciveQr} />
+            <Stack.Screen name="RequestPayment" component={RequestPayment} />
+            <Stack.Screen name="Scanner" component={Scanner} />
+            <Stack.Screen
+              name="CreateWalletOnBoarding"
+              component={CreateWalletOnBoarding}
+            />
+            <Stack.Screen name="ShowSeedPhrase" component={ShowSeedPhrase} />
+            <Stack.Screen name="EnterSeedPhrase" component={EnterSeedPhrase} />
+            <Stack.Screen
+              name="CreateWalletLoading"
+              component={CreateWalletLoading}
+            />
+            <Stack.Screen
+              name="CreateWalletOnSuccess"
+              component={CreateWalletSuccess}
+            />
+            <Stack.Screen
+              name="CreateWalletSuccess"
+              component={CreateWalletSuccess}
+            />
+            <Stack.Screen
+              name="TransectionSuccess"
+              component={TransectionSuccess}
+            />
+            <Stack.Screen name="ImportWallet" component={ImportWallet} />
+            <Stack.Screen name="Loading" component={Loading} />
+            <Stack.Screen name="Transections" component={Transections} />
+            <Stack.Screen
+              name="createAccountSuccess"
+              component={AccoundCreated}
+            />
+            <Stack.Screen
+              name="CreateAccountLoading"
+              component={CreateAccountLoading}
+            />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </AppCOntextProveder>
+    </GestureHandlerRootView>
   );
 }

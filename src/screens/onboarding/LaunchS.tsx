@@ -6,9 +6,9 @@ import { useFocusEffect } from "@react-navigation/native";
 import { useID } from "../../hooks";
 
 export function LaunchS({ navigation }: any) {
-  const { setWid, setUserWalletInfo } = useAppContext()
-  const { getId } = useID()
-  
+  const { setWid, setUserWalletInfo } = useAppContext();
+  const { getId } = useID();
+
   // useFocusEffect(
   //   useCallback(() => {
   //     AsyncStorage.getItem('userwalletinfo').then(res => {
@@ -33,7 +33,7 @@ export function LaunchS({ navigation }: any) {
         // We have data!!
         setUserWalletInfo(JSON.parse(value));
         const parsedVal = JSON.parse(value);
-        console.log(value);
+        console.log("val", value);
         navigation.navigate(
           parsedVal.id ? "TabNavigation" : "UserRegistration"
         );

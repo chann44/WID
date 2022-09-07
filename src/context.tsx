@@ -1,4 +1,7 @@
+import "react-native-get-random-values";
+import "@ethersproject/shims";
 import { Chain, getChain } from "fetcch-chain-data";
+
 import {
   createContext,
   ReactNode,
@@ -106,9 +109,9 @@ export const AppCOntextProveder = ({ children }: IAppContextProps) => {
     };
   }, []);
 
-  useEffect(() => {
-    delteItem();
-  }, []);
+  // useEffect(() => {
+  //   delteItem();
+  // }, []);
 
   const sharedState = {
     userWalletInfo,

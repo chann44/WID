@@ -1,26 +1,33 @@
-import { StyleSheet, Text, View, TouchableOpacity, Linking } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  Linking,
+} from "react-native";
 import React from "react";
 import { LinearGradient } from "expo-linear-gradient";
 import SVGImg from "../../../assets/done.svg";
 import { SIZES } from "../../../assets/theme";
 const TransectionSuccess = ({ navigation, route }: any) => {
-  console.log(route, "route")
+  console.log(route, "route");
 
   return (
     <View style={styles.container}>
       <View
         style={{
+          width: "70%",
           justifyContent: "center",
           alignItems: "center",
-          height: 200,
-          marginBottom: 30,
+          marginBottom: 0,
         }}
       >
         <SVGImg />
+
         <Text
           style={{
             textAlign: "center",
-            marginTop: SIZES.small,
+            marginTop: SIZES.extraLarge,
             fontSize: SIZES.large,
             fontWeight: "bold",
             color: "white",
@@ -28,28 +35,78 @@ const TransectionSuccess = ({ navigation, route }: any) => {
         >
           Transaction Successfull
         </Text>
-
-        <Text
-          selectable={true}
+        <View
           style={{
-            textAlign: "center",
-            marginTop: SIZES.large,
-            fontSize: SIZES.small,
-            fontWeight: "bold",
-            color: "white",
+            width: "100%",
           }}
         >
-          Transection Hash: {route.params.tx}
-        </Text>
+          <Text
+            selectable={true}
+            style={{
+              textAlign: "left",
+              marginTop: SIZES.large,
+              fontSize: SIZES.small,
+              fontWeight: "bold",
+              color: "white",
+            }}
+          >
+            Transection Hash: {route.params.tx}
+          </Text>
+
+          <Text
+            selectable={true}
+            style={{
+              textAlign: "left",
+              marginTop: SIZES.large,
+              fontSize: SIZES.small,
+              fontWeight: "bold",
+              color: "white",
+            }}
+          >
+            ammount: 20938409832080
+          </Text>
+          <Text
+            selectable={true}
+            style={{
+              textAlign: "left",
+              marginTop: SIZES.large,
+              fontSize: SIZES.small,
+              fontWeight: "bold",
+              color: "white",
+            }}
+          >
+            transfred to: satyam@wagpay
+          </Text>
+          <Text
+            selectable={true}
+            style={{
+              textAlign: "left",
+              marginTop: SIZES.large,
+              fontSize: SIZES.small,
+              fontWeight: "bold",
+              color: "white",
+            }}
+          >
+            to chain : Polygo Main net
+          </Text>
+        </View>
       </View>
-      <View style={{ alignItems: "center", justifyContent: "center" }}>
+      <View
+        style={{
+          marginTop: 50,
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
         <TouchableOpacity
           style={{
             width: "100%",
             marginBottom: 20,
           }}
           onPress={() => {
-            Linking.openURL(`https://testnet.bscscan.com/tx/${route.params.tx}`)
+            Linking.openURL(
+              `https://testnet.bscscan.com/tx/${route.params.tx}`
+            );
           }}
         >
           <LinearGradient
@@ -101,7 +158,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "#000000",
-    justifyContent: "center",
+    justifyContent: "space-around",
     alignItems: "center",
     paddingVertical: 40,
     paddingHorizontal: 16,

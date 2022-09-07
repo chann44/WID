@@ -15,99 +15,106 @@ import "@ethersproject/shims";
 import { ethers } from "ethers";
 export const UserRegistration = ({ navigation }: any) => {
   const { setUserName, username } = useAppContext();
-  const { getId } = useID()
+  const { getId } = useID();
 
-  const [valid, setIsValid] = useState(true)
+  const [valid, setIsValid] = useState(true);
 
   useEffect(() => {
     (async () => {
       try {
-        const id = await getId({ id: `${username}@wagpay` })
-        if(!id) {
-          setIsValid(false)
-          return
+        const id = await getId({ id: `${username}@wagpay` });
+        if (!id) {
+          setIsValid(false);
+          return;
         }
-        setIsValid(true)
+        setIsValid(true);
       } catch (e) {
-        setIsValid(false)
+        setIsValid(false);
       }
-    })()
-  }, [username])
+    })();
+  }, [username]);
 
   return (
     <View style={styles.Container}>
       <View>
-        <Text style={styles.headerText}>Create account</Text>
-      </View>
-      <View style={{ marginTop: 36 }}>
         <View>
-          <Text style={styles.inputHeader}>First name</Text>
-          <View style={styles.inputContainer}>
-            <TextInput
-              placeholder="Enter first name"
-              placeholderTextColor={"#636363"}
-              style={styles.textInputS}
-              keyboardType="default"
-              onChangeText={(text) => {
-                console.log(text);
+          <Text style={styles.headerText}>Create account</Text>
+        </View>
+        <View style={{ marginTop: 36 }}>
+          <View>
+            <Text style={styles.inputHeader}>First name</Text>
+            <View style={styles.inputContainer}>
+              <TextInput
+                placeholder="Enter first name"
+                placeholderTextColor={"#636363"}
+                style={styles.textInputS}
+                keyboardType="default"
+                onChangeText={(text) => {
+                  console.log(text);
+                }}
+              />
+            </View>
+          </View>
+          <View style={{ marginVertical: 20 }}>
+            <Text style={styles.inputHeader}>Last name</Text>
+            <View style={styles.inputContainer}>
+              <TextInput
+                placeholder="Enter last name"
+                placeholderTextColor={"#636363"}
+                style={styles.textInputS}
+              />
+            </View>
+          </View>
+          <View>
+            <Text style={styles.inputHeader}>Username</Text>
+            {valid && (
+              <View style={styles.inputContainerGreen}>
+                <TextInput
+                  placeholder="username@wagpay"
+                  placeholderTextColor={"#636363"}
+                  style={styles.textInputS}
+                  value={username}
+                  onChangeText={(text) => {
+                    setUserName(text);
+                    console.log(text);
+                  }}
+                />
+              </View>
+            )}
+            {!valid && (
+              <View style={styles.inputContainerRed}>
+                <TextInput
+                  placeholder="username@wagpay"
+                  placeholderTextColor={"#636363"}
+                  style={styles.textInputS}
+                  value={username}
+                  onChangeText={(text) => {
+                    setUserName(text);
+                    console.log(text);
+                  }}
+                />
+              </View>
+            )}
+            <Text
+              style={{
+                color: "#ABABAB",
+                lineHeight: 18,
+                marginTop: 4,
+                fontSize: 14,
+                fontWeight: "500",
               }}
-            />
+            >
+              *You can not change your username later.
+            </Text>
           </View>
-        </View>
-        <View style={{ marginVertical: 20 }}>
-          <Text style={styles.inputHeader}>Last name</Text>
-          <View style={styles.inputContainer}>
-            <TextInput
-              placeholder="Enter last name"
-              placeholderTextColor={"#636363"}
-              style={styles.textInputS}
-            />
-          </View>
-        </View>
-        <View>
-          <Text style={styles.inputHeader}>Username</Text>
-          {valid && 
-            <View style={styles.inputContainerGreen}>
-              <TextInput
-                placeholder="username@wagpay"
-                placeholderTextColor={"#636363"}
-                style={styles.textInputS}
-                value={username}
-                onChangeText={(text) => {
-                  setUserName(text);
-                  console.log(text);
-                }}
-              />
-            </View>
-          }
-          {!valid && 
-            <View style={styles.inputContainerRed}>
-              <TextInput
-                placeholder="username@wagpay"
-                placeholderTextColor={"#636363"}
-                style={styles.textInputS}
-                value={username}
-                onChangeText={(text) => {
-                  setUserName(text);
-                  console.log(text);
-                }}
-              />
-            </View>
-          }
-          <Text
-            style={{
-              color: "#ABABAB",
-              lineHeight: 18,
-              marginTop: 4,
-              fontSize: 14,
-              fontWeight: "500",
-            }}
-          >
-            *You can not change your username later.
-          </Text>
         </View>
       </View>
-      <View style={{ position: "absolute", bottom: 38, width: "90%" }}>
+
+      <View
+        style={{
+          width: "100%",
+        }}
+      >
         <Button
           title={"Next"}
           onPress={() => {
@@ -126,9 +133,10 @@ const styles = StyleSheet.create({
     backgroundColor: "#000000",
     flex: 1,
     paddingTop: 60,
-    paddingHorizontal: 17,
+    paddingHorizontal: 10,
     alignItems: "center",
     paddingBottom: 38,
+    justifyContent: "space-between",
   },
 
   headerText: {
@@ -136,6 +144,8 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     color: "#ffffff",
     lineHeight: 22.5,
+    textAlign: "center",
+    marginBottom: 30,
   },
   inputContainer: {
     marginTop: 4,
@@ -172,5 +182,5 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
     fontSize: 18,
     color: "#FFFFFF",
-  }
+  },
 });

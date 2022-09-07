@@ -23,6 +23,7 @@ import { ethers } from "ethers";
 import RequestPayment from "./recivepayment/RequestPayment";
 import Carousel from "react-native-snap-carousel";
 import { getId } from "../hooks";
+import { Swipeable } from "react-native-gesture-handler";
 
 export interface Request {
   amount: number;
@@ -44,7 +45,7 @@ export const Home = ({ navigation, route }: any) => {
   const [requests, setRequests] = useState<Request[] | []>([]);
 
   const [balance, setBalance] = useState("0.00");
-  const [erc20Balances, setERC20Balances] = useState<any[]>([])
+  const [erc20Balances, setERC20Balances] = useState<any[]>([]);
 
   useFocusEffect(
     useCallback(() => {
@@ -55,14 +56,14 @@ export const Home = ({ navigation, route }: any) => {
             setBalance(ethers.utils.formatEther(res.balance).toString());
           })
           .catch((e) => console.log(e));
-        
+
         getERC20Balance(wid.address, chain?.chainId.toString() as string)
-          .then(res => {
-            setERC20Balances(res)
+          .then((res) => {
+            setERC20Balances(res);
           })
           .catch((e) => {
-            console.error(e)
-          })
+            console.error(e);
+          });
       }
     }, [wid, chain])
   );
@@ -86,121 +87,145 @@ export const Home = ({ navigation, route }: any) => {
         flex: 1,
       }}
     >
-      <View style={{ backgroundColor: "#000" }}>
-        <ScrollView>
-          <View
-            style={{
-              flexDirection: "row",
-              paddingHorizontal: 17,
-              paddingTop: 20,
-              justifyContent: "space-between"
-            }}
-          >
-            <TouchableOpacity
-              onPress={() => {
-                navigation.navigate("Profile");
+      <Swipeable>
+        <View style={{ backgroundColor: "#000" }}>
+          <ScrollView>
+            <View
+              style={{
+                flexDirection: "row",
+                paddingHorizontal: 17,
+                paddingTop: 20,
+                justifyContent: "space-between",
               }}
             >
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate("Profile");
+                }}
+              >
+                <View>
+                  <LinearGradient
+                    colors={["#4B74FF", "#9281FF"]}
+                    style={styles.avatar}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 0 }}
+                  >
+                    <Text
+                      style={{
+                        fontSize: 15,
+                        color: "#ffffff",
+                        fontWeight: "bold",
+                        fontFamily: "TTInterfaces",
+                      }}
+                    >
+                      {wid?.wagpay_id.slice(0, 1)}
+                    </Text>
+                  </LinearGradient>
+                </View>
+              </TouchableOpacity>
               <View>
+                <TouchableOpacity
+                  onPress={() => {
+                    navigation.navigate("Scanner");
+                  }}
+                >
+                  <MaterialCommunityIcons
+                    name="line-scan"
+                    color={"#ffffff"}
+                    size={25}
+                  />
+                </TouchableOpacity>
+              </View>
+            </View>
+            <View style={{ alignItems: "center", marginTop: 44 }}>
+              <Text
+                style={{
+                  fontSize: 42,
+                  fontWeight: "600",
+                  color: "#fff",
+                  fontFamily: "TTInterfaces",
+                }}
+              >
+                {balance.substring(0, 5)} {chain?.nativeCurrency.symbol}
+              </Text>
+            </View>
+            <View
+              style={{
+                width: "100%",
+                display: "flex",
+                justifyContent: "space-around",
+                alignItems: "center",
+                flexDirection: "row",
+                // marginHorizontal: 16,
+                // justifyContent: "space-between",
+                marginBottom: 36,
+                marginTop: 30,
+              }}
+            >
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate("Send");
+                }}
+              >
                 <LinearGradient
                   colors={["#4B74FF", "#9281FF"]}
-                  style={styles.avatar}
+                  style={styles.button1}
                   start={{ x: 0, y: 0 }}
                   end={{ x: 1, y: 0 }}
                 >
+                  <Feather name="arrow-up-right" size={18} color={"#fff"} />
                   <Text
-                    style={{
-                      fontSize: 15,
-                      color: "#ffffff",
-                      fontWeight: "bold",
-                      fontFamily: 'TTInterfaces'
-                    }}
+                    style={{ fontFamily: "TTInterfaces", ...styles.buttonText }}
                   >
-                    {wid?.wagpay_id.slice(0, 1)}
+                    Send
                   </Text>
                 </LinearGradient>
-              </View>
-            </TouchableOpacity>
-            <View>
+              </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => {
-                  navigation.navigate("Scanner");
+                  navigation.navigate("Recive");
                 }}
+                style={
+                  {
+                    // marginHorizontal: 10,
+                    // flexGrow: 1,
+                  }
+                }
               >
-                <MaterialCommunityIcons
-                  name="line-scan"
-                  color={"#ffffff"}
-                  size={25}
-                />
+                <LinearGradient
+                  style={styles.button1}
+                  colors={["#4B74FF", "#A560FF80"]}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 0 }}
+                >
+                  <View
+                    style={{
+                      height: 54,
+                      width: "100%",
+                      backgroundColor: "#000",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      borderRadius: SIZES.small,
+                      flexDirection: "row",
+                      padding: 10,
+                    }}
+                  >
+                    <Feather name="arrow-down-left" size={18} color={"#fff"} />
+                    <Text
+                      style={{
+                        fontFamily: "TTInterfaces",
+                        ...styles.buttonText,
+                      }}
+                    >
+                      Receive
+                    </Text>
+                  </View>
+                </LinearGradient>
               </TouchableOpacity>
             </View>
-          </View>
-          <View style={{ alignItems: "center", marginTop: 44 }}>
-            <Text style={{ fontSize: 42, fontWeight: "600", color: "#fff", fontFamily: 'TTInterfaces' }}>
-              {balance.substring(0, 5)} {chain?.nativeCurrency.symbol}
-            </Text>
-          </View>
-          <View
-            style={{
-              width: '100%', display: 'flex', justifyContent: 'space-around', alignItems: "center",
-              flexDirection: "row",
-              // marginHorizontal: 16,
-              // justifyContent: "space-between",
-              marginBottom: 36,
-              marginTop: 30,
-            }}
-          >
-            <TouchableOpacity
-              onPress={() => {
-                navigation.navigate("Send");
-              }}
-            >
-              <LinearGradient
-                colors={["#4B74FF", "#9281FF"]}
-                style={styles.button1}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 0 }}
-              >
-                <Feather name="arrow-up-right" size={18} color={"#fff"} />
-                <Text style={{fontFamily: 'TTInterfaces', ...styles.buttonText}}>Send</Text>
-              </LinearGradient>
-            </TouchableOpacity>
-            <TouchableOpacity
-              onPress={() => {
-                navigation.navigate("Recive");
-              }}
-              style={{
-                // marginHorizontal: 10,
-                // flexGrow: 1,
-              }}
-            >
-              <LinearGradient
-                style={styles.button1}
-                colors={["#4B74FF", "#A560FF80"]}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 0 }}
-              >
-                <View
-                  style={{
-                    height: 54,
-                    width: "100%",
-                    backgroundColor: "#000",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    borderRadius: SIZES.small,
-                    flexDirection: "row",
-                    padding: 10,
-                  }}
-                >
-                  <Feather name="arrow-down-left" size={18} color={"#fff"} />
-                  <Text style={{fontFamily: 'TTInterfaces', ...styles.buttonText}}>Receive</Text>
-                </View>
-              </LinearGradient>
-            </TouchableOpacity>
-          </View>
-          <View style={{ marginHorizontal: 16 }}>
-            {/* payment request */}
-            {/* <Text
+            <View style={{ marginHorizontal: 16 }}>
+              {/* payment request */}
+              {/* <Text
               style={{
                 fontSize: 18,
                 color: "#FFFFFF",
@@ -210,7 +235,7 @@ export const Home = ({ navigation, route }: any) => {
             >
               Payment Requests
             </Text> */}
-            {/* <Carousel
+              {/* <Carousel
               data={requests}
               renderItem={(item: any) => {
                 return (
@@ -227,31 +252,32 @@ export const Home = ({ navigation, route }: any) => {
               apparitionDelay={1}
               sliderHeight={120}
             /> */}
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-                marginBottom: 8,
-              }}
-            >
-              <Text
+              <View
                 style={{
-                  fontSize: 18,
-                  color: "#FFFFFF",
-                  fontWeight: "600",
-                  lineHeight: 22.5,
-                  fontFamily: 'TTInterfaces', 
+                  flexDirection: "row",
+                  justifyContent: "space-between",
+                  marginBottom: 8,
                 }}
               >
-                Assets
-              </Text>
+                <Text
+                  style={{
+                    fontSize: 18,
+                    color: "#FFFFFF",
+                    fontWeight: "600",
+                    lineHeight: 22.5,
+                    fontFamily: "TTInterfaces",
+                  }}
+                >
+                  Assets
+                </Text>
+              </View>
+              {erc20Balances.map((erc20) => (
+                <AssetContainer token={erc20} />
+              ))}
             </View>
-            {erc20Balances.map(erc20 => (
-              <AssetContainer token={erc20} />
-            ))}
-          </View>
-        </ScrollView>
-      </View>
+          </ScrollView>
+        </View>
+      </Swipeable>
     </SafeAreaView>
   );
 };

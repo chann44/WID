@@ -74,7 +74,7 @@ export const AppCOntextProveder = ({ children }: IAppContextProps) => {
   const [wid, setWid] = useState<WID | null>(null);
   const [scannedwid, setScannedWid] = useState<string>("");
   const [chain, setChain] = useState<Chain | undefined>(
-    getChain({ internalId: 13 })
+    getChain({ internalId: 2 })
   );
 
   const [widUsername, setWidUsername] = useState("");

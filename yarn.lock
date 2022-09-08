@@ -2673,13 +2673,14 @@
     "@urql/core" ">=2.3.1"
     wonka "^4.0.14"
 
-"@wagpay/id@^0.5.0":
-  version "0.5.0"
-  resolved "https://registry.yarnpkg.com/@wagpay/id/-/id-0.5.0.tgz#d20824e5cea571ac75dce0add3b7cb636af096a6"
-  integrity sha512-0YUskx7FBol34eu0A07TeJ2tg39Gm1hhWySo6eClASmysSSlv03TqEiWpyXxl99X2CvoZLf4oYQ7Yzc5MnRGAA==
+"@wagpay/id@^0.5.4":
+  version "0.5.4"
+  resolved "https://registry.yarnpkg.com/@wagpay/id/-/id-0.5.4.tgz#1f3fbd57501b59b53c474bbf592e337f2b0279f6"
+  integrity sha512-DYmIOZ4dMgBgUyj1z4bNg9h/lkq1dcKkPZ5euSk7uMWPCYLmlc/rbNUuCsXO2qS7/2t/9ShRhIH98p1waXmF0A==
   dependencies:
     axios "^0.27.2"
     ethers "^5.6.9"
+    fetcch-chain-data "^0.0.2"
 
 "@xmldom/xmldom@~0.7.0":
   version "0.7.5"
@@ -4668,10 +4669,17 @@ fbjs@^3.0.0:
     setimmediate "^1.0.5"
     ua-parser-js "^0.7.30"
 
-fetcch-chain-data@^0.0.3:
-  version "0.0.3"
-  resolved "https://registry.yarnpkg.com/fetcch-chain-data/-/fetcch-chain-data-0.0.3.tgz#95e4426b7a75d3f535c69c36267933124978c8db"
-  integrity sha512-v3tWBwyOBYgY0D3mdAVLny68ORNGPwwiwhgj2SV4rsQxMTVdP6zJyV4bubaOBVrYTrg9c74mZ6YeCZ747fJmsg==
+fetcch-chain-data@^0.0.2:
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/fetcch-chain-data/-/fetcch-chain-data-0.0.2.tgz#aaa6382aa47004d0b35985e9883c1ffeaea7ae33"
+  integrity sha512-8jHE6arM+5qcQsDlrUbITgwYVJRTskPO6syQCBGQSeC3OfxhzkM3lkYmwn7jtVSer/dyXBhjwaOxurE2cxwUBw==
+  dependencies:
+    ts-node "^10.9.1"
+
+fetcch-chain-data@^0.0.5:
+  version "0.0.5"
+  resolved "https://registry.yarnpkg.com/fetcch-chain-data/-/fetcch-chain-data-0.0.5.tgz#2ecf87ad1586308253d24db31f6c6ea198eeac1c"
+  integrity sha512-TVTvuSJIGrfBaZCp+6oOuiwZlUwICPV5TxtOu+np61ZEaOwnlqAtloa5xrJ+rR/Q2CTqslIFHSTcCG7RbHKGxw==
   dependencies:
     ts-node "^10.9.1"
 

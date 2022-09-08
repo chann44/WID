@@ -50,7 +50,7 @@ export const Send = ({ navigation }: any) => {
   const [amount, setAmount] = useState("");
   const [selectedChain, setSelectedChain] = useState(chain);
   const [token, setToken] = useState(
-    tokenData["2"].find((t: any) => t.symbol === "USDC")
+    tokenData[chain?.internalId.toString() as string][0]
   );
   const [tokens, setTokens] = useState(
     getERC20Balance(
@@ -157,7 +157,7 @@ export const Send = ({ navigation }: any) => {
           "payment started",
           {
             to_id: scannedwid,
-            amount: amount,
+            amount: ethers.utils.parseUnits(amount, token.decimals).toString(),
           },
           {
             from_id: wid?.wagpay_id,
@@ -169,7 +169,7 @@ export const Send = ({ navigation }: any) => {
         const request = await payment(
           {
             to_id: scannedwid,
-            amount: amount,
+            amount: ethers.utils.parseUnits(amount, token.decimals).toString(),
           },
           {
             from_id: wid?.wagpay_id,
@@ -197,10 +197,7 @@ export const Send = ({ navigation }: any) => {
     try {
       if (userWalletInfo) {
         let signer = new ethers.Wallet(userWalletInfo.privateKey);
-        // const provider = get_provider(selectedChain?.internalId.toString() as string, "y141okG6TC3PecBM1mL0BfST9f4WQmLx")
-        const provider = ethers.getDefaultProvider(
-          "https://data-seed-prebsc-1-s1.binance.org:8545/"
-        );
+        const provider = get_provider(selectedChain?.internalId.toString() as string, "y141okG6TC3PecBM1mL0BfST9f4WQmLx")
         if (!provider) throw "Chain not supported";
         signer = signer.connect(provider);
 
@@ -267,7 +264,7 @@ export const Send = ({ navigation }: any) => {
   const updateToken = (t: string) => {
     const tokens = tokenData[selectedChain?.internalId.toString() as string];
 
-    const tk = tokens.find((tkK: any) => tkK.name === t);
+    const tk = tokens.find((tkK: any) => tkK.symbol === t);
 
     if (!tk) return;
     console.log(tk);
@@ -542,7 +539,11 @@ export const Send = ({ navigation }: any) => {
               title={
                 loading ? <ActivityIndicator size={20} color="white" /> : "Send"
               }
-              onPress={() => executePayment()}
+              onPress={() => navigation.navigate("TransactionLoading", {
+                selectedChain,
+                paymentRequest,
+                token 
+              })}
             />
           ) : (
             <Button
@@ -562,7 +563,7 @@ export const Send = ({ navigation }: any) => {
         snapPoints={snapPoints}
         bottomSheetRef={bottomSheetRef}
         data={chainData.map((t) => {
-          return { value: t.name, key: t.chainId } as unknown as item;
+          return { value: t.name, key: t.chainId, logo: t.icon } as unknown as item;
         })}
         handleClosePress={handleClosePress}
         handleSheetChanges={handleSheetChanges}
@@ -578,7 +579,7 @@ export const Send = ({ navigation }: any) => {
         handleSheetChanges={handleTokenSheetChanges}
         data={tokenData[selectedChain?.internalId.toString() as string].map(
           (t: any) => {
-            return { key: t.address, value: t.symbol };
+            return { key: t.address, value: t.symbol, logo: t.logoURI };
           }
         )}
       />

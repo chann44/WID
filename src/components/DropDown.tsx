@@ -68,7 +68,9 @@ export const DropDown = ({
                 }}
               >
                 <Image
-                  source={chain.logo ? chain.logo : USDCIMAGE}
+                  source={{
+                    uri: chain.logo as string
+                  }}
                   style={{ height: 32, width: 32 }}
                 />
                 <Text style={{ marginLeft: 10, fontFamily: "TTMedium" }}>

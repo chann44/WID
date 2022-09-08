@@ -7,12 +7,53 @@ import {
   TouchableOpacity,
   Linking,
 } from "react-native";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { MaterialIcons } from "@expo/vector-icons";
 import { SIZES } from "../../../assets/theme";
 import SVGImg from "../../../assets/tx.svg";
+import { getChain, getToken } from "fetcch-chain-data";
+import { ethers } from "ethers";
+import axios from "axios";
 
 const TransectionDetails = ({ navigation, route }: any) => {
+  const getStatus = async (bridge: any, fromChain: any, toChain: any, txHash: any) => {
+    const result = await axios.get('https://li.quest/v1/status', {
+        params: {
+            bridge,
+            fromChain,
+            toChain,
+            txHash,
+        }
+    });
+    return result.data;
+  }
+
+  const [completed, setCompleted] = useState(false)
+  const [failed, setFailed] = useState(false)
+
+  useEffect(() => {
+    console.log(route.params.config.to_details.bridge, route.params.chain.chainId, getChain({ internalId: route.params.config.to_details.to_chain })?.chainId.toString(), route.params.tx)
+    if(!route.params.config.same_chain) {
+      getStatus(route.params.config.to_details.bridge, route.params.chain.chainId, getChain({ internalId: route.params.config.to_details.to_chain })?.chainId.toString(), route.params.tx)
+        .then(res => {
+          if(res.status === 'DONE') {
+            setCompleted(true)
+          } else {
+            setCompleted(false)
+          }
+
+          if(res.status === 'FAILED') {
+            setFailed(true)
+          } else {
+            setFailed(false)
+          }
+        })
+        .catch(e => {
+          console.log(e)
+        })
+    }
+  }, [])
+  
   return (
     <SafeAreaView
       style={{
@@ -62,7 +103,19 @@ const TransectionDetails = ({ navigation, route }: any) => {
             </View>
             <View style={{ ...styles.rowView, marginVertical: 20 }}>
               <Text style={styles.text}>Transaction status</Text>
-              <Text style={{ ...styles.text, color: "green" }}>completed</Text>
+              
+              {route.params.config.same_chain && <Text style={{ ...styles.text, color: "green" }}>Completed</Text>}
+              {!route.params.config.same_chain && 
+                <>
+                  {completed ? 
+                    <Text style={{ ...styles.text, color: "green" }}>Completed</Text>
+                    :
+                    <>
+                      {failed ? <Text style={{ ...styles.text, color: "red" }}>Failed</Text> : <Text style={{ ...styles.text, color: "yellow" }}>Pending</Text>}
+                    </>
+                  }
+                </>
+              }
             </View>
             <View style={{ ...styles.rowView }}>
               <Text style={styles.text}>Transaction type</Text>
@@ -94,20 +147,20 @@ const TransectionDetails = ({ navigation, route }: any) => {
                 <Text
                   style={{ ...styles.text, fontSize: 17, marginBottom: 12 }}
                 >
-                  Ammount sent
+                  Amount sent
                 </Text>
                 <View>
-                  <Text style={styles.text}>1000 USDC</Text>
+                  <Text style={styles.text}>{ethers.utils.formatUnits(route.params.config.amount, route.params.token.decimals)} {route.params.token.symbol}</Text>
                   <Text
                     style={{ ...styles.text, fontSize: 10, textAlign: "right" }}
                   >
-                    on Polygon
+                    on {route.params.chain.name}
                   </Text>
                 </View>
               </View>
               <View style={{ ...styles.rowView, marginTop: 12 }}>
                 <Text style={styles.text}>Sender address</Text>
-                <Text style={styles.text}>0xweoijoeiwj</Text>
+                <Text style={styles.text}>{route.params.config.from_id.wagpay_id}</Text>
               </View>
             </View>
             <View
@@ -134,20 +187,20 @@ const TransectionDetails = ({ navigation, route }: any) => {
                 <Text
                   style={{ ...styles.text, fontSize: 17, marginBottom: 12 }}
                 >
-                  Ammount sent
+                  Amount sent
                 </Text>
                 <View>
-                  <Text style={styles.text}>1000 USDC</Text>
+                  <Text style={styles.text}>{!route.params.config.same_chain ? ethers.utils.formatUnits(route.params.config.to_details.amount, getToken(route.params.config.to_details.to_token, route.params.config.to_details.to_chain).decimals) : ethers.utils.formatUnits(route.params.config.amount, getToken(route.params.config.to_details.to_token, route.params.config.to_details.to_chain).decimals)} {getToken(route.params.config.to_details.to_token, route.params.config.to_details.to_chain).symbol}</Text>
                   <Text
                     style={{ ...styles.text, fontSize: 10, textAlign: "right" }}
                   >
-                    on Polygon
+                    on {getChain({internalId: Number(route.params.config.to_details.to_chain)})?.name.toString()}
                   </Text>
                 </View>
               </View>
               <View style={{ ...styles.rowView, marginTop: 12 }}>
                 <Text style={styles.text}>Sender address</Text>
-                <Text style={styles.text}>0xweoijoeiwj</Text>
+                <Text style={styles.text}>{route.params.config.to_id.wagpay_id}</Text>
               </View>
             </View>
 
@@ -159,7 +212,7 @@ const TransectionDetails = ({ navigation, route }: any) => {
             >
               <Text style={styles.text}>Payment IDs</Text>
               <Text style={{ ...styles.text, ...styles.dull }}>
-                0xweojeojoj
+                {route.params.config.payment_request_id}
               </Text>
             </View>
             <View
@@ -170,7 +223,7 @@ const TransectionDetails = ({ navigation, route }: any) => {
             >
               <Text style={styles.text}>Transaction hash</Text>
               <Text style={{ ...styles.text, ...styles.dull }}>
-                Transaction status
+                {route.params.tx.substring(0, 7)}... 
               </Text>
             </View>
           </View>
@@ -182,7 +235,7 @@ const TransectionDetails = ({ navigation, route }: any) => {
           >
             <Text style={styles.text}>Date & Time</Text>
             <Text style={{ ...styles.text, ...styles.dull }}>
-              Transaction status
+              {new Date().getDate()}
             </Text>
           </View>
           <TouchableOpacity
@@ -196,7 +249,7 @@ const TransectionDetails = ({ navigation, route }: any) => {
             }}
             onPress={() => {
               Linking.openURL(
-                `https://testnet.bscscan.com/tx/${route.params.tx}`
+                `${getChain({ internalId: route.params.chain.internalId })?.explorers[0].url}/tx/${route.params.tx}`
               );
             }}
           >

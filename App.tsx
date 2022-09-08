@@ -34,6 +34,7 @@ import { CreateAccountLoading } from "./src/screens/accountcreated/createaccount
 import { useFonts } from "expo-font";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import TransectionDetails from "./src/screens/transection/TransectionDetails";
+import { TransactionLoading } from "./src/screens/transection/TransactionLoading";
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 
@@ -117,6 +118,7 @@ export default function App() {
             <Stack.Screen name="ConnectWallet1" component={ConnectWallet1} />
             <Stack.Screen name="TabNavigation" component={TabNavigation} />
             <Stack.Screen name="Send" component={Send} />
+            <Stack.Screen name="TransactionLoading" component={TransactionLoading} />
             <Stack.Screen name="Recive" component={ReciveQr} />
             <Stack.Screen name="RequestPayment" component={RequestPayment} />
             <Stack.Screen name="Scanner" component={Scanner} />

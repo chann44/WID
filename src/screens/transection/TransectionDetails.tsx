@@ -7,15 +7,18 @@ import {
   TouchableOpacity,
   Linking,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { MaterialIcons } from "@expo/vector-icons";
 import { SIZES } from "../../../assets/theme";
 import SVGImg from "../../../assets/tx.svg";
 import { getChain, getToken } from "fetcch-chain-data";
 import { ethers } from "ethers";
 import axios from "axios";
+import { useFocusEffect } from "@react-navigation/native";
 
 const TransectionDetails = ({ navigation, route }: any) => {
+  const [completed, setCompleted] = useState(false)
+  const [failed, setFailed] = useState(false)
   const getStatus = async (bridge: any, fromChain: any, toChain: any, txHash: any) => {
     const result = await axios.get('https://li.quest/v1/status', {
         params: {
@@ -27,32 +30,38 @@ const TransectionDetails = ({ navigation, route }: any) => {
     });
     return result.data;
   }
-
-  const [completed, setCompleted] = useState(false)
-  const [failed, setFailed] = useState(false)
-
-  useEffect(() => {
-    console.log(route.params.config.to_details.bridge, route.params.chain.chainId, getChain({ internalId: route.params.config.to_details.to_chain })?.chainId.toString(), route.params.tx)
-    if(!route.params.config.same_chain) {
-      getStatus(route.params.config.to_details.bridge, route.params.chain.chainId, getChain({ internalId: route.params.config.to_details.to_chain })?.chainId.toString(), route.params.tx)
-        .then(res => {
-          if(res.status === 'DONE') {
-            setCompleted(true)
+  useFocusEffect(
+    useCallback(() => {
+      const interval = setInterval(() => {
+        if(!route.params.config.same_chain) {
+          if(!completed && !failed) {
+            getStatus(route.params.config.to_details.bridge, route.params.chain.chainId, getChain({ internalId: route.params.config.to_details.to_chain })?.chainId.toString(), route.params.tx)
+              .then(res => {
+                console.log(res.status === 'DONE')
+                if(res.status === 'DONE') {
+                  setCompleted(true)
+                } else {
+                  setCompleted(false)
+                }
+      
+                if(res.status === 'FAILED') {
+                  setFailed(true)
+                } else {
+                  setFailed(false)
+                }
+              })
+              .catch(e => {
+                console.log(e)
+              })
           } else {
-            setCompleted(false)
+            clearInterval(interval)
           }
-
-          if(res.status === 'FAILED') {
-            setFailed(true)
-          } else {
-            setFailed(false)
-          }
-        })
-        .catch(e => {
-          console.log(e)
-        })
-    }
-  }, [])
+        }
+      }, 5000)
+  
+      return () => clearInterval(interval)
+    }, [])
+  )
   
   return (
     <SafeAreaView

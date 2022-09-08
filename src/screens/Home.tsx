@@ -20,10 +20,11 @@ import { useAppContext } from "../context";
 import { useFocusEffect } from "@react-navigation/native";
 import { useBalance } from "../hooks";
 import { ethers } from "ethers";
-import RequestPayment from "./recivepayment/RequestPayment";
+// import RequestPayment from "./recivepayment/RequestPayment";
 import Carousel from "react-native-snap-carousel";
 import { getId } from "../hooks";
 import { Swipeable } from "react-native-gesture-handler";
+import axios from "axios";
 
 export interface Request {
   amount: number;

@@ -21,7 +21,7 @@ import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import Button from "../components/Button";
 import { useFocusEffect } from "@react-navigation/native";
-import { useBalance, useID, usePay } from "../hooks";
+import { useBalance, usePay } from "../hooks";
 import { useAppContext } from "../context";
 import { BigNumber, ethers } from "ethers";
 import {
@@ -36,13 +36,13 @@ import { tokens as tokenData } from "fetcch-chain-data/dist/tokens";
 import { get_id } from "@wagpay/id";
 import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 import USDCIMAGE from "../../assets/USDCicon.png";
+import { getId } from "@fetcch/id";
 
 export const Send = ({ navigation }: any) => {
-  const { wid, userWalletInfo, scannedwid, setScannedWid, chain } =
+  const { wid, userWalletInfo, scannedwid, setScannedWid, chain, API_KEY } =
     useAppContext();
   const { getERC20Balance } = useBalance();
   const { payment } = usePay();
-  const { getId } = useID();
 
   const [next, setNext] = useState(false);
 
@@ -197,7 +197,10 @@ export const Send = ({ navigation }: any) => {
     try {
       if (userWalletInfo) {
         let signer = new ethers.Wallet(userWalletInfo.privateKey);
-        const provider = get_provider(selectedChain?.internalId.toString() as string, "y141okG6TC3PecBM1mL0BfST9f4WQmLx")
+        const provider = get_provider(
+          selectedChain?.internalId.toString() as string,
+          "y141okG6TC3PecBM1mL0BfST9f4WQmLx"
+        );
         if (!provider) throw "Chain not supported";
         signer = signer.connect(provider);
 
@@ -275,7 +278,12 @@ export const Send = ({ navigation }: any) => {
     (async () => {
       console.log("alpaca", scannedwid);
       if (scannedwid) {
-        const id = await getId({ id: scannedwid });
+        const id = await getId({
+          apiKey: API_KEY,
+          data: {
+            id: scannedwid,
+          },
+        });
         if (id) {
           console.log(id);
           setAddress(id.default.address);
@@ -539,11 +547,13 @@ export const Send = ({ navigation }: any) => {
               title={
                 loading ? <ActivityIndicator size={20} color="white" /> : "Send"
               }
-              onPress={() => navigation.navigate("TransactionLoading", {
-                selectedChain,
-                paymentRequest,
-                token 
-              })}
+              onPress={() =>
+                navigation.navigate("TransactionLoading", {
+                  selectedChain,
+                  paymentRequest,
+                  token,
+                })
+              }
             />
           ) : (
             <Button
@@ -563,7 +573,11 @@ export const Send = ({ navigation }: any) => {
         snapPoints={snapPoints}
         bottomSheetRef={bottomSheetRef}
         data={chainData.map((t) => {
-          return { value: t.name, key: t.chainId, logo: t.icon } as unknown as item;
+          return {
+            value: t.name,
+            key: t.chainId,
+            logo: t.icon,
+          } as unknown as item;
         })}
         handleClosePress={handleClosePress}
         handleSheetChanges={handleSheetChanges}

@@ -8,21 +8,24 @@ import {
 import React, { useEffect, useId, useState } from "react";
 import Button from "../components/Button";
 import { useAppContext } from "../context";
-import { useID, getId } from "../hooks/useID";
 
+const API_KEY = "fa73b623-8a69-48f6-8997-6fc9cc3c8712";
 import "@ethersproject/shims";
 
 import { ethers } from "ethers";
+import { getId } from "@fetcch/id";
 export const UserRegistration = ({ navigation }: any) => {
   const { setUserName, username } = useAppContext();
-  const { getId } = useID();
 
   const [valid, setIsValid] = useState(true);
 
   useEffect(() => {
     (async () => {
       try {
-        const id = await getId({ id: `${username}@wagpay` });
+        const id = await getId({
+          apiKey: API_KEY,
+          data: { id: `${username}@fetcch` },
+        });
         if (!id) {
           setIsValid(false);
           return;

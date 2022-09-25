@@ -22,9 +22,9 @@ import { useBalance } from "../hooks";
 import { ethers } from "ethers";
 // import RequestPayment from "./recivepayment/RequestPayment";
 import Carousel from "react-native-snap-carousel";
-import { getId } from "../hooks";
 import { Swipeable } from "react-native-gesture-handler";
 import axios from "axios";
+import { getId } from "@fetcch/id";
 
 export interface Request {
   amount: number;
@@ -40,7 +40,7 @@ export interface Request {
 }
 
 export const Home = ({ navigation, route }: any) => {
-  const { wid, chain } = useAppContext();
+  const { wid, chain, API_KEY } = useAppContext();
   const { getNativeBalance, getERC20Balance } = useBalance();
 
   const [requests, setRequests] = useState<Request[] | []>([]);
@@ -73,7 +73,10 @@ export const Home = ({ navigation, route }: any) => {
     (async () => {
       try {
         console.log(wid?.wagpay_id);
-        const data: any = await getId({ id: "satyamxx@wagpay" });
+        const data: any = await getId({
+          apiKey: API_KEY,
+          data: { id: "satyamxx@wagpay" },
+        });
         setRequests(data.requests);
       } catch (E) {
         console.log(E);

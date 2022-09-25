@@ -51,6 +51,7 @@ interface AppContext {
   setChain: Dispatch<SetStateAction<Chain | undefined>>;
   widUsername: string;
   setWidUsername: Dispatch<SetStateAction<string>>;
+  API_KEY: string;
 }
 
 const AppContext = createContext<AppContext>({} as AppContext);
@@ -76,6 +77,7 @@ export const AppCOntextProveder = ({ children }: IAppContextProps) => {
   const [chain, setChain] = useState<Chain | undefined>(
     getChain({ internalId: 2 })
   );
+  const API_KEY = "fa73b623-8a69-48f6-8997-6fc9cc3c8712";
 
   const [widUsername, setWidUsername] = useState("");
 
@@ -132,6 +134,7 @@ export const AppCOntextProveder = ({ children }: IAppContextProps) => {
     setChain,
     widUsername,
     setWidUsername,
+    API_KEY,
   };
 
   return (

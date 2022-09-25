@@ -1918,6 +1918,15 @@
     find-up "^5.0.0"
     js-yaml "^4.1.0"
 
+"@fetcch/id@^0.1.1":
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/@fetcch/id/-/id-0.1.1.tgz#289bc0b0db7225c94906077b0170f0327996bd13"
+  integrity sha512-W6+zOX85gIAvj3jgvWyZF484fw9A8uUkvDT9Cztm0A46+nC1fzzDQQXShcRq+gP7OuWTHveq0+1pbO6xIfY3fg==
+  dependencies:
+    axios "^0.27.2"
+    fetcch-chain-data "^0.0.5"
+    ts-node "^10.9.1"
+
 "@gar/promisify@^1.0.1":
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/@gar/promisify/-/promisify-1.1.3.tgz#555193ab2e3bb3b6adc3d551c9c030d9e860daf6"

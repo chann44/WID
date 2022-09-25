@@ -1,14 +1,13 @@
 import { useEffect } from "react";
 import { View, Text, Image, ActivityIndicator } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-
+import { createId, getId } from "@fetcch/id";
 import "@ethersproject/shims";
 
 import { ethers } from "ethers";
 import { SIZES } from "../../../assets/theme";
 import { useAppContext, UserWalletInfo } from "../../context";
 import { AsyncStorage } from "react-native";
-import { useID } from "../../hooks/useID";
 import { _storeData } from "../createWallet.js/createWalletSuccess";
 
 const CreateID = async (
@@ -23,10 +22,10 @@ const CreateID = async (
     userWalletInfo && new ethers.Wallet(userWalletInfo?.privateKey);
   const msg = wallet && (await wallet.signMessage("wagpay did this"));
   console.log(msg);
-  const { createId } = useID();
+  const { API_KEY } = useAppContext();
 
   console.log({
-    wagpay_id: `${username}@wagpay`,
+    wagpay_id: `${username}@fetcch`,
     default: {
       address: userWalletInfo?.address,
       network: {
@@ -40,17 +39,17 @@ const CreateID = async (
   });
 
   createId({
-    wagpay_id: `${username}@wagpay`,
-    default: {
-      address: userWalletInfo?.address,
-      network: {
-        id: 2,
-        name: "polygon",
-        chain_type: "evm",
+    apiKey: API_KEY,
+    data: {
+      wagpayId: `${username}@fetcch`,
+      default: {
+        address: userWalletInfo.address,
+        network: 1,
       },
+      signedMsg: msg,
+      assumeHighSecurity: false,
+      others: [],
     },
-    forced_same_chain_payment: false,
-    signedMsg: msg, // signed message from default address
   })
     .then((res: any) => {
       console.log(res);

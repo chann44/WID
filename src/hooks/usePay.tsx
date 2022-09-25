@@ -1,4 +1,4 @@
-import { pay } from "@wagpay/id";
+import { pay } from "@fetcch/id";
 
 const API_KEY = "fa73b623-8a69-48f6-8997-6fc9cc3c8712";
 
@@ -25,7 +25,13 @@ export const usePay = () => {
   // user_config - UserPayConfig
 
   const payment = (config: any, user_config: any) => {
-    return pay(config, user_config, API_KEY);
+    return pay({
+      apiKey: API_KEY,
+      data: {
+        userConfig: user_config,
+        toConfig: config,
+      },
+    });
   };
 
   return {

@@ -8,7 +8,6 @@ import { BigNumber, ethers } from "ethers";
 import { SIZES } from "../../../assets/theme";
 import { useAppContext, UserWalletInfo } from "../../context";
 import { AsyncStorage } from "react-native";
-import { useID } from "../../hooks/useID";
 import { _storeData } from "../createWallet.js/createWalletSuccess";
 import { get_provider, is_native_token } from "@wagpay/id/dist/utils";
 
@@ -20,60 +19,63 @@ const ExecutePayment = async (
   paymentRequest: any,
   token: any
 ) => {
-    try {
-        if (userWalletInfo) {
-            let signer = new ethers.Wallet(userWalletInfo.privateKey);
-            const provider = get_provider(selectedChain?.internalId.toString() as string, "y141okG6TC3PecBM1mL0BfST9f4WQmLx")
-            if (!provider) throw "Chain not supported";
-            signer = signer.connect(provider);
+  try {
+    if (userWalletInfo) {
+      let signer = new ethers.Wallet(userWalletInfo.privateKey);
+      const provider = get_provider(
+        selectedChain?.internalId.toString() as string,
+        "y141okG6TC3PecBM1mL0BfST9f4WQmLx"
+      );
+      if (!provider) throw "Chain not supported";
+      signer = signer.connect(provider);
 
-            console.log(await (await signer.getBalance()).toString());
+      console.log(await (await signer.getBalance()).toString());
 
-            if (!is_native_token(token?.address.toLowerCase() as string, "evm")) {
-                const erc20 = new ethers.Contract(
-                    token.address,
-                    [
-                        "function approve(address _spender, uint256 _value) public returns (bool success)",
-                    ],
-                    signer
-                );
-                console.log(
-                    paymentRequest.transaction_data.to,
-                    paymentRequest.amount
-                );
-                const tx = await erc20.approve(
-                    paymentRequest.transaction_data.to,
-                    ethers.utils.parseUnits(paymentRequest.amount, token.decimals).toString(),
-                    {
-                        gasPrice: provider.getGasPrice(),
-                        gasLimit: BigNumber.from(1500000),
-                    }
-                );
+      if (!is_native_token(token?.address.toLowerCase() as string, "evm")) {
+        const erc20 = new ethers.Contract(
+          token.address,
+          [
+            "function approve(address _spender, uint256 _value) public returns (bool success)",
+          ],
+          signer
+        );
+        console.log(paymentRequest.transaction_data.to, paymentRequest.amount);
+        const tx = await erc20.approve(
+          paymentRequest.transaction_data.to,
+          ethers.utils
+            .parseUnits(paymentRequest.amount, token.decimals)
+            .toString(),
+          {
+            gasPrice: provider.getGasPrice(),
+            gasLimit: BigNumber.from(1500000),
+          }
+        );
 
-                console.log(tx, "erc20");
+        console.log(tx, "erc20");
 
-                await tx.wait();
-            }
-            const { gasLimit, chainId, from, value, ...request } = paymentRequest.transaction_data;
-            const tx = await signer.sendTransaction(paymentRequest.transaction_data);
-            console.log({
-                tx: tx.hash,
-                config: paymentRequest,
-                chain: selectedChain,
-                token: token
-            })
-            console.log(tx, "bridge");
-            navigation.navigate("txdetails", {
-                tx: tx.hash,
-                config: paymentRequest,
-                chain: selectedChain,
-                token: token
-            });
-        }
-    } catch (e) {
-        navigation.navigate("Send")
-        console.log(e);
+        await tx.wait();
+      }
+      const { gasLimit, chainId, from, value, ...request } =
+        paymentRequest.transaction_data;
+      const tx = await signer.sendTransaction(paymentRequest.transaction_data);
+      console.log({
+        tx: tx.hash,
+        config: paymentRequest,
+        chain: selectedChain,
+        token: token,
+      });
+      console.log(tx, "bridge");
+      navigation.navigate("txdetails", {
+        tx: tx.hash,
+        config: paymentRequest,
+        chain: selectedChain,
+        token: token,
+      });
     }
+  } catch (e) {
+    navigation.navigate("Send");
+    console.log(e);
+  }
 };
 
 export const TransactionLoading = ({ navigation, route }: any) => {

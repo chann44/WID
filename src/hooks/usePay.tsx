@@ -1,6 +1,6 @@
 import { pay } from "@fetcch/id";
 
-const API_KEY = "fa73b623-8a69-48f6-8997-6fc9cc3c8712";
+const API_KEY = "d4d8b48e-8554-4a95-a182-560b0e9d9731";
 
 export const usePay = () => {
   // @types
@@ -24,7 +24,7 @@ export const usePay = () => {
   // config - PaymentConfig
   // user_config - UserPayConfig
 
-  const payment = (config: any, user_config: any) => {
+  const payment = (config: any, user_config: any): Promise<any> => {
     return pay({
       apiKey: API_KEY,
       data: {

@@ -1,6 +1,6 @@
 import { pay } from "@fetcch/id";
 
-const API_KEY = "d4d8b48e-8554-4a95-a182-560b0e9d9731";
+export const API_KEY = "d4d8b48e-8554-4a95-a182-560b0e9d9731";
 
 export const usePay = () => {
   // @types

@@ -21,7 +21,7 @@ import MaterialCommunityIcons from "@expo/vector-icons/MaterialCommunityIcons";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import Button from "../components/Button";
 import { useFocusEffect } from "@react-navigation/native";
-import { useBalance, usePay } from "../hooks";
+import { API_KEY, useBalance, usePay } from "../hooks";
 import { useAppContext } from "../context";
 import { BigNumber, ethers } from "ethers";
 import {
@@ -44,7 +44,7 @@ import Constants from "expo-constants";
 const { manifest } = Constants;
 
 export const Send = ({ navigation }: any) => {
-  const { wid, userWalletInfo, scannedwid, setScannedWid, chain, API_KEY } =
+  const { wid, userWalletInfo, scannedwid, setScannedWid, chain } =
     useAppContext();
   const { getERC20Balance } = useBalance();
   const { payment } = usePay();

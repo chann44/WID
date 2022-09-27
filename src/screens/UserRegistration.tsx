@@ -9,11 +9,11 @@ import React, { useEffect, useId, useState } from "react";
 import Button from "../components/Button";
 import { useAppContext } from "../context";
 
-const API_KEY = "d4d8b48e-8554-4a95-a182-560b0e9d9731";
 import "@ethersproject/shims";
 
 import { ethers } from "ethers";
 import { getId } from "@fetcch/id";
+import { API_KEY } from "../hooks";
 export const UserRegistration = ({ navigation }: any) => {
   const { setUserName, username } = useAppContext();
 

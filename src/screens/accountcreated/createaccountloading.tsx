@@ -12,6 +12,7 @@ import { _storeData } from "../createWallet.js/createWalletSuccess";
 import axios from "axios";
 
 import Constants from "expo-constants";
+import { API_KEY } from "../../hooks";
 
 const { manifest } = Constants;
 
@@ -27,7 +28,6 @@ const CreateID = async (
     userWalletInfo && new ethers.Wallet(userWalletInfo?.privateKey);
   const msg = wallet && (await wallet.signMessage("wagpay did this"));
   console.log(msg);
-  const API_KEY = "d4d8b48e-8554-4a95-a182-560b0e9d9731";
 
   console.log({
     wagpay_id: `${username}@fetcchx`,

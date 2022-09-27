@@ -18,7 +18,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { SIZES } from "../../assets/theme";
 import { useAppContext } from "../context";
 import { useFocusEffect } from "@react-navigation/native";
-import { useBalance } from "../hooks";
+import { API_KEY, useBalance } from "../hooks";
 import { ethers } from "ethers";
 // import RequestPayment from "./recivepayment/RequestPayment";
 import Carousel from "react-native-snap-carousel";
@@ -50,7 +50,6 @@ export const Home = ({ navigation, route }: any) => {
 
   const [balance, setBalance] = useState("0.00");
   const [erc20Balances, setERC20Balances] = useState<any[]>([]);
-  const API_KEY = "d4d8b48e-8554-4a95-a182-560b0e9d9731";
 
   useFocusEffect(
     useCallback(() => {

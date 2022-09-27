@@ -37,6 +37,11 @@ import { get_id } from "@wagpay/id";
 import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet";
 import USDCIMAGE from "../../assets/USDCicon.png";
 import { getId } from "@fetcch/id";
+import axios from "axios";
+
+import Constants from "expo-constants";
+
+const { manifest } = Constants;
 
 export const Send = ({ navigation }: any) => {
   const { wid, userWalletInfo, scannedwid, setScannedWid, chain, API_KEY } =
@@ -166,20 +171,26 @@ export const Send = ({ navigation }: any) => {
             from_chain: selectedChain?.internalId.toString(),
           }
         );
-        const request = await payment(
+        const request = await axios.post(
+          `http://${manifest?.debuggerHost
+            ?.split(":")
+            .shift()}:8000/v1/requests/`,
           {
             to_id: scannedwid,
             amount: ethers.utils.parseUnits(amount, token.decimals).toString(),
-          },
-          {
             from_id: wid?.wagpay_id,
             from_address: wid?.address,
             from_token: token?.address.toLowerCase(),
             from_chain: selectedChain?.internalId.toString(),
+          },
+          {
+            headers: {
+              "x-api-key": API_KEY,
+            },
           }
         );
 
-        console.log(request.transaction_data);
+        console.log(request.data.transaction_data);
         setPaymentRequest(request);
 
         resolve(request);

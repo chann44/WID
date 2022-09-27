@@ -74,7 +74,7 @@ export const Home = ({ navigation, route }: any) => {
   );
 
   useEffect(() => {
-    (async () => {
+    const interval = setInterval(async () => {
       try {
         const wallet =
           userWalletInfo && new ethers.Wallet(userWalletInfo?.privateKey);
@@ -99,7 +99,8 @@ export const Home = ({ navigation, route }: any) => {
         console.log(wid?.wagpay_id);
         console.log(E);
       }
-    })();
+    }, 10000);
+    return () => clearInterval(interval);
   }, []);
 
   return (
